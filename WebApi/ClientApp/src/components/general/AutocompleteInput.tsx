@@ -1,22 +1,21 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, ChangeEvent, useEffect } from "react";
 import AsyncSelect from "react-select/async";
-import debounce from "lodash.debounce";
-import { Stock } from "../../types/AutocompleteInput";
+import {StockOption, TickerSecNameCombination} from '../../types/charting/types';
 
-interface StockOption {
-  value: string;
-  label: string;
+type Props = {
+  onAutoCompleteSelect: (stock: StockOption | null) => void;
 }
 
-interface tickerSecNameCombination {
-  ticker: string;
-  securityName: string;
-}
-
-function AutocompleteInput() {
+function AutocompleteInput({onAutoCompleteSelect} : Props) {
 
   const [selectedOption, setSelectedOption] = useState<StockOption | null>(null);
   const timingRef = useRef<ReturnType<typeof setTimeout>>(null);
+  
+  useEffect(() => {
+
+    onAutoCompleteSelect(selectedOption);
+
+  }, [selectedOption]);
 
   async function fetchOptions(inputValue: string): Promise<StockOption[]> {
 
@@ -24,9 +23,9 @@ function AutocompleteInput() {
 
     try {
 
-      const response = await fetch(`https://localhost:7133/api/stock/search?securityName=${inputValue}`);
+      const response = await fetch(`https://localhost:7133/api/stock/security/search?securityName=${inputValue}`);
       
-      const data: tickerSecNameCombination[] = await response.json();
+      const data: TickerSecNameCombination[] = await response.json();
 
       const securityTickerCombinations: StockOption[] = data.map((item) => 
         ({value: item.ticker,label: item.securityName})
@@ -40,6 +39,12 @@ function AutocompleteInput() {
       return [];
 
     }
+  }
+
+  const handleSecuritySelect = (e: StockOption | null) => {
+
+    setSelectedOption(e);
+
   }
 
   const loadOptions = (inputValue: string) : Promise<StockOption[]> => {
@@ -63,7 +68,7 @@ function AutocompleteInput() {
   }
 
   return (
-    <div style={{ width: 420 }}>
+    <div style={{ width: 620 }}>
       <AsyncSelect
         isClearable
         cacheOptions
@@ -83,30 +88,54 @@ function AutocompleteInput() {
         defaultOptions={false}
         loadOptions={loadOptions}
         value={selectedOption}
-        onChange={setSelectedOption}
+        onChange={handleSecuritySelect}
         styles={{
-          option: (provided) => ({
+          control: (provided: any) => ({
+            ...provided,
+            backgroundColor: "#212529", // Bootstrap dark background
+            color: "#fff",
+            borderColor: "#495057",
+            boxShadow: "none",
+            "&:hover": {
+              borderColor: "#6c757d",
+            },
+          }),
+          menu: (provided: any) => ({
+            ...provided,
+            backgroundColor: "#212529",
+            color: "#fff",
+          }),
+          menuList: (provided: any) => ({
+            ...provided,
+            backgroundColor: "#212529",
+            color: "#fff",
+          }),
+          option: (provided: any, state: any) => ({
             ...provided,
             fontSize: "14px", // dropdown items font size
+            backgroundColor: state.isFocused ? "#495057" : "#212529",
+            color: "#fff",
+            "&:active": {
+              backgroundColor: "#343a40",
+            },
           }),
-          input: (provided) => ({
+          singleValue: (provided: any) => ({
             ...provided,
-            fontSize: "14px", // text typed in input
+            fontSize: "14px", // dropdown items font size
+            color: "#fff",
           }),
-          singleValue: (provided) => ({
+          input: (provided: any) => ({
             ...provided,
-            fontSize: "14px", // selected value display
+            fontSize: "14px", // dropdown items font size
+            color: "#fff",
+          }),
+          placeholder: (provided: any) => ({
+            ...provided,
+            color: "#adb5bd",
           }),
         }}
         placeholder="Security name..."
       />
-      {selectedOption && (
-        <div>
-          <span style={{fontWeight: "bold"}}>Selected:</span>{selectedOption.label}
-          <br />
-          <span style={{fontWeight: "bold"}}>Value:</span>{selectedOption.value}
-        </div>
-      )}
     </div>
   );
 }

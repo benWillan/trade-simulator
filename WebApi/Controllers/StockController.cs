@@ -30,13 +30,13 @@ public class StockController : ControllerBase
         var quotes = await _stockQuoteService.GetStockQuotes(securityName);
         
         sw.Stop();
-        Console.WriteLine($"There were: {quotes.Count()} stock quotes from tickeer: {securityName} between {d1}-{d2}");
+        Console.WriteLine($"There were: {quotes.Count()} stock quotes from ticker: {securityName} between {d1}-{d2}");
         Console.WriteLine(sw.Elapsed);
 
         return Ok(quotes);
     }
 
-    [HttpGet("{search}")]
+    [HttpGet("security/{search}")]
     public async Task<IActionResult> GetSecurityNames([FromQuery] string? securityName)
     {
         if (securityName is null) return BadRequest();
@@ -47,4 +47,17 @@ public class StockController : ControllerBase
         
         return Ok(securityNameMatches);
     }
+
+    [HttpGet("metadata/{ticker}")]
+    public async Task<IActionResult> GetStockMetaData([FromQuery] string? stockTicker)
+    {
+        if (stockTicker is null) return BadRequest();
+        
+        stockTicker = stockTicker.Trim();
+
+        var stockData = await _stockQuoteService.RetrieveStockHeaderData(stockTicker);
+
+        return Ok(stockData);
+    }
+    
 }

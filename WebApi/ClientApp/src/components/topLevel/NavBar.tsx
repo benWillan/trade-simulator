@@ -4,10 +4,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export function NavBar() {
+
+  const glowValue = '#447ffff0';
+  const glowValue2 = '#3d7ff8a0';
+  const glowValue3 = '#f4fc8fde';
+
   return (
     <Navbar expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="#home">Trade Sim<span>u</span>lator</Navbar.Brand>
+        <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

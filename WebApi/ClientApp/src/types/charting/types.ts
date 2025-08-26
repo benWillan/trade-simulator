@@ -1,5 +1,15 @@
+export interface StockOption {
+  value: string;
+  label: string;
+}
+
+export interface TickerSecNameCombination {
+  ticker: string;
+  securityName: string;
+}
+
 // StockQuote matches C# StockQuote
-export interface StockQuote2 {
+export interface StockQuote {
   stockSymbol: string;
   date: string;         // DateTime in JSON is serialized as an ISO string
   openPrice?: number;   // nullable -> optional property
@@ -24,5 +34,5 @@ export interface Stock {
   exchange?: string;
   cqsSymbol?: string;
   nasdaqSymbol?: string;
-  stockQuotes: StockQuote2[]; // collection
+  stockQuotes: StockQuote[]; // collection
 }

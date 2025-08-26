@@ -30,11 +30,6 @@ public class StockQuoteService : IStockQuoteService
     
     public async Task<IEnumerable<SelectedStockDto>> RetrieveSecurityNameMatchesAsync(string securityName)
     {
-        /*
-         * 1. Fetch records as Ticker(value) and SecurityName (label).
-         * 2. (clientside) onChange should then lookup the quotes from the ticker.
-         */
-        
         var lowerSecurityName = securityName.ToLower();
 
         var matchedSecurityResults = await _context.Stocks
@@ -48,6 +43,14 @@ public class StockQuoteService : IStockQuoteService
             .ToListAsync();
         
         return matchedSecurityResults;
+    }
+
+    public async Task<Stock> RetrieveStockHeaderData(string stockTicker)
+    {
+        var stockData = await _context.Stocks
+            .FirstAsync(stock => stock.Ticker == stockTicker);
+
+        return stockData;
     }
 
 }

@@ -1,54 +1,75 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
-import AutocompleteInput from '../general/AutocompleteInput'
+import { Stock } from '../../types/charting/types';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table'
 
 type Props = {
-  onSearch: (ticker: string) => void;
-}
+  stockData: Stock | null;
+};
 
-function StockChartHeader({onSearch}: Props) {
-  
-  const [securityName, setSecurityName] = useState("");
+function StockChartHeader({ stockData }: Props) {
+  if (!stockData) return null;
 
-  const handleClick = () => {
+  const excludedKeys: (keyof Stock)[] = ['id', 'stockQuotes', 'securityName'];
 
-    // if (securityName.trim() !== "") {
+  const keys = (Object.keys(stockData) as (keyof Stock)[]).filter(
+    (key) => !excludedKeys.includes(key)
+  );
 
-    //   onSearch(securityName.trim());
+  const formatCamelCase = (str: string): string => {
+    if (!str) return '';
 
-    // }
+    //  to insert a space before each uppercase letter (except the first one).
+    const withSpaces = str.replace(/([A-Z])/g, ' $1');
 
-  };
+    //  to capitalize the first character.
+    return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+  }
 
   return (
-    <>
-      <Container fluid className="p-0 m-0">
-        <Row>
-          <Col>
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                {/* <Form.Label>Email address</Form.Label> */}
-                {/* <Form.Control
-                  type="text"
-                  placeholder="Security name"
-                  value={securityName}
-                  onChange={(e) => setSecurityName(e.target.value)}
-                  /> */}
-                <AutocompleteInput />
-                {/* <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                  </Form.Text> */}
-              </Form.Group>
-              {/* <Button variant="primary" size='sm' type="button" onClick={handleClick}>Load</Button> */}
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <Container fluid>
+      <Row>
+        <Col className='py-3 px-0'>
+          <Table striped bordered hover variant="dark">
+              <thead>
+                <tr>
+                  {keys.map((key) => (
+                    <th
+                      key={key}
+                      style={{ border: '1px solid #ccc', padding: '4px', textAlign: 'left', fontSize: 11 }}
+                    >
+                      {formatCamelCase(key)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {keys.map((key) => {
+                    const value = stockData[key];
+                    return (
+                      <td
+                        key={key}
+                        style={{ border: '1px solid #ccc', padding: '4px', fontSize: 11 }}
+                      >
+                        {value === null || value === undefined
+                          ? '-'
+                          : Array.isArray(value)
+                          ? JSON.stringify(value) //  render arrays as strings.
+                          : String(value)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+
+          </Table>
+        </Col>
+        <Col>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
