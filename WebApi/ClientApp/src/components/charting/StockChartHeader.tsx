@@ -18,6 +18,7 @@ function StockChartHeader({ stockData }: Props) {
   );
 
   const formatCamelCase = (str: string): string => {
+
     if (!str) return '';
 
     //  to insert a space before each uppercase letter (except the first one).
@@ -25,12 +26,13 @@ function StockChartHeader({ stockData }: Props) {
 
     //  to capitalize the first character.
     return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+    
   }
 
   return (
-    <Container fluid>
+    <Container fluid className='pt-2 ps-1'>
       <Row>
-        <Col className='py-3 px-0'>
+        <Col>
           <Table striped bordered hover variant="dark">
               <thead>
                 <tr>
@@ -65,8 +67,6 @@ function StockChartHeader({ stockData }: Props) {
               </tbody>
 
           </Table>
-        </Col>
-        <Col>
         </Col>
       </Row>
     </Container>
