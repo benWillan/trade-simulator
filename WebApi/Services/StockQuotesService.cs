@@ -42,7 +42,7 @@ public class StockQuoteService : IStockQuoteService
             .Select(s => new SelectedStockDto
             {
                 Ticker = s.Ticker,
-                SecurityName = s.SecurityName
+                SecurityName = s.SecurityName.Split(new[] { ',' }, StringSplitOptions.None)[0] + " " +$"[{s.Ticker}]"
             })
             .Take(50)
             .ToListAsync();
