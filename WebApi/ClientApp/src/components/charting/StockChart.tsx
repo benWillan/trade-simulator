@@ -11,16 +11,12 @@ import Col from 'react-bootstrap/Col';
 import {StockOption, Stock} from '../../types/charting/types'
 import StockChartDate from './StockChartDate';
 
-type StockDateRange = {
-  startDate: string;
-  endDate: string;
-}
-
 function StockChart() {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
-  const [stockDateRange, setStockDateRange] = useState<StockDateRange | null>(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   //  to handle api call after stock is selected from autoselect.
   useEffect(() => {
@@ -56,6 +52,24 @@ function StockChart() {
 
   }
 
+  const handleDateChange = async (newDate: string, field: "start" | "end") => {
+
+    if (field === "start") setStartDate(newDate);
+    if (field === "end") setEndDate(newDate);
+
+    // Optionally, trigger fetch after date change
+    // Could debounce if desired
+    if (selectedStock) {
+      // Trigger fetch here or let useEffect handle if state updates
+      const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${graphData?.ticker}&startDate=${startDate}&endDate=${endDate}`);
+
+      const data = await response.json() as Stock || null;
+
+      setGraphData(data);
+        
+    }
+  };
+
   return (
     <>
     <Container fluid className='py-0 px-0'>
@@ -64,12 +78,7 @@ function StockChart() {
           <AutocompleteInput onAutoCompleteSelect={handleStockSelect}></AutocompleteInput>
         </Col>
         <Col>
-        <StockChartDate startDate={graphData?.stockQuotes[0].date.split('T')[0]}></StockChartDate>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {/* <StockChartHeader stockData={responseData}></StockChartHeader> */}
+        <StockChartDate onDateChange={handleDateChange} startDate={graphData?.stockQuotes[0].date.split("T")[0]} endDate={graphData?.stockQuotes.at(-1)?.date.split("T")[0]}></StockChartDate>
         </Col>
       </Row>
       <Row>
