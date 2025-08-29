@@ -23,9 +23,9 @@ function AutocompleteInput({onAutoCompleteSelect} : Props) {
 
     try {
 
-      const response = await fetch(`https://localhost:7133/api/stock/security/search?securityName=${inputValue}`);
+      const response = await fetch(`https://localhost:7133/api/stock/search?securitySearch=${inputValue}`);
       
-      const data: TickerSecNameCombination[] = await response.json();
+      const data: TickerSecNameCombination[] = await response.json() as TickerSecNameCombination[];
 
       const securityTickerCombinations: StockOption[] = data.map((item) => 
         ({value: item.ticker,label: item.securityName})
@@ -134,7 +134,7 @@ function AutocompleteInput({onAutoCompleteSelect} : Props) {
             color: "#adb5bd",
           }),
         }}
-        placeholder="Security name..."
+        placeholder="Ticker | Security name..."
       />
     </div>
   );

@@ -17,45 +17,34 @@ public class StockController : ControllerBase
     
     // GET
     [HttpGet]
-    public async Task<IActionResult> GetStockQuotes([FromQuery] string? securityName)
+    public async Task<IActionResult> GetStockQuotes([FromQuery] string? securitySearch)
     {
-        if (string.IsNullOrEmpty(securityName)) return BadRequest();
+        if (string.IsNullOrEmpty(securitySearch)) return BadRequest();
 
-        var d1 = new DateTime(1970, 01, 01);
-        var d2 = new DateTime(2005, 01, 02);
-
-        var sw = new Stopwatch();
-        sw.Start();
+        var quotes = await _stockQuoteService.GetStockQuotes(securitySearch);
         
-        var quotes = await _stockQuoteService.GetStockQuotes(securityName);
-        
-        sw.Stop();
-        Console.WriteLine($"There were: {quotes.Count()} stock quotes from ticker: {securityName} between {d1}-{d2}");
-        Console.WriteLine(sw.Elapsed);
-
         return Ok(quotes);
     }
 
-    [HttpGet("security/{search}")]
-    public async Task<IActionResult> GetSecurityNames([FromQuery] string? securityName)
+    [HttpGet("search")]
+    public async Task<IActionResult> GetSecurityNames([FromQuery] string? securitySearch)
     {
-        if (securityName is null) return BadRequest();
+        if (securitySearch is null) return BadRequest();
 
-        securityName = securityName.Trim();
-
-        var securityNameMatches = await _stockQuoteService.RetrieveSecurityNameMatchesAsync(securityName);
+        var securityNameMatches = await _stockQuoteService.RetrieveSecurityDropdownMatchesAsync(securitySearch);
         
         return Ok(securityNameMatches);
     }
 
-    [HttpGet("metadata/{ticker}")]
-    public async Task<IActionResult> GetStockMetaData([FromQuery] string? stockTicker)
+    [HttpGet("stockdata")]
+    public async Task<IActionResult> GetStockMetaData([FromQuery] string stockTicker, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
     {
-        if (stockTicker is null) return BadRequest();
-        
-        stockTicker = stockTicker.Trim();
+        //if (stockTicker is null) return BadRequest();
 
-        var stockData = await _stockQuoteService.RetrieveStockHeaderData(stockTicker);
+        // startDate = new DateTime(1984, 09, 07);
+        // endDate = new DateTime(2017, 11, 10);
+        
+        var stockData = await _stockQuoteService.RetrieveStockData(stockTicker, startDate, endDate);
 
         return Ok(stockData);
     }

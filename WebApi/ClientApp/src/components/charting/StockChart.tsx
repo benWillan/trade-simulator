@@ -1,76 +1,90 @@
+//  internal.
 import AutocompleteInput from '../general/AutocompleteInput';
 import StockChartHeader from './StockChartHeader';
 import StockChartGraph from './StockChartGraph';
+//  external.
 import {useState, useEffect} from 'react'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 //  types.
 import {StockOption, Stock} from '../../types/charting/types'
+import StockChartDate from './StockChartDate';
 
 function StockChart() {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
-  const [responseData, setResponseData] = useState<Stock | null>(null);
+  const [graphData, setGraphData] = useState<Stock | null>(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
+  //  to handle api call after stock is selected from autoselect.
   useEffect(() => {
 
-    if(!selectedStock) return;
+    //  to clear and unmount the graph on x click.
+    if(!selectedStock) {
+      setGraphData(null);
+      return;
+    }
 
-    fetchStockHeaderData(selectedStock);
+    fetchStockGraphData(selectedStock);
 
   }, [selectedStock]);
 
-  const fetchStockHeaderData = async (stockOption: StockOption | null) => {
+  const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
     const ticker = stockOption?.value;
 
-    const response = await fetch(`https://localhost:7133/api/stock/metadata/ticker?stockTicker=${ticker}`);
+    const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`);
 
     const data = await response.json() as Stock | null;
 
-    setResponseData(data);
-
+    setGraphData(data);
+    
   }
 
+  //  to set state after user selects value in AutocompleteInput.
   const handleStockSelect = (stockOption: StockOption | null) => {
+
+    if (stockOption === null) setSelectedStock(null);
 
     setSelectedStock(stockOption);
 
   }
 
-  const glowValue = '#a2cdfbf0';
-  const glowValue2 = '#528efca0';
-  const glowValue3 = '#f2fd5fde';
+  const handleDateChange = async (newDate: string, field: "start" | "end") => {
 
-  const green1 = "#7bec5fd8";
-  const green2 = "#5dfb9cff";
+    if (field === "start") setStartDate(newDate);
+    if (field === "end") setEndDate(newDate);
+
+    // Optionally, trigger fetch after date change
+    // Could debounce if desired
+    if (selectedStock) {
+      // Trigger fetch here or let useEffect handle if state updates
+      const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${graphData?.ticker}&startDate=${startDate}&endDate=${endDate}`);
+
+      const data = await response.json() as Stock || null;
+
+      setGraphData(data);
+        
+    }
+  };
 
   return (
     <>
-      {/* <h1 style={{
-        color: glowValue,
-        textShadow: `
-          0 0 1px ${glowValue},
-          0 0 1px ${glowValue},
-          0 0 12px ${glowValue},
-          0 0 10px ${glowValue2},
-          0 0 6px ${glowValue3}
-        `,
-      }}>AAPL</h1> */}
-      <AutocompleteInput onAutoCompleteSelect={handleStockSelect}></AutocompleteInput>
-      {/* DateSelect */}
-      <StockChartHeader stockData={responseData}></StockChartHeader>
-      <a href='#' target='_blank' style={{
-        fontSize: 34,
-        textDecoration: "none",
-        color: green1,
-        textShadow: `
-          0 0 1px ${green1},
-          0 0 1px ${green1},
-          0 0 1px ${green1},
-          0 0 2px ${green2},
-          0 0 3px ${green2}
-        `,
-      }}>AAPL</a>
-      <StockChartGraph></StockChartGraph>
+    <Container fluid className='py-0 px-0'>
+      <Row>
+        <Col>
+          <AutocompleteInput onAutoCompleteSelect={handleStockSelect}></AutocompleteInput>
+        </Col>
+        <Col>
+        <StockChartDate onDateChange={handleDateChange} startDate={graphData?.stockQuotes[0].date.split("T")[0]} endDate={graphData?.stockQuotes.at(-1)?.date.split("T")[0]}></StockChartDate>
+        </Col>
+      </Row>
+      <Row>
+        {graphData && <StockChartGraph graphData={graphData}></StockChartGraph>}
+      </Row>
+    </Container>
     </>
   );
 

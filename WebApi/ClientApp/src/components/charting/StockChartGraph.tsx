@@ -1,12 +1,16 @@
+//  internal.
+import { Stock } from '../../types/charting/types'
+import colors from '../../types/styling/glowingText'
+//  external.
 import React from "react";
 import ReactECharts from "echarts-for-react";
 
 // Helper function to generate random candlestick data
-function generateCandleData(days = 1000) {
+function generateCandleData(days = 10) {
 
   const data = [];
   const dates = [];
-  let open = 100; // starting price
+  let open = 10; // starting price
 
   for (let i = 0; i < days; i++) {
 
@@ -27,18 +31,74 @@ function generateCandleData(days = 1000) {
   return { dates, data };
 }
 
-function CandleStickChart() {
+type Props = {
+  graphData: Stock | null;
+}
 
-  const dummyDays = 999;
+function StockChartGraph(props: Props) {
+
+  const dummyDays = 100;
 
   const { dates, data } = generateCandleData(dummyDays);
 
-  const option = {
+  const dates2 = props.graphData?.stockQuotes.map(sq => sq.date);
+  const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
+  const stockTicker = props.graphData?.ticker;
+
+  const options = {
     title: {
-      text: `AAPL (${dummyDays}) days`,
+      text: `${stockTicker}`,
+      subtext: "Test",
       left: "center",
-      top: 20
+      top: 20,
+      textStyle: {
+        fontSize: 28,
+        color: colors.teal_main,              // main text color
+        textShadowColor: colors.teal_glow,              // glow color
+        textShadowBlur: 5,                   // glow intensity
+        textShadowOffsetX: 0,                 // optional
+        textShadowOffsetY: 0
+      }
     },
+    graphic: [
+      {
+        type: "text",
+        left: "10%",       // x position
+        top: "10%",        // y position
+        style: {
+          text: "Extra stock info: P/E 28.5",
+          fill: "#c6c6c6ff",
+          font: "14px sans-serif"
+        },
+      },
+      {
+        type: "text",
+        left: "10%",
+        top: "15%",
+        style: {
+          text: "Sector: Technology",
+          fill: "#c4c4c4ff",
+          font: "12px sans-serif"
+        }
+      },
+      {
+        type: "rect",
+        left: "80%",
+        top: 25,
+        shape: { width: 20, height: 20 },
+        style: {
+          fill: "#393a3aff",
+          cursor: "pointer",
+          stroke: "#acacacff",
+          lineWidth: 1,
+          shadowColor: "#000",
+          shadowBlur: 4
+        },
+        onclick: function () {
+          alert("Download clicked!");
+        }
+      }
+    ],
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -60,7 +120,7 @@ function CandleStickChart() {
           type: "solid"
         }
       },
-      data: dates,
+      data: dates2,
       boundaryGap: false,
       axisLabel: {
         rotate: 45
@@ -93,7 +153,7 @@ function CandleStickChart() {
       {
         name: "Candlestick",
         type: "candlestick",
-        data: data,
+        data: ohlcData,
         itemStyle: {
           color: "#00da3c",    // rising
           color0: "#ec0000",   // falling
@@ -105,8 +165,8 @@ function CandleStickChart() {
   };
 
   return (
-      <ReactECharts option={option} style={{ height: 350, width: 700 }} />
+    <ReactECharts option={options} style={{ height: 550, width: 1100 }} />
   );
 }
 
-export default CandleStickChart;
+export default StockChartGraph;
