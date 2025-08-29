@@ -5,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {useState, useEffect} from 'react'
-import { on } from 'events';
 
 type Props = {
   onDateChange: (date: string, field: "start" | "end") => void;
@@ -26,7 +25,8 @@ function StockChartDate({onDateChange, startDate, endDate}: Props) {
     <Container fluid className='px-0 py-0'>
       <Form>
         <Row>
-          <Col lg='5'>
+          <Col lg='4'></Col>
+          <Col lg='4'>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               {/* <Form.Label>Start Date</Form.Label> */}
               <Form.Control type="date" onChange={(e) => {
@@ -35,16 +35,13 @@ function StockChartDate({onDateChange, startDate, endDate}: Props) {
               }} value={localStartDate} />
             </Form.Group>
           </Col>
-          {/* <Col lg='2' className='text-center'>
-            <p>-&gt;</p>
-          </Col> */}
-          <Col lg='5'>
+          <Col lg='4'>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               {/* <Form.Label>End Date</Form.Label> */}
               <Form.Control type='date' onChange={(e) => {
                 setLocalEndDate(e.target.value);
                 onDateChange(e.target.value, "end");
-                }} value={localEndDate}/>
+              }} value={localEndDate}/>
             </Form.Group>
           </Col>
         </Row>

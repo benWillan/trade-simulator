@@ -5,31 +5,6 @@ import colors from '../../types/styling/glowingText'
 import React from "react";
 import ReactECharts from "echarts-for-react";
 
-// Helper function to generate random candlestick data
-function generateCandleData(days = 10) {
-
-  const data = [];
-  const dates = [];
-  let open = 10; // starting price
-
-  for (let i = 0; i < days; i++) {
-
-    const date = new Date();
-    date.setDate(date.getDate() - (days - i - 1)); // past `days` days
-    const dayStr = date.toISOString().split("T")[0];
-    dates.push(dayStr);
-
-    // Random fluctuation
-    const close = open + (Math.random() - 0.5) * 10;
-    const low = Math.min(open, close) - Math.random() * 5;
-    const high = Math.max(open, close) + Math.random() * 5;
-
-    data.push([open.toFixed(2), close.toFixed(2), low.toFixed(2), high.toFixed(2)]);
-    open = close; // next day's open is previous close
-  }
-
-  return { dates, data };
-}
 
 type Props = {
   graphData: Stock | null;
@@ -37,11 +12,7 @@ type Props = {
 
 function StockChartGraph(props: Props) {
 
-  const dummyDays = 100;
-
-  const { dates, data } = generateCandleData(dummyDays);
-
-  const dates2 = props.graphData?.stockQuotes.map(sq => sq.date);
+  const dates = props.graphData?.stockQuotes.map(sq => sq.date);
   const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = props.graphData?.ticker;
 
@@ -120,7 +91,7 @@ function StockChartGraph(props: Props) {
           type: "solid"
         }
       },
-      data: dates2,
+      data: dates,
       boundaryGap: false,
       axisLabel: {
         rotate: 45
@@ -140,13 +111,13 @@ function StockChartGraph(props: Props) {
       {
         type: "inside",
         start: 0,
-        end: dummyDays
+        end: 100
       },
       {
         show: true,
         type: "slider",
         start: 0,
-        end: dummyDays
+        end: 100
       }
     ],
     series: [
