@@ -1,3 +1,6 @@
+//  internal.
+import '../../css/global.css';
+//  external.
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -5,12 +8,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export function NavBar() {
 
-  const glowValue = '#447ffff0';
-  const glowValue2 = '#3d7ff8a0';
-  const glowValue3 = '#f4fc8fde';
-
   return (
-    <Navbar expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
+    <Navbar bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
       <Container fluid>
         <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

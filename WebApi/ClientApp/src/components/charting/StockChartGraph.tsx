@@ -12,7 +12,7 @@ type Props = {
 
 function StockChartGraph(props: Props) {
 
-  const dates = props.graphData?.stockQuotes.map(sq => sq.date);
+  const dates = props.graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = props.graphData?.ticker;
 
@@ -77,12 +77,13 @@ function StockChartGraph(props: Props) {
       }
     },
     grid: {
-      left: 30,
+      left: 36,
       right: 0,
       top: 10,
-      bottom: 10
+      bottom: 75,
     },
     xAxis: {
+      name: "Price Date",
       type: "category",
       splitLine: {
         show: true,
@@ -94,10 +95,11 @@ function StockChartGraph(props: Props) {
       data: dates,
       boundaryGap: false,
       axisLabel: {
-        rotate: 45
+        rotate: 0
       }
     },
     yAxis: {
+      name: "Date",
       scale: true,
       splitLine: {
         show: true,
@@ -122,7 +124,7 @@ function StockChartGraph(props: Props) {
     ],
     series: [
       {
-        name: "Candlestick",
+        name: "OHLC Candlestick Graph",
         type: "candlestick",
         data: ohlcData,
         itemStyle: {
@@ -136,7 +138,8 @@ function StockChartGraph(props: Props) {
   };
 
   return (
-    <ReactECharts option={options} style={{ height: 550, width: 1100 }} />
+    <ReactECharts option={options} style={{ height: "100%", width: "100%", margin: "0 auto" }} />
+    // <ReactECharts option={options} />
   );
 }
 
