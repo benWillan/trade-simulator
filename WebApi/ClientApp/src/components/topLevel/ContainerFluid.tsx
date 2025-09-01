@@ -11,26 +11,40 @@ import { Stock, StockQuote } from '../../types/charting/types'
 
 export function ContainerFluid() {
 
+  const isQuad = true;
+
   return (
     <Container fluid className='stock-chart-container'>
-      <Row style={{ display: 'flex' }}>
-        <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-          <StockChart></StockChart>
-        </Col>
-        <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-          <StockChart></StockChart>
-        </Col>
-        <Col style={{ flex: '0 0 16.666%' }}></Col>
-      </Row>
-      <Row style={{ display: 'flex' }}>
-        <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-          <StockChart></StockChart>
-        </Col>
-        <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-          <StockChart></StockChart>
-        </Col>
-        <Col style={{ flex: '0 0 16.666%' }}></Col>
-      </Row>
+        {!isQuad ? (
+          <>
+            <Row style={{ display: 'flex' }}>
+              <Col style={{ flex: '0 0 75%' }} className='py-3 chart-container'>
+                <StockChart></StockChart>
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <>
+            <Row style={{ display: 'flex' }}>
+              <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
+                <StockChart></StockChart>
+              </Col>
+              <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
+                <StockChart></StockChart>
+              </Col>
+              <Col style={{ flex: '0 0 16.666%' }}></Col>
+            </Row>
+            <Row style={{ display: 'flex' }}>
+              <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
+                <StockChart></StockChart>
+              </Col>
+              <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
+                <StockChart></StockChart>
+              </Col>
+              <Col style={{ flex: '0 0 16.666%' }}></Col>
+            </Row>
+          </>
+        )}
     </Container>
   );
 }
