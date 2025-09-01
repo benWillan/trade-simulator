@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <NavBar></NavBar>
-      <ContainerFluid></ContainerFluid>
+      <ContainerFluid chartsRendered={2}></ContainerFluid>
     </>
   );
 }

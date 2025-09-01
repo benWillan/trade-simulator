@@ -82,7 +82,7 @@ function StockChart() {
         </Col>
       </Row>
       {/* height compensates for (~230px): Navbar, echarts datazoom and (stock/ticker + date) element heights */}
-      <Row style={{height: "calc((100vh - 230px) / 2)" }}> 
+      <Row style={{height: "calc((100vh - 230px) / 2)" }}>
         {graphData && <StockChartGraph graphData={graphData}></StockChartGraph>}
       </Row>
     </Container>

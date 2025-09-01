@@ -32,7 +32,7 @@ function StockChartDate({onDateChange, startDate, endDate}: Props) {
               <Form.Control type="date" onChange={(e) => {
                 setLocalStartDate(e.target.value);
                 onDateChange(e.target.value, "start");
-              }} value={localStartDate} />
+              }} value={localStartDate}/>
             </Form.Group>
           </Col>
           <Col>
