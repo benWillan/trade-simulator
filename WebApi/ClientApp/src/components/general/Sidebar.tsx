@@ -4,20 +4,20 @@ import { Nav } from "react-bootstrap";
 import {Button} from "react-bootstrap";
 
 type Props = {
-  onShowOffcanvas: () => void;
+  onWatchListShow: () => void;
 }
 
-const Sidebar = ({onShowOffcanvas}: Props) => {
+const Sidebar = ({onWatchListShow}: Props) => {
 
   return (
     <div
       className="bg-body-tertiary"
       style={{
-        height: "100vh",         // Full height
-        width: "56px",          // Sidebar width
-        position: "fixed",       // Stick to side
+        height: "100vh",              // Full height
+        width: "56px",                // Sidebar width
+        position: "fixed",            // Stick to side
         top: 0,
-        right: 0,                 // Change to "right: 0" if you want it on the right
+        right: 0,                     // Change to "right: 0" if you want it on the right
         backgroundColor: "#343a40", // Bootstrap dark color
         paddingTop: "20px",
         display: "flex",
@@ -42,11 +42,11 @@ const Sidebar = ({onShowOffcanvas}: Props) => {
         <Nav.Link href="/services" className="text-white">Services</Nav.Link>
         <Nav.Link href="/contact" className="text-white">Contact</Nav.Link> */}
         <div style={{position: "absolute", top: "62px", width: "100%", textAlign: "center"}}>
-          <Button onClick={onShowOffcanvas} variant="secondary" className="bg-body-secondary" style={{width: "80%"}}>A</Button>
+          <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary" style={{width: "80%"}}>W</Button>
         </div>
-        <div style={{position: "absolute", top: "108px", width: "100%", textAlign: "center"}}>
+        {/* <div style={{position: "absolute", top: "108px", width: "100%", textAlign: "center"}}>
           <Button style={{width: "80%", backgroundColor: "black"}}>D</Button>
-        </div>
+        </div> */}
       </Nav>
     </div>
   );
