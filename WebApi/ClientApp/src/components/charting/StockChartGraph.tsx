@@ -4,6 +4,8 @@ import colors from '../../types/styling/glowingText'
 //  external.
 import React from "react";
 import ReactECharts from "echarts-for-react";
+import {useState} from 'react';
+import { text } from 'stream/consumers';
 
 
 type Props = {
@@ -15,6 +17,8 @@ function StockChartGraph(props: Props) {
   const dates = props.graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = props.graphData?.ticker;
+
+  const [targetPrice, setTargetPrice] = useState(34);
 
   const options = {
     title: {
@@ -63,7 +67,7 @@ function StockChartGraph(props: Props) {
           stroke: "#acacacff",
           lineWidth: 1,
           shadowColor: "#000",
-          shadowBlur: 4
+          shadowBlur: 4,
         },
         onclick: function () {
           alert("Download clicked!");
@@ -133,8 +137,32 @@ function StockChartGraph(props: Props) {
           borderColor0: "#8A0000",
           borderColor: "#008F28"
         }
+      },
+      {
+        name: "Price",
+        type: "line",
+        data: [30, 40, 50],
+        markLine: {
+          symbol: "none",
+          lineStyle: {
+            color: "#d7caccff",
+            width: 1,
+            type: "dashed"
+          },
+          label: {
+            formatter: `Target: ${targetPrice}`,
+            position: "end",
+            color: "#ad9ea0ff",
+            fontWeight: "bold"
+          },
+          data: [
+            {
+              yAxis: targetPrice
+            }
+          ],
+        }
       }
-    ]
+    ],
   };
 
   return (

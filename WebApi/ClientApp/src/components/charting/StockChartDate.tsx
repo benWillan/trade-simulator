@@ -29,7 +29,7 @@ function StockChartDate({onDateChange, startDate, endDate}: Props) {
           <Col>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               {/* <Form.Label>Start Date</Form.Label> */}
-              <Form.Control type="date" onChange={(e) => {
+              <Form.Control style={{width: 144}} type="date" onChange={(e) => {
                 setLocalStartDate(e.target.value);
                 onDateChange(e.target.value, "start");
               }} value={localStartDate}/>
@@ -38,7 +38,7 @@ function StockChartDate({onDateChange, startDate, endDate}: Props) {
           <Col>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               {/* <Form.Label>End Date</Form.Label> */}
-              <Form.Control type='date' onChange={(e) => {
+              <Form.Control style={{width: 144}} type='date' onChange={(e) => {
                 setLocalEndDate(e.target.value);
                 onDateChange(e.target.value, "end");
               }} value={localEndDate}/>

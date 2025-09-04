@@ -8,10 +8,27 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 type Props = {
-  chartsRendered: 1 | 2 | 3 | 4;
+  chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
 }
 
 export function ContainerFluid({chartsRendered}: Props) {
+
+  const calculateChartWidthPercentage = (numberOfCharts: number): number => {
+
+    switch(numberOfCharts) {
+
+      case 1:
+      case 2:
+        
+        return (10/12) * 100;
+
+    }
+
+    return 1;
+
+  }
+
+  const calculateSideBarWidth = () => {};
 
   return (
     <Container fluid className='stock-chart-container'>
@@ -80,6 +97,86 @@ export function ContainerFluid({chartsRendered}: Props) {
         </Row>
         </>
       )}
+      {chartsRendered == 6 && (
+        <>
+        <Row style={{ display: 'flex' }}>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 16.666%' }}></Col>
+        </Row>
+        <Row style={{ display: 'flex' }}>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 16.666%' }}></Col>
+        </Row>
+        </>
+      )}
+      {chartsRendered == 12 && (
+        <>
+        <Row style={{ display: 'flex' }}>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 16.666%' }}></Col>
+        </Row>
+        <Row style={{ display: 'flex' }}>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 16.666%' }}></Col>
+        </Row>
+        <Row style={{ display: 'flex' }}>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 16.666%' }}></Col>
+        </Row>
+        <Row style={{ display: 'flex' }}>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
+            <StockChart></StockChart>
+          </Col>
+          <Col style={{ flex: '0 0 16.666%' }}></Col>
+        </Row>
+        </>
+      )} 
     </Container>
   );
 }
