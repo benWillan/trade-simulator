@@ -17,7 +17,7 @@ const Sidebar = () => {
         display: "flex",
         flexDirection: "column",
         boxShadow: "2px 0 5px rgba(0,0,0,0.2)",
-        zIndex: 1000,
+        zIndex: 1,
       }}
     >
       {/* <h4
@@ -30,12 +30,18 @@ const Sidebar = () => {
         My App
       </h4> */}
       <Nav className="flex-column" variant="pills">
-        <Nav.Link href="/" className="text-white">
+        {/* <Nav.Link href="/" className="text-white">
           <Button style={{width: "80%"}}>C</Button>
         </Nav.Link>
         <Nav.Link href="/about" className="text-white">About</Nav.Link>
         <Nav.Link href="/services" className="text-white">Services</Nav.Link>
-        <Nav.Link href="/contact" className="text-white">Contact</Nav.Link>
+        <Nav.Link href="/contact" className="text-white">Contact</Nav.Link> */}
+        <div style={{position: "absolute", top: "62px", width: "100%", textAlign: "center"}}>
+          <Button style={{width: "80%", backgroundColor: "black"}}>C</Button>
+        </div>
+        <div style={{position: "absolute", top: "108px", width: "100%", textAlign: "center"}}>
+          <Button style={{width: "80%", backgroundColor: "black"}}>C</Button>
+        </div>
       </Nav>
     </div>
   );
