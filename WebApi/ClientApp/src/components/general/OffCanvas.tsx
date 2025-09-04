@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
@@ -25,28 +25,67 @@ const options = [
   // },
 ];
 
-function OffCanvas() {
-  const [show, setShow] = useState(false);
+type Props = {
+  isOffCanvasVisible: boolean;
+  onClose: () => void;
+}
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+function OffCanvas({isOffCanvasVisible, onClose}: Props) {
 
+  const [visibility, setVisibility] = useState(false);
+
+  useEffect(() => {
+
+    setVisibility(isOffCanvasVisible);
+
+  }, [isOffCanvasVisible]);
+
+  const handleClose = () => {
+    
+    setVisibility(false);
+
+    onClose();
+
+  };
+  
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch
-      </Button>
-
       {options.map((props, idx) => (
         
-        <Offcanvas show={show} {...props} onHide={handleClose} style={{ top: "56px", width: "360px" }} placement='end'>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
-        </Offcanvas.Body>
+        <Offcanvas show={visibility} onHide={handleClose} {...props} style={{ top: "56px", width: "360px" }} placement='end'>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Watch List</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <table>
+              <thead>
+                <th>Ticker</th>
+                <th>Price</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>AAPL</td>
+                  <td>$15.67</td>
+                </tr>
+                <tr>
+                  <td>DSN</td>
+                  <td>$8.03</td>
+                </tr>
+                <tr>
+                  <td>AAPL</td>
+                  <td>$23.58</td>
+                </tr>
+                <tr>
+                  <td>TSLA</td>
+                  <td>$7.47</td>
+                </tr>
+                <tr>
+                  <td>GAINN</td>
+                  <td>$106.23</td>
+                </tr>
+              </tbody>
+            </table>
+          </Offcanvas.Body>
       </Offcanvas>
       ))}
     </>

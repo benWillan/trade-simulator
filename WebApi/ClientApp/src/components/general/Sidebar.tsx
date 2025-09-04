@@ -1,8 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import { Nav } from "react-bootstrap";
 import {Button} from "react-bootstrap";
 
-const Sidebar = () => {
+type Props = {
+  onSetIsOffCanvasVisible: (state: boolean) => void;
+}
+
+const Sidebar = ({onSetIsOffCanvasVisible}: Props) => {
+
   return (
     <div
       className="bg-body-tertiary"
@@ -37,10 +43,10 @@ const Sidebar = () => {
         <Nav.Link href="/services" className="text-white">Services</Nav.Link>
         <Nav.Link href="/contact" className="text-white">Contact</Nav.Link> */}
         <div style={{position: "absolute", top: "62px", width: "100%", textAlign: "center"}}>
-          <Button style={{width: "80%", backgroundColor: "black"}}>C</Button>
+          <Button onClick={() => onSetIsOffCanvasVisible(true)} variant="secondary" className="bg-body-secondary" style={{width: "80%"}}>A</Button>
         </div>
         <div style={{position: "absolute", top: "108px", width: "100%", textAlign: "center"}}>
-          <Button style={{width: "80%", backgroundColor: "black"}}>C</Button>
+          <Button style={{width: "80%", backgroundColor: "black"}}>D</Button>
         </div>
       </Nav>
     </div>
