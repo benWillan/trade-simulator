@@ -26,33 +26,17 @@ const options = [
 ];
 
 type Props = {
-  isOffCanvasVisible: boolean;
+  visibility: boolean;
   onClose: () => void;
 }
 
-function OffCanvas({isOffCanvasVisible, onClose}: Props) {
+function OffCanvas({visibility, onClose}: Props) {
 
-  const [visibility, setVisibility] = useState(false);
-
-  useEffect(() => {
-
-    setVisibility(isOffCanvasVisible);
-
-  }, [isOffCanvasVisible]);
-
-  const handleClose = () => {
-    
-    setVisibility(false);
-
-    onClose();
-
-  };
-  
   return (
     <>
       {options.map((props, idx) => (
         
-        <Offcanvas show={visibility} onHide={handleClose} {...props} style={{ top: "56px", width: "360px" }} placement='end'>
+        <Offcanvas show={visibility} onHide={onClose} {...props} style={{ top: "56px", width: "560px" }} placement='end'>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Watch List</Offcanvas.Title>
           </Offcanvas.Header>

@@ -7,18 +7,26 @@ import { useState } from 'react';
 
 function App() {
 
-  const [isOffcanvasVisible, setIsOffcanvasVisible] = useState<boolean>(false);
+  const [offCanvasVisibility, setOffcanvasVisibility] = useState<boolean>(false);
   
-  const handleClose = () => {
-    setIsOffcanvasVisible(false);
+  const showOffcanvas = () => {
+
+    setOffcanvasVisibility(true);
+
+  }
+
+  const closeOffcanvas = () => {
+
+    setOffcanvasVisibility(false);
+
   }
 
   return (
     <>
       <NavBar></NavBar>
       <ContainerFluid chartsRendered={2}></ContainerFluid>
-      <Sidebar onSetIsOffCanvasVisible={setIsOffcanvasVisible}></Sidebar>
-      <OffCanvas onClose={handleClose} isOffCanvasVisible={isOffcanvasVisible}></OffCanvas>
+      <Sidebar onShowOffcanvas={showOffcanvas}></Sidebar>
+      <OffCanvas visibility={offCanvasVisibility} onClose={closeOffcanvas} ></OffCanvas>
     </>
   );
 }

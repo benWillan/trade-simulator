@@ -4,10 +4,10 @@ import { Nav } from "react-bootstrap";
 import {Button} from "react-bootstrap";
 
 type Props = {
-  onSetIsOffCanvasVisible: (state: boolean) => void;
+  onShowOffcanvas: () => void;
 }
 
-const Sidebar = ({onSetIsOffCanvasVisible}: Props) => {
+const Sidebar = ({onShowOffcanvas}: Props) => {
 
   return (
     <div
@@ -23,7 +23,6 @@ const Sidebar = ({onSetIsOffCanvasVisible}: Props) => {
         display: "flex",
         flexDirection: "column",
         boxShadow: "2px 0 5px rgba(0,0,0,0.2)",
-        zIndex: 1,
       }}
     >
       {/* <h4
@@ -43,7 +42,7 @@ const Sidebar = ({onSetIsOffCanvasVisible}: Props) => {
         <Nav.Link href="/services" className="text-white">Services</Nav.Link>
         <Nav.Link href="/contact" className="text-white">Contact</Nav.Link> */}
         <div style={{position: "absolute", top: "62px", width: "100%", textAlign: "center"}}>
-          <Button onClick={() => onSetIsOffCanvasVisible(true)} variant="secondary" className="bg-body-secondary" style={{width: "80%"}}>A</Button>
+          <Button onClick={onShowOffcanvas} variant="secondary" className="bg-body-secondary" style={{width: "80%"}}>A</Button>
         </div>
         <div style={{position: "absolute", top: "108px", width: "100%", textAlign: "center"}}>
           <Button style={{width: "80%", backgroundColor: "black"}}>D</Button>
