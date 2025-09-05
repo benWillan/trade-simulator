@@ -23,160 +23,190 @@ function OffCanvas({visibility, onWatchListHide}: Props) {
           <Offcanvas.Title style={{fontFamily: "Verdana"}}>Watch List</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          {/* <table>
-            <tr key={idx}>
+          <table>
+            <tr>
               <th>Ticker</th>
               <th>Price</th>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "crimson"}}>ZRF</td>
               <td style={{color: "crimson"}}>$23.58</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>TSLA</td>
               <td style={{color: "green"}}>$7.47</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "crimson"}}>ZRF</td>
               <td style={{color: "crimson"}}>$23.58</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>GAINN</td>
               <td>$106.23</td>
-            </tr><tr key={idx}>
+            </tr><tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "crimson"}}>ZRF</td>
               <td style={{color: "crimson"}}>$23.58</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>TSLA</td>
               <td style={{color: "green"}}>$7.47</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "crimson"}}>ZRF</td>
               <td style={{color: "crimson"}}>$23.58</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>GAINN</td>
               <td>$106.23</td>
-            </tr><tr key={idx}>
+            </tr><tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>TSLA</td>
               <td style={{color: "green"}}>$7.47</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "crimson"}}>ZRF</td>
               <td style={{color: "crimson"}}>$23.58</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>GAINN</td>
               <td>$106.23</td>
-            </tr><tr key={idx}>
+            </tr><tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>TSLA</td>
               <td style={{color: "green"}}>$7.47</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "crimson"}}>ZRF</td>
               <td style={{color: "crimson"}}>$23.58</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>GAINN</td>
               <td>$106.23</td>
-            </tr><tr key={idx}>
+            </tr><tr>
               <td style={{color: "green"}}>AAPL</td>
               <td style={{color: "green"}}>$15.67</td>
             </tr>
-            <tr key={idx}>
+            <tr>
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-          </table> */}
+            <tr>
+              <td style={{color: "green"}}>AAPL</td>
+              <td style={{color: "green"}}>$15.67</td>
+            </tr>
+            <tr>
+              <td>GAINN</td>
+              <td>$106.23</td>
+            </tr><tr>
+              <td style={{color: "green"}}>AAPL</td>
+              <td style={{color: "green"}}>$15.67</td>
+            </tr>
+            <tr>
+              <td>DSN</td>
+              <td>$8.03</td>
+            </tr>
+            <tr>
+              <td style={{color: "green"}}>AAPL</td>
+              <td style={{color: "green"}}>$15.67</td>
+            </tr>
+            <tr>
+              <td>GAINN</td>
+              <td>$106.23</td>
+            </tr><tr>
+              <td style={{color: "green"}}>AAPL</td>
+              <td style={{color: "green"}}>$15.67</td>
+            </tr>
+            <tr>
+              <td>DSN</td>
+              <td>$8.03</td>
+            </tr>
+          </table>
         </Offcanvas.Body>
       </Offcanvas>
     </>

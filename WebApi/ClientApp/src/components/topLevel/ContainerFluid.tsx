@@ -22,11 +22,11 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
             <Col style={{ flex: '0 0 calc(100vw - 380px)'}} className='py-3 chart-container'>
-              <StockChart></StockChart>
-            </Col>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
+           </Col>
           ) : (
             <Col style={{ flex: '0 0 calc(100vw - 56px)'}} className='py-3 chart-container'>
-              <StockChart></StockChart>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           )}
         </Row>
@@ -36,22 +36,22 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
             <Col style={{ flex: '0 0 calc(100vw - 380px)'}} className='py-3 chart-container'>
-              <StockChart></StockChart>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           ) : (
             <Col style={{ flex: '0 0 calc(100vw - 56px)'}} className='py-3 chart-container'>
-              <StockChart></StockChart>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           )}
         </Row>
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
             <Col style={{ flex: '0 0 calc(100vw - 380px)'}} className='py-3 chart-container'>
-              <StockChart></StockChart>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           ) : (
             <Col style={{ flex: '0 0 calc(100vw - 56px)'}} className='py-3 chart-container'>
-              <StockChart></StockChart>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           )}
         </Row>
@@ -61,16 +61,16 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
         <>
         <Row style={{ display: 'flex' }}>
           <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-            <StockChart></StockChart>
+            <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
           </Col>
           <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-            <StockChart></StockChart>
+            <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
           </Col>
           <Col style={{ flex: '0 0 16.666%' }}></Col>
         </Row>
         <Row style={{ display: 'flex' }}>
           <Col style={{ flex: '0 0 83.332%' }} className='py-3 chart-container'>
-            <StockChart></StockChart>
+            <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
           </Col>
           <Col style={{ flex: '0 0 16.666%' }}></Col>
         </Row>
@@ -82,19 +82,19 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
           {isOffCanvasVisible ? (
             <>
               <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
               <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
           ) : (
             <>
               <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
               <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
           )}
@@ -103,19 +103,19 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
           {isOffCanvasVisible ? (
             <>
               <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
               <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
           ) : (
             <>
               <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
               <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
-                <StockChart></StockChart>
+                <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
             
