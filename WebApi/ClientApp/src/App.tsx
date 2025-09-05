@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <NavBar></NavBar>
-      <ContainerFluid chartsRendered={2} isOffCanvasVisible={offCanvasVisibility}></ContainerFluid>
+      <ContainerFluid chartsRendered={4} isOffCanvasVisible={offCanvasVisibility}></ContainerFluid>
       <Sidebar onWatchListShow={showOffCanvas}></Sidebar>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
