@@ -1,6 +1,7 @@
 //  internal.
-import { Stock } from '../../types/charting/types'
-import colors from '../../types/styling/glowingText'
+import { Stock } from '../../types/charting/types';
+import colors from '../../types/styling/glowingText';
+import { useRef, useEffect } from 'react';
 //  external.
 import React from "react";
 import ReactECharts from "echarts-for-react";
@@ -10,9 +11,23 @@ import { text } from 'stream/consumers';
 
 type Props = {
   graphData: Stock | null;
+  isOffCanvasVisible: boolean;
 }
 
 function StockChartGraph(props: Props) {
+
+  const chartRef = useRef<ReactECharts>(null);
+
+  useEffect(() => {
+
+    if (chartRef.current) {
+
+      const chartInstance = chartRef.current.getEchartsInstance();
+      chartInstance.resize();
+
+    }
+
+  }, [props.isOffCanvasVisible]);
 
   const dates = props.graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
@@ -102,17 +117,19 @@ function StockChartGraph(props: Props) {
         rotate: 0
       }
     },
-    yAxis: {
-      name: "Date",
-      scale: true,
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: "#e5e5e50c",
-          type: "solid"
+    yAxis: [
+      {
+        name: "Date",
+        scale: true,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: "#e5e5e50c",
+            type: "solid"
+          }
         }
-      }
-    },
+      },
+    ],
     dataZoom: [
       {
         type: "inside",
@@ -166,7 +183,7 @@ function StockChartGraph(props: Props) {
   };
 
   return (
-    <ReactECharts option={options} style={{ height: "100%", width: "100%", margin: "0 auto" }} />
+    <ReactECharts ref={chartRef} option={options} style={{ height: "100%", width: "100%", margin: "0 auto" }} />
   );
 }
 

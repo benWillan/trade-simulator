@@ -9,7 +9,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 export function NavBar() {
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
+    <Navbar style={{zIndex: 2}} bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
       <Container fluid>
         <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

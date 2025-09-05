@@ -11,7 +11,11 @@ import Col from 'react-bootstrap/Col';
 import {StockOption, Stock} from '../../types/charting/types'
 import StockChartDate from './StockChartDate';
 
-function StockChart() {
+type Props = {
+  isOffCanvasVisible: boolean;
+}
+
+function StockChart({isOffCanvasVisible}: Props) {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
@@ -83,7 +87,7 @@ function StockChart() {
       </Row>
       {/* height compensates for (~230px): Navbar, echarts datazoom and (stock/ticker + date) element heights */}
       <Row style={{height: "calc((100vh - 230px) / 2)" }}>
-        {graphData && <StockChartGraph graphData={graphData}></StockChartGraph>}
+        {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>}
       </Row>
     </Container>
     </>
