@@ -23,12 +23,9 @@ export function ContainerFluid({chartsRendered}: Props) {
         return (10/12) * 100;
 
     }
-
     return 1;
 
   }
-
-  const calculateSideBarWidth = () => {};
 
   return (
     <Container fluid className='stock-chart-container'>

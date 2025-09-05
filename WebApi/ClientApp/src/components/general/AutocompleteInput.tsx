@@ -68,7 +68,7 @@ function AutocompleteInput({onAutoCompleteSelect} : Props) {
   }
 
   return (
-    <div style={{ width: 320 }}>
+    <div style={{ width: 420 }}>
       <AsyncSelect
         isClearable
         cacheOptions
