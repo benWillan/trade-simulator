@@ -19,8 +19,6 @@ function StockChart({isOffCanvasVisible}: Props) {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
 
   //  to handle api call after stock is selected from autoselect.
   useEffect(() => {
@@ -55,24 +53,6 @@ function StockChart({isOffCanvasVisible}: Props) {
     setSelectedStock(stockOption);
 
   }
-
-  const handleDateChange = async (newDate: string, field: "start" | "end") => {
-
-    if (field === "start") setStartDate(newDate);
-    if (field === "end") setEndDate(newDate);
-
-    // Optionally, trigger fetch after date change
-    // Could debounce if desired
-    if (selectedStock) {
-      // Trigger fetch here or let useEffect handle if state updates
-      const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${graphData?.ticker}&startDate=${startDate}&endDate=${endDate}`);
-
-      const data = await response.json() as Stock || null;
-
-      setGraphData(data);
-        
-    }
-  };
 
   return (
     <>

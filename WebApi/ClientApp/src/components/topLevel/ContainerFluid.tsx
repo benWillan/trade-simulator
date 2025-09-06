@@ -16,17 +16,19 @@ type Props = {
 
 export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
 
-  const calculateChartWidth = (numberOfCharts: number): number => {
+  const calculateChartWidth = (numberOfCharts: number): string => {
 
     switch(numberOfCharts) {
-
-      case 1:
+      
       case 2:
-        
-        return (10/12) * 100;
+
+        return ""
+
+      default:
+
+        return "100vw - 360px"
 
     }
-    return 1;
 
   }
 
@@ -35,15 +37,15 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
   }
 
   return (
-    <Container fluid className='stock-chart-container'>
+    <Container fluid className='px-0 py-3'>
       {chartsRendered === 1 && (
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
-            <Col style={{ flex: '0 0 calc(100vw - 360px)'}} className='py-3 chart-container'>
+            <Col style={{ flex: `0 0 calc(${calculateChartWidth(chartsRendered)})`}} className='py-3 chart-container'>
               <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           ) : (
-            <Col style={{ flex: '0 0 calc(100vw - 28px)'}} className='py-3 chart-container'>
+            <Col style={{ flex: `0 0 calc(100vw - 56px)`}} className='chart-container'>
               <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           )}

@@ -23,7 +23,7 @@ function OffCanvas({visibility, onWatchListHide}: Props) {
           <Offcanvas.Title style={{fontFamily: "Verdana"}}>Watch List</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <table>
+          {/* <table>
             <tr>
               <th>Ticker</th>
               <th>Price</th>
@@ -206,7 +206,7 @@ function OffCanvas({visibility, onWatchListHide}: Props) {
               <td>DSN</td>
               <td>$8.03</td>
             </tr>
-          </table>
+          </table> */}
         </Offcanvas.Body>
       </Offcanvas>
     </>
