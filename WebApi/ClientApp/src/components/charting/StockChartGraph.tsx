@@ -40,7 +40,7 @@ function StockChartGraph(props: Props) {
       text: `${stockTicker}`,
       subtext: "Test",
       left: "center",
-      top: 20,
+      top: "4%",
       textStyle: {
         fontSize: 28,
         color: colors.teal_main,              // main text color
@@ -74,7 +74,7 @@ function StockChartGraph(props: Props) {
       {
         type: "rect",
         left: "80%",
-        top: 25,
+        top: "5%",
         shape: { width: 20, height: 20 },
         style: {
           fill: "#393a3aff",
@@ -96,13 +96,16 @@ function StockChartGraph(props: Props) {
       }
     },
     grid: {
-      left: 36,
-      right: 0,
-      top: 10,
-      bottom: 75,
+      height: 'auto',
+      width: 'auto',
+      containLabel: false,
+      left: 0,
+      right: "2%",
+      top: "3%",
+      bottom: "7%",
     },
     xAxis: {
-      name: "Price Date",
+      // name: "Date",
       type: "category",
       splitLine: {
         show: true,
@@ -119,7 +122,9 @@ function StockChartGraph(props: Props) {
     },
     yAxis: [
       {
-        name: "Date",
+        name: "Price ($)",
+        position: 'right',
+        offset: -5,
         scale: true,
         splitLine: {
           show: true,
@@ -139,6 +144,7 @@ function StockChartGraph(props: Props) {
       {
         show: true,
         type: "slider",
+        bottom: 8,
         start: 0,
         end: 100
       }
@@ -155,30 +161,30 @@ function StockChartGraph(props: Props) {
           borderColor: "#008F28"
         }
       },
-      {
-        name: "Price",
-        type: "line",
-        data: [30, 40, 50],
-        markLine: {
-          symbol: "none",
-          lineStyle: {
-            color: "#d7caccff",
-            width: 1,
-            type: "dashed"
-          },
-          label: {
-            formatter: `Target: ${targetPrice}`,
-            position: "end",
-            color: "#ad9ea0ff",
-            fontWeight: "bold"
-          },
-          data: [
-            {
-              yAxis: targetPrice
-            }
-          ],
-        }
-      }
+      // {
+      //   name: "Price",
+      //   type: "line",
+      //   data: [30, 40, 50],
+      //   markLine: {
+      //     symbol: "none",
+      //     lineStyle: {
+      //       color: "#d7caccff",
+      //       width: 1,
+      //       type: "dashed"
+      //     },
+      //     label: {
+      //       formatter: `Target: ${targetPrice}`,
+      //       position: "end",
+      //       color: "#ad9ea0ff",
+      //       fontWeight: "bold"
+      //     },
+      //     data: [
+      //       {
+      //         yAxis: targetPrice
+      //       }
+      //     ],
+      //   }
+      // }
     ],
   };
 

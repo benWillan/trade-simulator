@@ -16,7 +16,7 @@ type Props = {
 
 export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
 
-  const calculateChartWidthPercentage = (numberOfCharts: number): number => {
+  const calculateChartWidth = (numberOfCharts: number): number => {
 
     switch(numberOfCharts) {
 
@@ -30,16 +30,20 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
 
   }
 
+  const calculateChartHeight = () => {
+
+  }
+
   return (
     <Container fluid className='stock-chart-container'>
       {chartsRendered === 1 && (
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
-            <Col style={{ flex: '0 0 calc(100vw - 380px)'}} className='py-3 chart-container'>
+            <Col style={{ flex: '0 0 calc(100vw - 360px)'}} className='py-3 chart-container'>
               <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-           </Col>
+            </Col>
           ) : (
-            <Col style={{ flex: '0 0 calc(100vw - 56px)'}} className='py-3 chart-container'>
+            <Col style={{ flex: '0 0 calc(100vw - 28px)'}} className='py-3 chart-container'>
               <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
             </Col>
           )}
@@ -95,19 +99,19 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
             <>
-              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
-              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
           ) : (
             <>
-              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
-              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
@@ -116,19 +120,19 @@ export function ContainerFluid({chartsRendered, isOffCanvasVisible}: Props) {
         <Row style={{ display: 'flex' }}>
           {isOffCanvasVisible ? (
             <>
-              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
-              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
           ) : (
             <>
-              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
-              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-3 chart-container'>
+              <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
                 <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
               </Col>
             </>
