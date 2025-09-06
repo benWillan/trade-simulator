@@ -63,8 +63,10 @@ function StockChart({isOffCanvasVisible}: Props) {
         </Col>
       </Row>
       {/* height compensates for (~230px): Navbar, echarts datazoom and (stock/ticker + date) element heights */}
-      <Row style={{height: "calc(100vh - 128px)" }}>
-        {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>}
+      <Row>
+        <Col style={{height: "calc(100vh - 144px)" }}>
+          {/* {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>} */}
+        </Col>
       </Row>
     </Container>
     </>

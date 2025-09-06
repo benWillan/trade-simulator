@@ -1,6 +1,6 @@
 import './App.css';
 import { NavBar } from './components/topLevel/NavBar';
-import { ContainerFluid } from './components/topLevel/ContainerFluid';
+import { ContentArea } from './components/topLevel/ContentArea';
 import Sidebar from './components/general/Sidebar';
 import OffCanvas from './components/general/OffCanvas';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <NavBar></NavBar>
-      <ContainerFluid chartsRendered={1} isOffCanvasVisible={offCanvasVisibility}></ContainerFluid>
+      <ContentArea chartsRendered={1} isOffCanvasVisible={offCanvasVisibility}></ContentArea>
       <Sidebar onWatchListShow={showOffCanvas}></Sidebar>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
