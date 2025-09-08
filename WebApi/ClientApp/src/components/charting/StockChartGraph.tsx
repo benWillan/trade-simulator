@@ -189,7 +189,7 @@ function StockChartGraph(props: Props) {
   };
 
   return (
-    <ReactECharts ref={chartRef} option={options} style={{ height: "100%", width: "100%", margin: "0 auto" }} />
+    <ReactECharts ref={chartRef} option={options} style={{ height: "100%", width: "100%" }} />
   );
 }
 

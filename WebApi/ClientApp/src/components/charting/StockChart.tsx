@@ -56,16 +56,15 @@ function StockChart({isOffCanvasVisible}: Props) {
 
   return (
     <>
-    <Container fluid>
+    <Container fluid className='px-0 py-0'>
       <Row>
         <Col>
           <AutocompleteInput onAutoCompleteSelect={handleStockSelect}></AutocompleteInput>
         </Col>
       </Row>
-      {/* height compensates for (~230px): Navbar, echarts datazoom and (stock/ticker + date) element heights */}
-      <Row>
-        <Col style={{height: "calc(100vh - 144px)" }}>
-          {/* {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>} */}
+      <Row style={{height: "calc(100vh - 124px)"}}>
+        <Col>
+          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>}
         </Col>
       </Row>
     </Container>
