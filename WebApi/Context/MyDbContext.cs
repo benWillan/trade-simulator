@@ -44,6 +44,8 @@ public partial class MyDbContext : DbContext
 
             entity.ToTable("StockQuote");
 
+            entity.HasIndex(e => e.StockSymbol, "fki_fk_sq_stock_ticker");
+
             entity.Property(e => e.Date).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.ClosePrice).HasPrecision(12, 3);
             entity.Property(e => e.HighPrice).HasPrecision(12, 3);
@@ -54,7 +56,7 @@ public partial class MyDbContext : DbContext
                 .HasPrincipalKey(p => p.Ticker)
                 .HasForeignKey(d => d.StockSymbol)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_stockquote_stock_ticker");
+                .HasConstraintName("fk_sq_stock_ticker");
         });
 
         modelBuilder.Entity<stock_price>(entity =>
