@@ -24,8 +24,8 @@ function App() {
   return (
     <>
       <NavBar></NavBar>
-      <ContentArea chartsRendered={1} isOffCanvasVisible={offCanvasVisibility}></ContentArea>
-      <Sidebar onWatchListShow={showOffCanvas}></Sidebar>
+      <ContentArea onWatchListShow={showOffCanvas} chartsRendered={1} isOffCanvasVisible={offCanvasVisibility}></ContentArea>
+      {/* <Sidebar onWatchListShow={showOffCanvas}></Sidebar> */}
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
   );

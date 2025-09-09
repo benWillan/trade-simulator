@@ -16,10 +16,10 @@ const Sidebar = ({onWatchListShow}: Props) => {
         height: "100vh",              // Full height
         width: "56px",                // Sidebar width
         position: "fixed",            // Stick to side
-        top: 0,
+        top: -20,
         right: 0,                     // Change to "right: 0" if you want it on the right
         backgroundColor: "#343a40", // Bootstrap dark color
-        paddingTop: "20px",
+        marginTop: "20px",
         display: "flex",
         flexDirection: "column",
         boxShadow: "2px 0 5px rgba(0,0,0,0.2)",

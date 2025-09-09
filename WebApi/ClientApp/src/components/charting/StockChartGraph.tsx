@@ -98,11 +98,11 @@ function StockChartGraph(props: Props) {
     grid: {
       height: 'auto',
       width: 'auto',
-      containLabel: false,
+      containLabel: true,
       left: 0,
-      right: "2%",
-      top: "3%",
-      bottom: "7%",
+      right: 0,
+      top: 30,
+      bottom: 60,
     },
     xAxis: {
       // name: "Date",
@@ -144,7 +144,7 @@ function StockChartGraph(props: Props) {
       {
         show: true,
         type: "slider",
-        bottom: 8,
+        bottom: 10,
         start: 0,
         end: 100
       }

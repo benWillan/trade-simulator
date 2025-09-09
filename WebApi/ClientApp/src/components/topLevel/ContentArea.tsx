@@ -7,14 +7,16 @@ import '../../css/global.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import OffCanvas from '../general/OffCanvas';
+import Sidebar from '../general/Sidebar';
 import { useState } from 'react';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
   isOffCanvasVisible: boolean;
+  onWatchListShow: () => void;
 }
 
-export function ContentArea({chartsRendered, isOffCanvasVisible}: Props) {
+export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible}: Props) {
 
   const calculateChartWidth = (numberOfCharts: number): string => {
 
@@ -33,32 +35,47 @@ export function ContentArea({chartsRendered, isOffCanvasVisible}: Props) {
   }
 
   const calculateChartHeight = () => {
-
+    // <Container fluid className='px-0 py-0' style={{width: "calc(100% - 56px)", marginLeft: 0, marginRight: 0}}></Container>
   }
 
   return (
-    <Container fluid className='px-2 py-3' style={{width: "calc(100% - 56px)", marginLeft: 0, marginRight: 0}}>
+    <Container fluid className='px-2 py-3'>
+      <div style={{ display: "flex" }}>
+        
+        <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
+          <Row>
+            <Col>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible} />
+            </Col>
+          </Row>
+        </div>
+
+        <div style={{ width: "56px" }}>
+          <Sidebar onWatchListShow={onWatchListShow}></Sidebar>
+        </div>
+      </div>
+
+    {/* <Container fluid style={{paddingRight: "86px"}}>
       {chartsRendered === 1 && (
         <Row>
           <Col>
             <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
           </Col>
-        </Row>
-      )}
-      {chartsRendered === 2 && (
+        </Row> */}
+      {/* {chartsRendered === 2 && (
         <>
-        <Row>
-          <Col>
-            <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-          </Col>
-        </Row>
+          <Row>
+            <Col>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
+            </Col>
+          </Row>
         </>
-      )}
+      )} */}
     </Container>
       // {/* {chartsRendered === 3 && (
       //   <>

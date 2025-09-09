@@ -134,7 +134,7 @@ function AutocompleteInput({onAutoCompleteSelect} : Props) {
             color: "#adb5bd",
           }),
         }}
-        placeholder="Ticker | Security name..."
+        placeholder="Ticker | Security name"
       />
     </div>
   );
