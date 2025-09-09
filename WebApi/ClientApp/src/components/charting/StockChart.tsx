@@ -2,23 +2,28 @@
 import AutocompleteInput from '../general/AutocompleteInput';
 import StockChartHeader from './StockChartHeader';
 import StockChartGraph from './StockChartGraph';
+import '../../css/global.css';
 //  external.
 import {useState, useEffect} from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal'
 //  types.
 import {StockOption, Stock} from '../../types/charting/types'
 import StockChartDate from './StockChartDate';
 
 type Props = {
+  chartIndex: number;
   isOffCanvasVisible: boolean;
 }
 
-function StockChart({isOffCanvasVisible}: Props) {
+function StockChart({isOffCanvasVisible, chartIndex}: Props) {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
+  const [isModalVisible, setModalVisibility] = useState(false);
 
   //  to handle api call after stock is selected from autoselect.
   useEffect(() => {
@@ -32,6 +37,9 @@ function StockChart({isOffCanvasVisible}: Props) {
     fetchStockGraphData(selectedStock);
 
   }, [selectedStock]);
+
+  const closeCompareModal = () => setModalVisibility(false);
+  const showCompareModal = () => setModalVisibility(true);
 
   const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
@@ -60,12 +68,33 @@ function StockChart({isOffCanvasVisible}: Props) {
         <Col>
           <AutocompleteInput onAutoCompleteSelect={handleStockSelect}></AutocompleteInput>
         </Col>
+        <Col>
+          <Button key={chartIndex} onClick={showCompareModal} variant="outline-secondary" size='sm'>Compare</Button>
+        </Col>
       </Row>
       <Row>
         <Col style={{height: "90vh"}}>
           {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>}
         </Col>
       </Row>
+
+      <Modal
+        show={isModalVisible}
+        onHide={closeCompareModal}
+        backdrop={false}
+        // backdrop='static' // keeps the dim overlay
+        className="modal-click-through"        // class added to the .modal element
+        backdropClassName="backdrop-click-through"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Compare</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={closeCompareModal}>Save</Button>
+          <Button variant="secondary" onClick={closeCompareModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 

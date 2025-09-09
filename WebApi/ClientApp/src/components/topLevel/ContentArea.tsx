@@ -18,210 +18,55 @@ type Props = {
 
 export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible}: Props) {
 
-  const calculateChartWidth = (numberOfCharts: number): string => {
+  switch(chartsRendered) {
 
-    switch(numberOfCharts) {
-      
+    case 1:
+      return (
+        <Container fluid className='px-2 py-3'>
+          <div style={{ display: "flex" }}>
+            
+            <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
+              <Row>
+                <Col>
+                  <StockChart chartIndex={1} isOffCanvasVisible={isOffCanvasVisible} />
+                </Col>
+              </Row>
+            </div>
+
+            <div style={{ width: "56px" }}>
+              <Sidebar onWatchListShow={onWatchListShow}></Sidebar>
+            </div>
+          </div>
+        </Container>
+      );
+
       case 2:
+        return (
+          <Container fluid className='px-2 py-3'>
+            <div style={{ display: "flex" }}>
+              
+              <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
+                <Row>
+                  <Col>
+                    <StockChart chartIndex={1} isOffCanvasVisible={isOffCanvasVisible} />
+                  </Col>
+                  <Col>
+                    <StockChart chartIndex={2} isOffCanvasVisible={isOffCanvasVisible} />
+                  </Col>
+                </Row>
+              </div>
 
-        return "";
+              <div style={{ width: "56px" }}>
+                <Sidebar onWatchListShow={onWatchListShow}></Sidebar>
+              </div>
+            </div>
+          </Container>
+        );
 
       default:
-
-        return "100vw - 360px";
-
+        return null;
     }
+  
 
-  }
-
-  const calculateChartHeight = () => {
-    // <Container fluid className='px-0 py-0' style={{width: "calc(100% - 56px)", marginLeft: 0, marginRight: 0}}></Container>
-  }
-
-  return (
-    <Container fluid className='px-2 py-3'>
-      <div style={{ display: "flex" }}>
-        
-        <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
-          <Row>
-            <Col>
-              <StockChart isOffCanvasVisible={isOffCanvasVisible} />
-            </Col>
-          </Row>
-        </div>
-
-        <div style={{ width: "56px" }}>
-          <Sidebar onWatchListShow={onWatchListShow}></Sidebar>
-        </div>
-      </div>
-
-    {/* <Container fluid style={{paddingRight: "86px"}}>
-      {chartsRendered === 1 && (
-        <Row>
-          <Col>
-            <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-          </Col>
-        </Row> */}
-      {/* {chartsRendered === 2 && (
-        <>
-          <Row>
-            <Col>
-              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-            </Col>
-          </Row>
-        </>
-      )} */}
-    </Container>
-      // {/* {chartsRendered === 3 && (
-      //   <>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 41.666%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 83.332%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   </>
-      // )} */}
-      // {/* {chartsRendered === 4 && (
-      //   <>
-      //   <Row style={{ display: 'flex' }}>
-      //     {isOffCanvasVisible ? (
-      //       <>
-      //         <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //         <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //       </>
-      //     ) : (
-      //       <>
-      //         <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //         <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //       </>
-      //     )}
-      //   </Row>
-      //   <Row style={{ display: 'flex' }}>
-      //     {isOffCanvasVisible ? (
-      //       <>
-      //         <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //         <Col style={{ flex: '0 0 calc(50vw - 190px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //       </>
-      //     ) : (
-      //       <>
-      //         <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //         <Col style={{ flex: '0 0 calc(50vw - 56px)'}} className='py-2 chart-container'>
-      //           <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //         </Col>
-      //       </>
-            
-      //     )}
-      //   </Row>
-      //   </>
-      // )} */}
-      // {/* {chartsRendered == 6 && (
-      //   <>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   </>
-      // )} */}
-      // {/* {chartsRendered == 12 && (
-      //   <>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   <Row style={{ display: 'flex' }}>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 27.777%' }} className='py-3 chart-container'>
-      //       <StockChart isOffCanvasVisible={isOffCanvasVisible}></StockChart>
-      //     </Col>
-      //     <Col style={{ flex: '0 0 16.666%' }}></Col>
-      //   </Row>
-      //   </>
-      // )}  */}
-  );
+    
 }

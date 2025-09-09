@@ -13,3 +13,18 @@
   height: 100%;
   /* min-height: 300px; */
 }
+
+/* Modal css to make the background interactive while the overlay is showing  */
+.backdrop-click-through {
+  pointer-events: none; /* allow clicks through the dim overlay */
+}
+
+/* make the modal container click-through... */
+.modal-click-through {
+  pointer-events: none; /* allows clicks to pass through the area around dialog */
+}
+
+/* ...but keep the dialog contents interactive */
+.modal-click-through .modal-dialog, .modal-click-through .modal-content {
+  pointer-events: auto;
+}
