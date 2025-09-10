@@ -11,12 +11,14 @@ import { text } from 'stream/consumers';
 
 type Props = {
   graphData: Stock | null;
+  //comparisonData: Stock | null;
   isOffCanvasVisible: boolean;
 }
 
 function StockChartGraph(props: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
+  //const [comparisonData, setComparisonData] = useState<Stock[] | null>(null);
 
   useEffect(() => {
 
@@ -28,6 +30,13 @@ function StockChartGraph(props: Props) {
     }
 
   }, [props.isOffCanvasVisible]);
+
+  // useEffect(() => {
+
+  //   setComparisonData((prevData) =>
+  //     prevData ? [...prevData, props.comparisonData as Stock] : [props.comparisonData as Stock])
+
+  // }, [props.comparisonData]);
 
   const dates = props.graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
@@ -159,6 +168,10 @@ function StockChartGraph(props: Props) {
           borderColor: "#008F28"
         }
       },
+      // comparisonData?.map((item) => ({
+      //   name: item.ticker,
+      //   data: [1,2,3,45,5,6,5,45,34,53,45,34,5]
+      // }))
       // {
       //   name: "Price",
       //   type: "line",

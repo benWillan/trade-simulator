@@ -68,75 +68,73 @@ function AutocompleteInput({onAutoCompleteSelect} : Props) {
   }
 
   return (
-    <div style={{ width: 420 }}>
-      <AsyncSelect
-        isClearable
-        cacheOptions
-        onKeyDown={(e) => {
-          const input = e.target as HTMLInputElement; // cast to HTMLInputElement
-          if (e.shiftKey && e.key === 'Home') {
-            input.setSelectionRange(0, input.value.length);
-            e.preventDefault();
-          }
+    <AsyncSelect
+      isClearable
+      cacheOptions
+      onKeyDown={(e) => {
+        const input = e.target as HTMLInputElement; // cast to HTMLInputElement
+        if (e.shiftKey && e.key === 'Home') {
+          input.setSelectionRange(0, input.value.length);
+          e.preventDefault();
+        }
 
-          // Optional: support Ctrl+A / Cmd+A
-          if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
-            input.setSelectionRange(0, input.value.length);
-            e.preventDefault();
-          }
-        }}
-        defaultOptions={false}
-        loadOptions={loadOptions}
-        value={selectedOption}
-        onChange={handleSecuritySelect}
-        styles={{
-          control: (provided: any) => ({
-            ...provided,
-            backgroundColor: "#212529", // Bootstrap dark background
-            color: "#fff",
-            borderColor: "#495057",
-            boxShadow: "none",
-            "&:hover": {
-              borderColor: "#6c757d",
-            },
-          }),
-          menu: (provided: any) => ({
-            ...provided,
-            backgroundColor: "#212529",
-            color: "#fff",
-          }),
-          menuList: (provided: any) => ({
-            ...provided,
-            backgroundColor: "#212529",
-            color: "#fff",
-          }),
-          option: (provided: any, state: any) => ({
-            ...provided,
-            fontSize: "14px", // dropdown items font size
-            backgroundColor: state.isFocused ? "#495057" : "#212529",
-            color: "#fff",
-            "&:active": {
-              backgroundColor: "#343a40",
-            },
-          }),
-          singleValue: (provided: any) => ({
-            ...provided,
-            fontSize: "14px", // dropdown items font size
-            color: "#fff",
-          }),
-          input: (provided: any) => ({
-            ...provided,
-            fontSize: "14px", // dropdown items font size
-            color: "#fff",
-          }),
-          placeholder: (provided: any) => ({
-            ...provided,
-            color: "#adb5bd",
-          }),
-        }}
-        placeholder="Ticker | Security name"
-      />
-    </div>
+        // Optional: support Ctrl+A / Cmd+A
+        if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+          input.setSelectionRange(0, input.value.length);
+          e.preventDefault();
+        }
+      }}
+      defaultOptions={false}
+      loadOptions={loadOptions}
+      value={selectedOption}
+      onChange={handleSecuritySelect}
+      styles={{
+        control: (provided: any) => ({
+          ...provided,
+          backgroundColor: "#212529", // Bootstrap dark background
+          color: "#fff",
+          borderColor: "#495057",
+          boxShadow: "none",
+          "&:hover": {
+            borderColor: "#6c757d",
+          },
+        }),
+        menu: (provided: any) => ({
+          ...provided,
+          backgroundColor: "#212529",
+          color: "#fff",
+        }),
+        menuList: (provided: any) => ({
+          ...provided,
+          backgroundColor: "#212529",
+          color: "#fff",
+        }),
+        option: (provided: any, state: any) => ({
+          ...provided,
+          fontSize: "14px", // dropdown items font size
+          backgroundColor: state.isFocused ? "#495057" : "#212529",
+          color: "#fff",
+          "&:active": {
+            backgroundColor: "#343a40",
+          },
+        }),
+        singleValue: (provided: any) => ({
+          ...provided,
+          fontSize: "14px", // dropdown items font size
+          color: "#fff",
+        }),
+        input: (provided: any) => ({
+          ...provided,
+          fontSize: "14px", // dropdown items font size
+          color: "#fff",
+        }),
+        placeholder: (provided: any) => ({
+          ...provided,
+          color: "#adb5bd",
+        }),
+      }}
+      placeholder="Ticker | Security name"
+    />
   );
 }
 

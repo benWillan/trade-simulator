@@ -22,14 +22,16 @@ type Props = {
 function StockChart({isOffCanvasVisible, chartIndex}: Props) {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
-  const [graphData, setGraphData] = useState<Stock | null>(null);
-  const [isModalVisible, setModalVisibility] = useState(false);
-  const [comparisonData, setComparisonData] = useState<Stock | null>(null);
+  const [selectedComparison, setComparison] = useState<StockOption | null>(null);
 
-  //  to handle api call after stock is selected from autoselect.
+  const [graphData, setGraphData] = useState<Stock | null>(null);
+  const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
+  const [childSeriesData, setchildSeriesData] = useState<Stock[] | null>([]);
+  
+  const [isModalVisible, setModalVisibility] = useState(false);
+
   useEffect(() => {
 
-    //  to clear and unmount the graph on x click.
     if(!selectedStock) {
       setGraphData(null);
       return;
@@ -38,19 +40,39 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
     fetchStockGraphData(selectedStock);
 
   }, [selectedStock]);
+  
+  useEffect(() => {
+
+    if(!selectedComparison) {
+      setComparison(null);
+      return;
+    }
+
+    fetchStockGraphData(selectedComparison, true);
+
+  }, [selectedComparison]);
 
   const closeCompareModal = () => setModalVisibility(false);
   const showCompareModal = () => setModalVisibility(true);
 
-  const fetchStockGraphData = async (stockOption: StockOption | null) => {
+  const fetchStockGraphData = async (stockOption: StockOption | null, isComparison: boolean = false) => {
 
     const ticker = stockOption?.value;
 
     const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`);
 
-    const data = await response.json() as Stock | null;
+    const data = await response.json() as Stock;
 
-    setGraphData(data);
+    if (isComparison) {
+
+      setComparisonGraphData(prev => {
+        if (!prev) return [data];  // If it's null, start a new array
+        return [...prev, data];    // Otherwise, append to existing array
+      });
+
+    } else {
+      setGraphData(data);
+    }
     
   }
 
@@ -66,14 +88,20 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
 
   }
 
-  const handleComparisonSelect = () => {
+  const handleComparisonSelect = (stockOption: StockOption | null) => {
 
-    if (comparisonData === null) {
-      setComparisonData(null);
+    if (stockOption === null) {
+      setComparison(null);
       return;
-    } 
+    }
 
-    console.log("Comparison stock selected");
+    setComparison(stockOption);
+
+  }
+
+  const addComparisonDataToGraph = () => {
+
+    setchildSeriesData(comparisonGraphData);
 
   }
 
@@ -88,14 +116,15 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
         </Col>
       </Row>
       <Row>
-        <Col style={{height: "90vh"}}>
-          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData}></StockChartGraph>}
+        <Col style={{height: `calc(100vh - 144px)`}}>
+          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} ></StockChartGraph>}
         </Col>
       </Row>
 
       <Modal
         show={isModalVisible}
         onHide={closeCompareModal}
+        size='lg'
         backdrop={false}
         // backdrop='static' // keeps the dim overlay
         className="modal-click-through"        // class added to the .modal element
@@ -106,10 +135,29 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
         </Modal.Header>
         <Modal.Body>
           <AutocompleteInput onAutoCompleteSelect={handleComparisonSelect}></AutocompleteInput>
+          {comparisonGraphData &&
+            <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Security</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonGraphData?.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.ticker}</td>
+                    <td>{item.securityName}</td>
+                    <td><Button variant='danger' size='sm'>X</Button></td>
+                  </tr>))}
+              </tbody>
+            </table>
+          }
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={closeCompareModal}>Add</Button>
-          <Button variant="secondary" onClick={closeCompareModal}>Cancel</Button>
+          <Button variant="primary" size='sm' onClick={addComparisonDataToGraph}>Add</Button>
+          <Button variant="secondary" size='sm' onClick={closeCompareModal}>Cancel</Button>
         </Modal.Footer>
       </Modal>
     </>
