@@ -33,8 +33,6 @@ function StockChartGraph(props: Props) {
   const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = props.graphData?.ticker;
 
-  const [targetPrice, setTargetPrice] = useState(34);
-
   const options = {
     title: {
       text: `${stockTicker}`,

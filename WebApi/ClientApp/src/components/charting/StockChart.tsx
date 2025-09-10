@@ -24,6 +24,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
   const [isModalVisible, setModalVisibility] = useState(false);
+  const [comparisonData, setComparisonData] = useState<Stock | null>(null);
 
   //  to handle api call after stock is selected from autoselect.
   useEffect(() => {
@@ -56,9 +57,23 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
   //  to set state after user selects value in AutocompleteInput.
   const handleStockSelect = (stockOption: StockOption | null) => {
 
-    if (stockOption === null) setSelectedStock(null);
+    if (stockOption === null) {
+      setSelectedStock(null);
+      return;
+    } 
 
     setSelectedStock(stockOption);
+
+  }
+
+  const handleComparisonSelect = () => {
+
+    if (comparisonData === null) {
+      setComparisonData(null);
+      return;
+    } 
+
+    console.log("Comparison stock selected");
 
   }
 
@@ -89,10 +104,12 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
         <Modal.Header closeButton>
           <Modal.Title>Compare</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          <AutocompleteInput onAutoCompleteSelect={handleComparisonSelect}></AutocompleteInput>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={closeCompareModal}>Save</Button>
-          <Button variant="secondary" onClick={closeCompareModal}>Close</Button>
+          <Button variant="primary" onClick={closeCompareModal}>Add</Button>
+          <Button variant="secondary" onClick={closeCompareModal}>Cancel</Button>
         </Modal.Footer>
       </Modal>
     </>
