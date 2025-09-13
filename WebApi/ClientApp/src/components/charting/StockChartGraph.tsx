@@ -11,14 +11,14 @@ import { text } from 'stream/consumers';
 
 type Props = {
   graphData: Stock | null;
-  //comparisonData: Stock | null;
+  seriesData: Stock[] | null;
   isOffCanvasVisible: boolean;
 }
 
-function StockChartGraph(props: Props) {
+function StockChartGraph({graphData, seriesData, isOffCanvasVisible}: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
-  //const [comparisonData, setComparisonData] = useState<Stock[] | null>(null);
+  const [seriesDataState, setSeriesDataState] = useState<Stock[] | null>(null);
 
   useEffect(() => {
 
@@ -29,18 +29,21 @@ function StockChartGraph(props: Props) {
 
     }
 
-  }, [props.isOffCanvasVisible]);
+  }, [isOffCanvasVisible]);
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   setComparisonData((prevData) =>
-  //     prevData ? [...prevData, props.comparisonData as Stock] : [props.comparisonData as Stock])
+    if (seriesData?.length) {
 
-  // }, [props.comparisonData]);
+      setSeriesDataState(prevData => [...(prevData ?? []), ...seriesData!]);
 
-  const dates = props.graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
-  const ohlcData = props.graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
-  const stockTicker = props.graphData?.ticker;
+    }
+
+  }, [seriesData]);
+
+  const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
+  const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
+  const stockTicker = graphData?.ticker;
 
   const options = {
     title: {
@@ -168,10 +171,11 @@ function StockChartGraph(props: Props) {
           borderColor: "#008F28"
         }
       },
-      // comparisonData?.map((item) => ({
-      //   name: item.ticker,
-      //   data: [1,2,3,45,5,6,5,45,34,53,45,34,5]
-      // }))
+      ...(seriesData ?? []).map((s, idx) => ({
+        name: s.ticker ?? `Series ${idx + 1}`,
+        type: "line",
+        data: s.stockQuotes.map(q => q.closePrice),
+      }))
       // {
       //   name: "Price",
       //   type: "line",
@@ -196,7 +200,7 @@ function StockChartGraph(props: Props) {
       //     ],
       //   }
       // }
-    ],
+    ]
   };
 
   return (

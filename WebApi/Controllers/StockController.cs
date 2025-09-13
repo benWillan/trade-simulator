@@ -49,4 +49,12 @@ public class StockController : ControllerBase
         return Ok(stockData);
     }
     
+    [HttpGet("comparisondata")]
+    public async Task<IActionResult> GetComparisonStockMetaData([FromQuery] string mainTicker, string comparisonTicker)
+    {
+        var comparsionData = await _stockQuoteService.RetrieveComparisonStockData(mainTicker, comparisonTicker);
+
+        return Ok(comparsionData);
+    }
+    
 }

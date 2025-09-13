@@ -26,7 +26,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
 
   const [graphData, setGraphData] = useState<Stock | null>(null);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
-  const [childSeriesData, setchildSeriesData] = useState<Stock[] | null>([]);
+  const [seriesData, setSeriesData] = useState<Stock[] | null>([]);
   
   const [isModalVisible, setModalVisibility] = useState(false);
 
@@ -48,31 +48,35 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
       return;
     }
 
-    fetchStockGraphData(selectedComparison, true);
+    fetchStockGraphComparisonData(selectedComparison);
 
   }, [selectedComparison]);
 
   const closeCompareModal = () => setModalVisibility(false);
   const showCompareModal = () => setModalVisibility(true);
 
-  const fetchStockGraphData = async (stockOption: StockOption | null, isComparison: boolean = false) => {
+  const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
     const ticker = stockOption?.value;
-
     const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`);
-
     const data = await response.json() as Stock;
 
-    if (isComparison) {
+    setGraphData(data);
+    
+  }
 
-      setComparisonGraphData(prev => {
-        if (!prev) return [data];  // If it's null, start a new array
-        return [...prev, data];    // Otherwise, append to existing array
-      });
+  const fetchStockGraphComparisonData = async (stockOption: StockOption | null) => {
 
-    } else {
-      setGraphData(data);
-    }
+    const comparisonTicker = stockOption?.value;
+    const mainStockTicker = graphData?.ticker;
+
+    const response = await fetch(`https://localhost:7133/api/stock/comparisondata?mainTicker=${mainStockTicker}&comparisonTicker=${comparisonTicker}`);
+    const data = await response.json() as Stock;
+
+    setComparisonGraphData(prev => {
+      if (!prev) return [data];  // If it's null, start a new array
+      return [...prev, data];    // Otherwise, append to existing array
+    })
     
   }
 
@@ -101,7 +105,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
 
   const addComparisonDataToGraph = () => {
 
-    setchildSeriesData(comparisonGraphData);
+    setSeriesData(comparisonGraphData);
 
   }
 
@@ -117,7 +121,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
       </Row>
       <Row>
         <Col style={{height: `calc(100vh - 144px)`}}>
-          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} ></StockChartGraph>}
+          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} seriesData={seriesData}></StockChartGraph>}
         </Col>
       </Row>
 
@@ -156,7 +160,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
           }
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" size='sm' onClick={addComparisonDataToGraph}>Add</Button>
+          <Button variant="primary" size='sm' onClick={addComparisonDataToGraph}>Save</Button>
           <Button variant="secondary" size='sm' onClick={closeCompareModal}>Cancel</Button>
         </Modal.Footer>
       </Modal>
