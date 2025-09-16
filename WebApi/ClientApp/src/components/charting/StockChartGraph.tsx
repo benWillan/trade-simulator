@@ -3,19 +3,16 @@ import { Stock } from '../../types/charting/types';
 import colors from '../../types/styling/glowingText';
 import { useRef, useEffect } from 'react';
 //  external.
-import React from "react";
 import ReactECharts from "echarts-for-react";
 import {useState} from 'react';
-import { text } from 'stream/consumers';
-
 
 type Props = {
   graphData: Stock | null;
-  seriesData: Stock[] | null;
+  comparisonData: Stock[] | null;
   isOffCanvasVisible: boolean;
 }
 
-function StockChartGraph({graphData, seriesData, isOffCanvasVisible}: Props) {
+function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
   const [seriesDataState, setSeriesDataState] = useState<Stock[] | null>(null);
@@ -33,13 +30,13 @@ function StockChartGraph({graphData, seriesData, isOffCanvasVisible}: Props) {
 
   useEffect(() => {
 
-    if (seriesData?.length) {
+    if (comparisonData?.length) {
 
-      setSeriesDataState(prevData => [...(prevData ?? []), ...seriesData!]);
+      setSeriesDataState(prevData => [...(prevData ?? []), ...comparisonData!]);
 
     }
 
-  }, [seriesData]);
+  }, [comparisonData]);
 
   const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
@@ -171,7 +168,7 @@ function StockChartGraph({graphData, seriesData, isOffCanvasVisible}: Props) {
           borderColor: "#008F28"
         }
       },
-      ...(seriesData ?? []).map((s, idx) => ({
+      ...(comparisonData ?? []).map((s, idx) => ({
         name: s.ticker ?? `Series ${idx + 1}`,
         type: "line",
         data: s.stockQuotes.map(q => q.closePrice),

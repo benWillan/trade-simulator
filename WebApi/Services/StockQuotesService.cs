@@ -120,13 +120,15 @@ public class StockQuoteService : IStockQuoteService
                     })
                     .ToList()
             })
-            .FirstOrDefaultAsync(stock => stock.Ticker == mainStockTicker);
+            .FirstOrDefaultAsync(s => s.Ticker == mainStockTicker);
 
-        var requestedDates = mainStockData.StockQuotes
+        var mainStockDates = mainStockData?.StockQuotes
             .Select(sq => sq.Date.Date)
             .ToList();
-        
-        var stock = await _context.Stocks
+
+        if (mainStockDates == null) return null;
+
+        var comparisonStock = await _context.Stocks
             .AsNoTracking()
             .Include(s => s.StockQuotes)
             .Where(s => s.Ticker == comparisonStockTicker)
@@ -136,7 +138,7 @@ public class StockQuoteService : IStockQuoteService
                 Ticker = s.Ticker,
                 SecurityName = s.SecurityName,
                 StockQuotes = s.StockQuotes
-                    .Where(sq => requestedDates.Contains(sq.Date.Date))
+                    .Where(sq => mainStockDates.Contains(sq.Date.Date))
                     .Select(sq => new StockQuote
                     {
                         StockSymbol = sq.StockSymbol,
@@ -147,31 +149,28 @@ public class StockQuoteService : IStockQuoteService
             })
             .FirstOrDefaultAsync();
 
-        if (stock == null)
-            return null!;
+        if (comparisonStock == null) return null;
 
-        // Ensure all requested dates are present in StockQuotes
-        var existingDates = stock.StockQuotes.Select(q => q.Date.Date).ToHashSet();
+        var existingDates = comparisonStock.StockQuotes.Select(q => q.Date.Date).ToHashSet();
 
-        foreach (var date in requestedDates)
+        foreach (var date in mainStockDates)
         {
             if (!existingDates.Contains(date.Date))
             {
-                stock.StockQuotes.Add(new StockQuote
+                comparisonStock.StockQuotes.Add(new StockQuote
                 {
-                    StockSymbol = stock.Ticker,
+                    StockSymbol = comparisonStock.Ticker,
                     Date = date,
                     ClosePrice = null
                 });
             }
         }
 
-        // Optional: order by date
-        stock.StockQuotes = stock.StockQuotes
+        comparisonStock.StockQuotes = comparisonStock.StockQuotes
             .OrderBy(q => q.Date)
             .ToList();
 
-        return stock;
+        return comparisonStock;
     }
     
 }
