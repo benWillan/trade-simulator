@@ -158,7 +158,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     ],
     series: [
       {
-        name: "OHLC Candlestick Graph",
+        name: `${graphData?.ticker}`,
         type: "candlestick",
         data: ohlcData,
         itemStyle: {

@@ -1,5 +1,5 @@
 //  internal.
-import { Stock } from '../../types/charting/types';
+import { Stock, StockOption } from '../../types/charting/types';
 import AutocompleteInput from '../general/AutocompleteInput';
 //  external.
 import { useEffect, useState } from 'react'
@@ -8,15 +8,14 @@ import Button from 'react-bootstrap/Button';
 
 type Props = {
   isVisible: boolean;
+  comparisonGraphData: Stock[] | null;
   onComparisonModalCloseClick: () => void;
+  onComparisonStockSelect: (stock: StockOption | null) => void;
+  onComparisonDataSave: () => void;
 }
 
-function CompareModal({isVisible, onComparisonModalCloseClick}: Props) {
+function CompareModal({isVisible, comparisonGraphData, onComparisonStockSelect, onComparisonModalCloseClick, onComparisonDataSave}: Props) {
   
-  const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
-
-  const handleComparisonSelect = () => {};
-
   return (
     <Modal
       show={isVisible}
@@ -31,17 +30,9 @@ function CompareModal({isVisible, onComparisonModalCloseClick}: Props) {
         <Modal.Title>Compare</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* <AutocompleteInput onAutoCompleteSelect={handleComparisonSelect}></AutocompleteInput> */}
-        <AutocompleteInput onAutoCompleteSelect={handleComparisonSelect}></AutocompleteInput>
+        <AutocompleteInput onAutoCompleteSelect={onComparisonStockSelect}></AutocompleteInput>
         {comparisonGraphData &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
-            <thead>
-              <tr>
-                <th>Ticker</th>
-                <th>Security</th>
-                <th></th>
-              </tr>
-            </thead>
             <tbody>
               {comparisonGraphData?.map((item, index) => (
                 <tr key={index}>
@@ -54,7 +45,7 @@ function CompareModal({isVisible, onComparisonModalCloseClick}: Props) {
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" size='sm'>Save</Button>
+        <Button variant="primary" size='sm' onClick={onComparisonDataSave}>Save</Button>
         <Button variant="secondary" size='sm' onClick={onComparisonModalCloseClick}>Cancel</Button>
       </Modal.Footer>
     </Modal>

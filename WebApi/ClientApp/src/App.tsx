@@ -13,11 +13,6 @@ function App() {
   const showOffCanvas = () => setOffCanvasVisibility(true);
   const hideOffCanvas = () => setOffCanvasVisibility(false);
 
-  const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
-
-  const showCompareModal = () => setCompareModalVisibility(true);
-  const hideCompareModal = () => setCompareModalVisibility(false);
-
   return (
     <>
       <NavBar></NavBar>
