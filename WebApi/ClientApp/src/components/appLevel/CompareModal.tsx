@@ -2,27 +2,29 @@
 import { Stock } from '../../types/charting/types';
 import AutocompleteInput from '../general/AutocompleteInput';
 //  external.
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
+type Props = {
+  isVisible: boolean;
+  onComparisonModalCloseClick: () => void;
+}
 
-function CompareModal() {
+function CompareModal({isVisible, onComparisonModalCloseClick}: Props) {
   
-  const [isModalVisible, setModalVisibility] = useState(false);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
 
-  const closeCompareModal = () => setModalVisibility(false);
-  const showCompareModal = () => setModalVisibility(true);
+  const handleComparisonSelect = () => {};
 
   return (
     <Modal
-      show={isModalVisible}
-      onHide={closeCompareModal}
+      show={isVisible}
+      onHide={onComparisonModalCloseClick}
       size='lg'
       backdrop={false}
-      // backdrop='static' // keeps the dim overlay
-      className="modal-click-through"        // class added to the .modal element
+      // backdrop='static'                        // keeps the dim overlay
+      className="modal-click-through"             // class added to the .modal element
       backdropClassName="backdrop-click-through"
     >
       <Modal.Header closeButton>
@@ -30,6 +32,7 @@ function CompareModal() {
       </Modal.Header>
       <Modal.Body>
         {/* <AutocompleteInput onAutoCompleteSelect={handleComparisonSelect}></AutocompleteInput> */}
+        <AutocompleteInput onAutoCompleteSelect={handleComparisonSelect}></AutocompleteInput>
         {comparisonGraphData &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
             <thead>
@@ -52,7 +55,7 @@ function CompareModal() {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" size='sm'>Save</Button>
-        <Button variant="secondary" size='sm' onClick={closeCompareModal}>Cancel</Button>
+        <Button variant="secondary" size='sm' onClick={onComparisonModalCloseClick}>Cancel</Button>
       </Modal.Footer>
     </Modal>
   );

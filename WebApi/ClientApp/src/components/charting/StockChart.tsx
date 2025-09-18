@@ -15,11 +15,12 @@ import {StockOption, Stock} from '../../types/charting/types'
 import StockChartDate from './StockChartDate';
 
 type Props = {
-  chartIndex: number;
+  stockChartId: number;
   isOffCanvasVisible: boolean;
+  onCompareModalClick: () => void;
 }
 
-function StockChart({isOffCanvasVisible, chartIndex}: Props) {
+function StockChart({onCompareModalClick, isOffCanvasVisible, stockChartId}: Props) {
 
   const [selectedStock, setSelectedStock] = useState<StockOption | null>(null);
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
@@ -28,7 +29,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
   const [seriesData, setSeriesData] = useState<Stock[] | null>([]);
   
-  const [isModalVisible, setModalVisibility] = useState(false);
+  //const [isModalVisible, setModalVisibility] = useState(false);
 
   useEffect(() => {
 
@@ -52,8 +53,8 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
 
   }, [selectedComparison]);
 
-  const closeCompareModal = () => setModalVisibility(false);
-  const showCompareModal = () => setModalVisibility(true);
+  // const closeCompareModal = () => setModalVisibility(false);
+  //const showCompareModal = () => setModalVisibility();
 
   const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
@@ -116,7 +117,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
           <AutocompleteInput onAutoCompleteSelect={handleStockSelect}></AutocompleteInput>
         </Col>
         <Col>
-          <Button key={chartIndex} onClick={showCompareModal} variant="outline-secondary" size='sm'>Compare</Button>
+          <Button key={stockChartId} onClick={onCompareModalClick} variant="outline-secondary" size='sm'>Compare</Button>
         </Col>
       </Row>
       <Row>
@@ -125,7 +126,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
         </Col>
       </Row>
 
-      <Modal
+      {/* <Modal
         show={isModalVisible}
         onHide={closeCompareModal}
         size='lg'
@@ -163,7 +164,7 @@ function StockChart({isOffCanvasVisible, chartIndex}: Props) {
           <Button variant="primary" size='sm' onClick={addComparisonDataToGraph}>Save</Button>
           <Button variant="secondary" size='sm' onClick={closeCompareModal}>Cancel</Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   );
 
