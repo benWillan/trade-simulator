@@ -60,24 +60,24 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     graphic: [
       {
         type: "text",
-        left: "10%",       // x position
-        top: "10%",        // y position
+        left: "1%",       // x position
+        top: "5%",        // y position
         style: {
-          text: "Extra stock info: P/E 28.5",
+          text: `${graphData?.securityName} [${graphData?.ticker}]`,
           fill: "#c6c6c6ff",
-          font: "14px sans-serif"
-        },
-      },
-      {
-        type: "text",
-        left: "10%",
-        top: "15%",
-        style: {
-          text: "Sector: Technology",
-          fill: "#c4c4c4ff",
-          font: "12px sans-serif"
+          font: "18px Verdana"
         }
       },
+      // ...(comparisonData ?? []).map((comparisonStock) => ({
+      //   type: "text",
+      //   left: "1%",
+      //   top: "8%",
+      //   style: {
+      //     text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
+      //     fill: "#c6c6c6ff",
+      //     font: "14px Verdana"
+      //   }
+      // })),
       {
         type: "rect",
         left: "80%",
