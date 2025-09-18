@@ -41,6 +41,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = graphData?.ticker;
+  const primaryStockTopValue = 9;
 
   const options = {
     title: {
@@ -65,19 +66,20 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
         style: {
           text: `${graphData?.securityName} [${graphData?.ticker}]`,
           fill: "#c6c6c6ff",
-          font: "18px Verdana"
+          font: "bolder 20px Verdana"
         }
       },
-      // ...(comparisonData ?? []).map((comparisonStock) => ({
-      //   type: "text",
-      //   left: "1%",
-      //   top: "8%",
-      //   style: {
-      //     text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
-      //     fill: "#c6c6c6ff",
-      //     font: "14px Verdana"
-      //   }
-      // })),
+      ...(seriesDataState ?? []).map((comparisonStock, index) => ({
+        $action: "replace",
+        type: "text",
+        left: "1%",
+        top: `${(primaryStockTopValue + (index*2.5)).toString()}%`,
+        style: {
+          text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
+          fill: "#c6c6c6ff",
+          font: "14px Verdana"
+        }
+      })),
       {
         type: "rect",
         left: "80%",
