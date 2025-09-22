@@ -5,6 +5,7 @@ import Sidebar from './components/general/Sidebar';
 import OffCanvas from './components/general/OffCanvas';
 import { useState } from 'react';
 import CompareModal from './components/appLevel/CompareModal';
+import Toast from './components/general/Notification';
 
 function App() {
 

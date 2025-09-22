@@ -4,6 +4,7 @@ import StockChartHeader from '../charting/StockChartHeader';
 import StockChart from '../charting/StockChart';
 import '../../css/global.css'
 import CompareModal from './CompareModal';
+import Notification from '../general/Notification';
 //  external.
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -29,6 +30,8 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   const [seriesData, setSeriesData] = useState<Stock[] | null>([]);
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
+
+  const [showNotification, setNotificationShow] = useState<boolean>(false);
 
   const showCompareModal = () => setCompareModalVisibility(true);
   const hideCompareModal = () => setCompareModalVisibility(false);
@@ -94,6 +97,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   const addComparisonDataToGraph = () => {
 
     setSeriesData(comparisonGraphData);
+    setNotificationShow(true);
 
   }
 
@@ -113,8 +117,8 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     case 1:
       return (
         <Container fluid className='px-2 py-3'>
+          <Notification isVisible={showNotification} isOffCanvasVisible={isOffCanvasVisible}/>
           <div style={{ display: "flex" }}>
-            
             <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
               <Row>
                 <Col>
@@ -126,7 +130,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
                     stockChartId={1}
                     isOffCanvasVisible={isOffCanvasVisible}
                     onCompareModalClick={showCompareModal}
-                  />
+                    />
                 </Col>
               </Row>
             </div>
@@ -142,8 +146,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
             onComparisonStockSelect={handleComparisonSelect}
             onComparisonModalCloseClick={hideCompareModal}
             onComparisonDataSave={addComparisonDataToGraph}
-          />
-
+            />
         </Container>
       );
 
