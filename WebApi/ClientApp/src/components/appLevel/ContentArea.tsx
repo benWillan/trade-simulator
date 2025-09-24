@@ -206,13 +206,13 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   const addComparisonDataToGraph = () => {
 
-    if (selectedMainStock === null) {
-      
-      showNotification("Warning", "");
-      return;
-      
-    }
+    if (comparisonGraphData === null || comparisonGraphData.length === 0) {
 
+      showNotification("Warning", "Select a comparison security.");
+      return;
+
+    }
+    
     setSeriesData(comparisonGraphData);
     
     const haveSameStocksAlreadyBeenAddedToGraph = areStockArraysEqual(comparisonGraphData, seriesData);
