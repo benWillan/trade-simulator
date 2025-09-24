@@ -36,3 +36,10 @@ export interface Stock {
   nasdaqSymbol?: string;
   stockQuotes: StockQuote[]; // collection
 }
+
+export type NotificationState = {
+  isVisible: boolean;
+  isOffCanvasVisible: boolean;
+  headerText: string;
+  bodyText: string;
+}
