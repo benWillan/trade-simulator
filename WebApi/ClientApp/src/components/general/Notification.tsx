@@ -35,10 +35,10 @@ function Notification({ notificationState }: NotificationProps) {
         autohide
       >
         <Toast.Header>
-          <strong className="me-auto">{notificationState.headerText ?? "Notification"}</strong>
+          <strong className="me-auto">{notificationState.header ?? "Notification"}</strong>
         </Toast.Header>
         <Toast.Body>
-          {notificationState.bodyText ?? "Default notification body text"}
+          {notificationState.body ?? "Default notification body text"}
         </Toast.Body>
       </Toast>
     </ToastContainer>

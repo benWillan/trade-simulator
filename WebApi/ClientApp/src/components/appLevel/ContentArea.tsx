@@ -13,7 +13,7 @@ import Sidebar from '../general/Sidebar';
 import { useState, useEffect } from 'react';
 //  types.
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
-import { NotificationState } from '../../types/charting/types';
+import { NotificationState, NotificationType } from '../../types/charting/types';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -32,7 +32,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
 
-  const [notificationState, setNotificationState] = useState<NotificationState>({bodyText: "", headerText: "", isOffCanvasVisible: false, isVisible: false});
+  const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false});
 
   const showCompareModal = () => setCompareModalVisibility(true);
   const hideCompareModal = () => setCompareModalVisibility(false);
@@ -58,6 +58,27 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     fetchStockGraphComparisonData(selectedComparison);
 
   }, [selectedComparison]);
+
+  const showNotification = (header: NotificationType, body: string | Stock[] | null) => {
+
+    if (Array.isArray(body)) {
+
+      const state: NotificationState = {
+        isVisible: true,
+        isOffCanvasVisible: isOffCanvasVisible,
+        body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
+        header: `${header}`
+      };
+      
+      setNotificationState(state);
+
+      return;
+
+    }
+
+    showNotification('Comparison Stock', body);
+
+  }
   
   const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
@@ -70,6 +91,14 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   }
 
   const fetchStockGraphComparisonData = async (stockOption: StockOption | null) => {
+
+    if(selectedMainStock === null) {
+
+      showNotification('Comparison Stock', "Select primary stock first.")
+
+      return;
+
+    }
 
     const comparisonTicker = stockOption?.value;
     const mainStockTicker = graphData?.ticker;
@@ -154,31 +183,31 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     //setComparisonGraphData([]);
     setSeriesData(comparisonGraphData);
 
+    if (selectedMainStock === null) {
+
+    }
+
     const haveSameStocksAlreadyBeenAddedToGraph = areStockArraysEqual(comparisonGraphData, seriesData);
     
     if (haveSameStocksAlreadyBeenAddedToGraph) {
+
+      showNotification('Comparison Stock', "Stocks already added.");
       
-      const state: NotificationState = {
-        isVisible: true,
-        isOffCanvasVisible: isOffCanvasVisible,
-        bodyText: "Nothing new to add.",
-        headerText: "Comparison Stocks"
-      };
-
-      setNotificationState(state);
-
       return;
 
-    } 
+    }
+
+    showNotification('Comparison Stock', comparisonGraphData);
       
     const state: NotificationState = {
       isVisible: true,
       isOffCanvasVisible: isOffCanvasVisible,
-      bodyText: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
-      headerText: "Comparison Stocks"
+      body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
+      header: "Comparison Stocks"
     };
 
     setNotificationState(state);
+
     hideCompareModal();
 
   }

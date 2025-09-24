@@ -40,6 +40,10 @@ export interface Stock {
 export type NotificationState = {
   isVisible: boolean;
   isOffCanvasVisible: boolean;
-  headerText: string;
-  bodyText: string;
+  header: string;
+  body: string;
 }
+
+export type NotificationType =
+  "Comparison Stock" 
+  | "";
