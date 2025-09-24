@@ -46,4 +46,6 @@ export type NotificationState = {
 
 export type NotificationType =
   "Comparison Stock" 
-  | "";
+  | "Saved"
+  | "Updated"
+  | "Warning";

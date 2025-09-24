@@ -34,29 +34,26 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false});
 
-  const showCompareModal = () => setCompareModalVisibility(true);
-  const hideCompareModal = () => setCompareModalVisibility(false);
-
   useEffect(() => {
-  
+    
     if(!selectedMainStock) {
       setGraphData(null);
       return;
     }
-
+    
     fetchStockGraphData(selectedMainStock);
-
+    
   }, [selectedMainStock]);
-
+  
   useEffect(() => {
-
+    
     if(!selectedComparison) {
       setComparison(null);
       return;
     }
-
+    
     fetchStockGraphComparisonData(selectedComparison);
-
+    
   }, [selectedComparison]);
 
   const showNotification = (header: NotificationType, body: string | Stock[] | null) => {
@@ -66,7 +63,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       const state: NotificationState = {
         isVisible: true,
         isOffCanvasVisible: isOffCanvasVisible,
-        body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
+        body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}`,
         header: `${header}`
       };
       
@@ -76,9 +73,31 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     }
 
-    showNotification('Comparison Stock', body);
+    const state: NotificationState = {
+      isVisible: true,
+      isOffCanvasVisible: isOffCanvasVisible,
+      body: `${body}`,
+      header: `${header}`
+    };
+
+    setNotificationState(state);
 
   }
+
+  const showCompareModal = () => {
+    
+    if (selectedMainStock === null) {
+
+      showNotification("Warning", "A security must be assigned first.");
+      return;
+
+    }
+    
+    setCompareModalVisibility(true);
+
+  }
+  
+  const hideCompareModal = () => setCompareModalVisibility(false);
   
   const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
@@ -115,6 +134,13 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   const handleComparisonSelect = (stockOption: StockOption | null) => {
 
+    if(selectedMainStock === null) {
+
+      showNotification("Warning", "Assign a primary stock.");
+      return;
+
+    }
+
     // if (stockOption === null) {
     //   setComparison(null);
     //   return;
@@ -142,18 +168,18 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   function areStocksEqual(s1: Stock, s2: Stock): boolean {
     return (
       s1.id === s2.id &&
-      s1.ticker === s2.ticker &&
-      s1.securityName === s2.securityName &&
-      s1.marketCategory === s2.marketCategory &&
-      s1.testIssue === s2.testIssue &&
-      s1.financialStatus === s2.financialStatus &&
-      s1.roundLotSize === s2.roundLotSize &&
-      s1.etf === s2.etf &&
-      s1.nextShares === s2.nextShares &&
-      s1.exchange === s2.exchange &&
-      s1.cqsSymbol === s2.cqsSymbol &&
-      s1.nasdaqSymbol === s2.nasdaqSymbol &&
-      areStockQuotesEqual(s1.stockQuotes, s2.stockQuotes)
+      s1.ticker === s2.ticker
+      // s1.securityName === s2.securityName &&
+      // s1.marketCategory === s2.marketCategory &&
+      // s1.testIssue === s2.testIssue &&
+      // s1.financialStatus === s2.financialStatus &&
+      // s1.roundLotSize === s2.roundLotSize &&
+      // s1.etf === s2.etf &&
+      // s1.nextShares === s2.nextShares &&
+      // s1.exchange === s2.exchange &&
+      // s1.cqsSymbol === s2.cqsSymbol &&
+      // s1.nasdaqSymbol === s2.nasdaqSymbol &&
+      //areStockQuotesEqual(s1.stockQuotes, s2.stockQuotes)
     );
   }
 
@@ -180,33 +206,34 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   const addComparisonDataToGraph = () => {
 
-    //setComparisonGraphData([]);
-    setSeriesData(comparisonGraphData);
-
     if (selectedMainStock === null) {
-
+      
+      showNotification("Warning", "");
+      return;
+      
     }
 
+    setSeriesData(comparisonGraphData);
+    
     const haveSameStocksAlreadyBeenAddedToGraph = areStockArraysEqual(comparisonGraphData, seriesData);
     
     if (haveSameStocksAlreadyBeenAddedToGraph) {
 
-      showNotification('Comparison Stock', "Stocks already added.");
-      
+      showNotification('Updated', "Stocks already added.");
       return;
 
     }
 
-    showNotification('Comparison Stock', comparisonGraphData);
+    showNotification('Updated', comparisonGraphData);
       
-    const state: NotificationState = {
-      isVisible: true,
-      isOffCanvasVisible: isOffCanvasVisible,
-      body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
-      header: "Comparison Stocks"
-    };
+    // const state: NotificationState = {
+    //   isVisible: true,
+    //   isOffCanvasVisible: isOffCanvasVisible,
+    //   body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
+    //   header: "Comparison Stocks"
+    // };
 
-    setNotificationState(state);
+    // setNotificationState(state);
 
     hideCompareModal();
 
