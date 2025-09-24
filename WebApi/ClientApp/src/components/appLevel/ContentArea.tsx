@@ -111,14 +111,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   const fetchStockGraphComparisonData = async (stockOption: StockOption | null) => {
 
-    if(selectedMainStock === null) {
-
-      showNotification('Comparison Stock', "Select primary stock first.")
-
-      return;
-
-    }
-
     const comparisonTicker = stockOption?.value;
     const mainStockTicker = graphData?.ticker;
 
@@ -140,11 +132,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       return;
 
     }
-
-    // if (stockOption === null) {
-    //   setComparison(null);
-    //   return;
-    // }
 
     setComparison(stockOption);
 
@@ -208,32 +195,22 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     if (comparisonGraphData === null || comparisonGraphData.length === 0) {
 
-      showNotification("Warning", "Select a comparison security.");
+      showNotification("Warning", "Select comparison security.");
       return;
 
     }
-    
-    setSeriesData(comparisonGraphData);
     
     const haveSameStocksAlreadyBeenAddedToGraph = areStockArraysEqual(comparisonGraphData, seriesData);
     
     if (haveSameStocksAlreadyBeenAddedToGraph) {
-
-      showNotification('Updated', "Stocks already added.");
-      return;
-
-    }
-
-    showNotification('Updated', comparisonGraphData);
       
-    // const state: NotificationState = {
-    //   isVisible: true,
-    //   isOffCanvasVisible: isOffCanvasVisible,
-    //   body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}.`,
-    //   header: "Comparison Stocks"
-    // };
-
-    // setNotificationState(state);
+      showNotification('Warning', "Stocks already added.");
+      return;
+      
+    }
+    
+    setSeriesData(comparisonGraphData);
+    showNotification('Added', comparisonGraphData);
 
     hideCompareModal();
 
@@ -258,7 +235,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     case 1:
       return (
-
         <Container fluid className='px-2 py-3'>
 
           <Notification notificationState={notificationState}/>
@@ -296,33 +272,31 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
         </Container>
       );
 
-      case 2:
-        return (
-          <Container fluid className='px-2 py-3'>
-            <div style={{ display: "flex" }}>
-              
-              {/* <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
-                <Row>
-                  <Col>
-                    <StockChart key={1} stockChartId={1} isOffCanvasVisible={isOffCanvasVisible} />
-                  </Col>
-                  <Col>
-                    <StockChart key={2} stockChartId={2} isOffCanvasVisible={isOffCanvasVisible} />
-                  </Col>
-                </Row>
-              </div> */}
+    case 2:
+      return (
+        <Container fluid className='px-2 py-3'>
+          <div style={{ display: "flex" }}>
+            
+            {/* <div style={{ flex: 1, paddingRight: isOffCanvasVisible ? "318px" : "0" }}>
+              <Row>
+                <Col>
+                  <StockChart key={1} stockChartId={1} isOffCanvasVisible={isOffCanvasVisible} />
+                </Col>
+                <Col>
+                  <StockChart key={2} stockChartId={2} isOffCanvasVisible={isOffCanvasVisible} />
+                </Col>
+              </Row>
+            </div> */}
 
-              <div style={{ width: "56px" }}>
-                <Sidebar onWatchListShow={onWatchListShow}></Sidebar>
-              </div>
+            <div style={{ width: "56px" }}>
+              <Sidebar onWatchListShow={onWatchListShow}></Sidebar>
             </div>
-          </Container>
-        );
+          </div>
+        </Container>
+      );
 
-      default:
-        return null;
-    }
-  
+    default:
+      return null;
+  }
 
-    
 }
