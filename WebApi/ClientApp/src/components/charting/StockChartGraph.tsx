@@ -15,7 +15,6 @@ type Props = {
 function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
-  const [seriesDataState, setSeriesDataState] = useState<Stock[] | null>(null);
 
   useEffect(() => {
 
@@ -27,16 +26,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }
 
   }, [isOffCanvasVisible]);
-
-  useEffect(() => {
-
-    if (comparisonData?.length) {
-
-      setSeriesDataState(prevData => [...(prevData ?? []), ...comparisonData!]);
-
-    }
-
-  }, [comparisonData]);
 
   const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
@@ -69,8 +58,9 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
           font: "bolder 20px Verdana"
         }
       },
-      ...(seriesDataState ?? []).map((comparisonStock, index) => ({
-        $action: "replace",
+      ...(comparisonData ?? []).map((comparisonStock, index) => ({
+        $action: 'replace',
+        id: `comparison-label-${comparisonStock.ticker}`,
         type: "text",
         left: "1%",
         top: `${(primaryStockTopValue + (index*2.5)).toString()}%`,
@@ -170,10 +160,11 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
           borderColor: "#008F28"
         }
       },
-      ...(comparisonData ?? []).map((s, idx) => ({
-        name: s.ticker ?? `Series ${idx + 1}`,
+      ...(comparisonData ?? []).map((comparisonStock, idx) => ({
+        id: `comparison-label-${comparisonStock.ticker}`,
+        name: comparisonStock.ticker ?? `Series ${idx + 1}`,
         type: "line",
-        data: s.stockQuotes.map(q => q.closePrice),
+        data: comparisonStock.stockQuotes.map(q => q.closePrice),
       }))
       // {
       //   name: "Price",
@@ -203,7 +194,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   };
 
   return (
-    <ReactECharts ref={chartRef} option={options} style={{ height: "100%", width: "100%" }} />
+    <ReactECharts ref={chartRef} option={options} notMerge={true} style={{ height: "100%", width: "100%" }} />
   );
 }
 

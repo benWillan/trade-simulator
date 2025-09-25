@@ -20,10 +20,10 @@ type Props = {
   onCompareModalClick: () => void;
   onMainStockPass: (selectedStock: StockOption | null) => void;
   graphData: Stock | null;
-  seriesData: Stock[] | null;
+  comparisonData: Stock[] | null;
 }
 
-function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, stockChartId, graphData, seriesData}: Props) {
+function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, stockChartId, graphData, comparisonData}: Props) {
 
   return (
     <>
@@ -37,7 +37,7 @@ function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, s
       </Row>
       <Row>
         <Col style={{height: `calc(100vh - 144px)`}}>
-          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} comparisonData={seriesData}></StockChartGraph>}
+          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} comparisonData={comparisonData}></StockChartGraph>}
         </Col>
       </Row>
     </>

@@ -28,7 +28,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
-  const [seriesData, setSeriesData] = useState<Stock[] | null>([]);
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
 
@@ -137,85 +136,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   }
 
-  function areStockArraysEqual(a: Stock[] | null, b: Stock[] | null): boolean {
-    
-    // both null -> equal
-    if (a === null && b === null) return true;
-    // one null, the other not -> not equal
-    if (a === null || b === null) return false;
-
-    // lengths differ -> not equal
-    if (a.length !== b.length) return false;
-
-    // compare each Stock
-    return a.every((stock, idx) => areStocksEqual(stock, b[idx]));
-
-  }
-
-  function areStocksEqual(s1: Stock, s2: Stock): boolean {
-    return (
-      s1.id === s2.id &&
-      s1.ticker === s2.ticker
-      // s1.securityName === s2.securityName &&
-      // s1.marketCategory === s2.marketCategory &&
-      // s1.testIssue === s2.testIssue &&
-      // s1.financialStatus === s2.financialStatus &&
-      // s1.roundLotSize === s2.roundLotSize &&
-      // s1.etf === s2.etf &&
-      // s1.nextShares === s2.nextShares &&
-      // s1.exchange === s2.exchange &&
-      // s1.cqsSymbol === s2.cqsSymbol &&
-      // s1.nasdaqSymbol === s2.nasdaqSymbol &&
-      //areStockQuotesEqual(s1.stockQuotes, s2.stockQuotes)
-    );
-  }
-
-  function areStockQuotesEqual(a: StockQuote[], b: StockQuote[]): boolean {
-    
-    if (a.length !== b.length) return false;
-    
-    return a.every((q, idx) => {
-      
-      const other = b[idx];
-
-      return (
-        q.stockSymbol === other.stockSymbol &&
-        q.date === other.date &&
-        q.openPrice === other.openPrice &&
-        q.highPrice === other.highPrice &&
-        q.lowPrice === other.lowPrice &&
-        q.closePrice === other.closePrice &&
-        q.volume === other.volume
-      );
-    });
-
-  }
-
-  const addComparisonDataToGraph = () => {
-
-    if (comparisonGraphData === null || comparisonGraphData.length === 0) {
-
-      showNotification("Warning", "Select comparison security.");
-      return;
-
-    }
-    
-    const haveSameStocksAlreadyBeenAddedToGraph = areStockArraysEqual(comparisonGraphData, seriesData);
-    
-    if (haveSameStocksAlreadyBeenAddedToGraph) {
-      
-      showNotification('Warning', "Stocks already added.");
-      return;
-      
-    }
-    
-    setSeriesData(comparisonGraphData);
-    showNotification('Added', comparisonGraphData);
-
-    hideCompareModal();
-
-  }
-
   const handleStockSelect = (stockOption: StockOption | null) => {
 
     // setComparisonGraphData([]);
@@ -229,6 +149,12 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     setSelectedMainStock(stockOption);
   
+  }
+
+  const removeComparisonStock = (ticker: string) => {
+
+    setComparisonGraphData(prev => prev ? prev.filter(stock => stock.ticker !== ticker) : null);
+    
   }
 
   switch(chartsRendered) {
@@ -246,7 +172,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
                   <StockChart
                     key={1}
                     graphData={graphData}
-                    seriesData={seriesData}
+                    comparisonData={comparisonGraphData}
                     onMainStockPass={handleStockSelect}
                     stockChartId={1}
                     isOffCanvasVisible={isOffCanvasVisible}
@@ -266,7 +192,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
             comparisonGraphData={comparisonGraphData}
             onComparisonStockSelect={handleComparisonSelect}
             onComparisonModalCloseClick={hideCompareModal}
-            onComparisonDataSave={addComparisonDataToGraph}
+            onComparisonStockRemove={removeComparisonStock}
           />
 
         </Container>

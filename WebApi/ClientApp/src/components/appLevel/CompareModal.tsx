@@ -11,10 +11,10 @@ type Props = {
   comparisonGraphData: Stock[] | null;
   onComparisonModalCloseClick: () => void;
   onComparisonStockSelect: (stock: StockOption | null) => void;
-  onComparisonDataSave: () => void;
+  onComparisonStockRemove: (ticker: string) => void;
 }
 
-function CompareModal({isVisible, comparisonGraphData, onComparisonStockSelect, onComparisonModalCloseClick, onComparisonDataSave}: Props) {
+function CompareModal({isVisible, comparisonGraphData, onComparisonStockSelect, onComparisonModalCloseClick, onComparisonStockRemove}: Props) {
   
   return (
     <Modal
@@ -38,15 +38,14 @@ function CompareModal({isVisible, comparisonGraphData, onComparisonStockSelect, 
                 <tr key={index}>
                   <td>{item.ticker}</td>
                   <td>{item.securityName}</td>
-                  <td><Button variant='danger' size='sm'>X</Button></td>
+                  <td><Button variant='danger' onClick={() => onComparisonStockRemove(item.ticker)} size='sm'>X</Button></td>
                 </tr>))}
             </tbody>
           </table>
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" size='sm' onClick={onComparisonDataSave}>Save</Button>
-        <Button variant="secondary" size='sm' onClick={onComparisonModalCloseClick}>Cancel</Button>
+        <Button variant="primary" size='sm' onClick={onComparisonModalCloseClick}>Save</Button>
       </Modal.Footer>
     </Modal>
   );
