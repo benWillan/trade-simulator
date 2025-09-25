@@ -55,22 +55,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     
   }, [selectedComparison]);
 
-  const showNotification = (header: NotificationType, body: string | Stock[] | null) => {
-
-    if (Array.isArray(body)) {
-
-      const state: NotificationState = {
-        isVisible: true,
-        isOffCanvasVisible: isOffCanvasVisible,
-        body: `${comparisonGraphData?.map(compGraphData => compGraphData.securityName)}`,
-        header: `${header}`
-      };
-      
-      setNotificationState(state);
-
-      return;
-
-    }
+  const showNotification = (header: NotificationType, body: string) => {
 
     const state: NotificationState = {
       isVisible: true,
@@ -152,8 +137,19 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   }
 
   const removeComparisonStock = (ticker: string) => {
-
+    
+    const stockRemovedSecName = comparisonGraphData?.find(stock => stock.ticker === ticker)?.securityName;
+    
     setComparisonGraphData(prev => prev ? prev.filter(stock => stock.ticker !== ticker) : null);
+
+    if (typeof stockRemovedSecName === "string") {
+
+      showNotification('Removed', stockRemovedSecName);
+      return;
+
+    }
+
+    showNotification('Error', "An unexpected error occured.");
     
   }
 

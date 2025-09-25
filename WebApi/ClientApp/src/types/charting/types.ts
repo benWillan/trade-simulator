@@ -48,4 +48,6 @@ export type NotificationType =
   "Added"
   | "Saved"
   | "Warning"
-  | "Info";
+  | "Info"
+  | "Removed"
+  | "Error";
