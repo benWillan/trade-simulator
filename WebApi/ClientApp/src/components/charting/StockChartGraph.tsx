@@ -31,7 +31,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   
   const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = graphData?.ticker;
-  const primaryStockTopValue = 9;
+  const primaryStockTopValue = 9.6;
 
   const options = {
     title: {
@@ -51,8 +51,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     graphic: [
       {
         type: "group",
-        left: "1%",       // x position
-        top: "5%",        // y position
+        left: "0.5%",       // x position
+        top: "4%",        // y position
         children: [
           {
             type: "text",
@@ -78,8 +78,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
         //$action: 'replace',
         id: `comparison-label-${comparisonStock.ticker}`,
         type: "group",
-        left: "1%",
-        top: `${(primaryStockTopValue + (index*3.6)).toString()}%`,
+        left: "0.5%",
+        top: `${(primaryStockTopValue + (index*3.4)).toString()}%`,
         children : [
           {
             type: "text",
