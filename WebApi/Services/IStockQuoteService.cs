@@ -7,6 +7,6 @@ public interface IStockQuoteService
 {
     Task<IEnumerable<Stock>> GetStockQuotes(string symbol);
     Task<IEnumerable<SelectedStockDto>> RetrieveSecurityDropdownMatchesAsync(string securityOrTicker);
-    Task<Stock?> RetrieveStockData(string symbol, DateTime? startDate, DateTime? endDate);
+    Task<Stock?> RetrieveStockData(string symbol);
     Task<Stock?> RetrieveComparisonStockData(string mainSymbol, string comparisonSymbol);
 }

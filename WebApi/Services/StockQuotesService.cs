@@ -53,20 +53,8 @@ public class StockQuoteService : IStockQuoteService
         return matchedResults;
     }
 
-    public async Task<Stock?> RetrieveStockData(string stockTicker, DateTime? startDate = null, DateTime? endDate = null)
+    public async Task<Stock?> RetrieveStockData(string stockTicker)
     {
-        // if (startDate is not null && endDate is not null)
-        // {
-        //     startDate = await _context.StockQuotes
-        //         .MinAsync(sq => sq.Date);
-        //     
-        //     endDate = await _context.StockQuotes
-        //         .MaxAsync(sq => sq.Date);
-        // }
-
-        var count = await _context.StockQuotes
-            .CountAsync(sq => sq.StockSymbol == stockTicker);
-
         var stockData = await _context.Stocks
             .AsNoTracking()
             .Include(s => s.StockQuotes)
@@ -84,7 +72,6 @@ public class StockQuoteService : IStockQuoteService
                 CQSSymbol = s.CQSSymbol,
                 NASDAQSymbol = s.NASDAQSymbol,
                 StockQuotes = s.StockQuotes
-                    .Where(sq => (!startDate.HasValue || sq.Date >= startDate) && (!endDate.HasValue || sq.Date <= endDate))
                     .OrderBy(sq => sq.Date)
                     .Select(sq => new StockQuote
                     {
@@ -99,7 +86,7 @@ public class StockQuoteService : IStockQuoteService
                     .ToList()
             })
             .FirstOrDefaultAsync(stock => stock.Ticker == stockTicker);
-        
+
         return stockData;
     }
 

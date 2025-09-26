@@ -123,10 +123,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   const handleStockSelect = (stockOption: StockOption | null) => {
 
-    // setComparisonGraphData([]);
-    // setSeriesData([]);
-    // setComparison(null);
-
     if (stockOption === null) {
       setSelectedMainStock(null);
       return;

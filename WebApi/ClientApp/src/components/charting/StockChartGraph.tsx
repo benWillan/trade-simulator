@@ -1,7 +1,7 @@
 //  internal.
 import { Stock } from '../../types/charting/types';
 import colors from '../../types/styling/glowingText';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, Children } from 'react';
 //  external.
 import ReactECharts from "echarts-for-react";
 import {useState} from 'react';
@@ -28,6 +28,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   }, [isOffCanvasVisible]);
 
   const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
+  
   const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = graphData?.ticker;
   const primaryStockTopValue = 9;
@@ -49,27 +50,56 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     },
     graphic: [
       {
-        type: "text",
+        type: "group",
         left: "1%",       // x position
         top: "5%",        // y position
-        style: {
-          text: `${graphData?.securityName} [${graphData?.ticker}]`,
-          fill: "#c6c6c6ff",
-          font: "bolder 20px Verdana"
-        }
+        children: [
+          {
+            type: "text",
+            style: {
+              text: `${graphData?.securityName} [${graphData?.ticker}]`,
+              fill: "#c6c6c6ff",
+              font: "bolder 20px Verdana"
+            }
+          },
+          {
+            type: "text",
+            top: 24,
+            style: {
+              text: `(${graphData?.minDate} - ${graphData?.maxDate})`,
+              fill: "#999",
+              font: "11px Verdana"
+            }
+          }
+        ],
       },
-      ...(comparisonData ?? []).map((comparisonStock, index) => ({
-        $action: 'replace',
+      ...(comparisonData ?? []).map((comparisonStock, index) => {
+        return ({
+        //$action: 'replace',
         id: `comparison-label-${comparisonStock.ticker}`,
-        type: "text",
+        type: "group",
         left: "1%",
-        top: `${(primaryStockTopValue + (index*2.5)).toString()}%`,
-        style: {
-          text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
-          fill: "#c6c6c6ff",
-          font: "14px Verdana"
-        }
-      })),
+        top: `${(primaryStockTopValue + (index*3.6)).toString()}%`,
+        children : [
+          {
+            type: "text",
+            style: {
+              text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
+              fill: "#c6c6c6ff",
+              font: "14px Verdana"
+            }
+          },
+          {
+            type: "text",
+            top: 18,
+            style: {
+              text: `(${comparisonStock?.minDate} - ${comparisonStock?.maxDate})`,
+              fill: "#999",
+              font: "10px Verdana"
+            }
+          }
+        ]
+      })}),
       {
         type: "rect",
         left: "80%",

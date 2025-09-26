@@ -34,7 +34,9 @@ export interface Stock {
   exchange?: string;
   cqsSymbol?: string;
   nasdaqSymbol?: string;
-  stockQuotes: StockQuote[]; // collection
+  stockQuotes: StockQuote[];
+  minDate: string;
+  maxDate: string;
 }
 
 export type NotificationState = {

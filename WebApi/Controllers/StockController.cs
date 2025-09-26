@@ -37,24 +37,61 @@ public class StockController : ControllerBase
     }
 
     [HttpGet("stockdata")]
-    public async Task<IActionResult> GetStockMetaData([FromQuery] string stockTicker, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+    public async Task<IActionResult> GetStockMetaData([FromQuery] string? stockTicker)
     {
-        //if (stockTicker is null) return BadRequest();
+        if (stockTicker is null) return BadRequest();
 
-        // startDate = new DateTime(1984, 09, 07);
-        // endDate = new DateTime(2017, 11, 10);
-        
-        var stockData = await _stockQuoteService.RetrieveStockData(stockTicker, startDate, endDate);
+        var stockData = await _stockQuoteService.RetrieveStockData(stockTicker);
 
-        return Ok(stockData);
+        return Ok(new
+        {
+            stockData?.Id,
+            stockData?.Ticker,
+            stockData?.SecurityName,
+            stockData?.MarketCategory,
+            stockData?.TestIssue,
+            stockData?.FinancialStatus,
+            stockData?.RoundLotSize,
+            stockData?.ETF,
+            stockData?.NextShares,
+            stockData?.Exchange,
+            stockData?.CQSSymbol,
+            stockData?.NASDAQSymbol,
+            stockData?.StockQuotes,
+            MinDate = stockData?.StockQuotes.Min(sq => sq.Date).ToShortDateString(),
+            MaxDate = stockData?.StockQuotes.Max(sq => sq.Date).ToShortDateString()
+        });
     }
     
     [HttpGet("comparisondata")]
     public async Task<IActionResult> GetComparisonStockMetaData([FromQuery] string mainTicker, string comparisonTicker)
     {
-        var comparsionData = await _stockQuoteService.RetrieveComparisonStockData(mainTicker, comparisonTicker);
+        var comparisonData = await _stockQuoteService.RetrieveComparisonStockData(mainTicker, comparisonTicker);
 
-        return Ok(comparsionData);
+        var minDate = comparisonData?.StockQuotes.Where(sq => sq.ClosePrice != null)
+            .Min(sq => sq.Date).ToShortDateString();
+        
+        var maxDate = comparisonData?.StockQuotes.Where(sq => sq.ClosePrice != null)
+            .Max(sq => sq.Date).ToShortDateString();
+
+        return Ok(new
+        {
+            comparisonData?.Id,
+            comparisonData?.Ticker,
+            comparisonData?.SecurityName,
+            comparisonData?.MarketCategory,
+            comparisonData?.TestIssue,
+            comparisonData?.FinancialStatus,
+            comparisonData?.RoundLotSize,
+            comparisonData?.ETF,
+            comparisonData?.NextShares,
+            comparisonData?.Exchange,
+            comparisonData?.CQSSymbol,
+            comparisonData?.NASDAQSymbol,
+            comparisonData?.StockQuotes,
+            MinDate = minDate,
+            MaxDate = maxDate
+        });
     }
     
 }
