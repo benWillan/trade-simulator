@@ -69,6 +69,7 @@ function AutocompleteInput({onAutoCompleteSelect} : Props) {
 
   return (
     <AsyncSelect
+      autoFocus
       isClearable
       cacheOptions
       onKeyDown={(e) => {
