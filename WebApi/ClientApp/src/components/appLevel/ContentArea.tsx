@@ -105,7 +105,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       if (!prev) return [data];  // If it's null, start a new array
       return [...prev, data];    // Otherwise, append to existing array
     })
-    
+
   }
 
   const handleComparisonSelect = (stockOption: StockOption | null) => {
@@ -118,6 +118,15 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     }
 
     setComparison(stockOption);
+
+    const comparisonStockAddedSecName = stockOption?.label;
+
+    if (typeof comparisonStockAddedSecName === "string") {
+
+      showNotification('Added', comparisonStockAddedSecName);
+      return;
+      
+    }
 
   }
 
