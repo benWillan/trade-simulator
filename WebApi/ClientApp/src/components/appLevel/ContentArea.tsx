@@ -135,7 +135,9 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     if (stockOption === null) {
       setSelectedMainStock(null);
       return;
-    } 
+    }
+
+    setComparisonGraphData([]);
 
     setSelectedMainStock(stockOption);
   

@@ -17,6 +17,15 @@ function Notification({ notificationState }: NotificationProps) {
 
   }, [notificationState]);
 
+  interface CSSVars extends React.CSSProperties {
+    ["--bs-bg-opacity"]?: string;
+  }
+
+  const toastStyle: CSSVars = {
+    marginRight: notificationState.isOffCanvasVisible ? "365px" : "60px",
+    "--bs-bg-opacity": "1"
+  };
+
   return (
     <ToastContainer
       className="p-3"
@@ -24,11 +33,9 @@ function Notification({ notificationState }: NotificationProps) {
       style={{ zIndex: 1 }}
     >
       <Toast
-        style={
-          notificationState.isOffCanvasVisible
-            ? { marginRight: "365px" }
-            : { marginRight: "60px" }
-        }
+        style={{
+          marginRight: notificationState.isOffCanvasVisible ? "365px" : "60px",
+        }}
         onClose={() => setShow(false)}
         show={show}
         delay={4000}
