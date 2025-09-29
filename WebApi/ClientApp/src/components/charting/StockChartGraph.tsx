@@ -4,7 +4,7 @@ import colors from '../../types/styling/glowingText';
 import { useRef, useEffect, Children } from 'react';
 //  external.
 import ReactECharts from "echarts-for-react";
-import {useState} from 'react';
+import {useMemo} from 'react';
 
 type Props = {
   graphData: Stock | null;
@@ -33,7 +33,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   const stockTicker = graphData?.ticker;
   const primaryStockTopValue = 9.6;
 
-  const options = {
+  const options = useMemo(() => ({
     title: {
       text: `${stockTicker}`,
       subtext: "Test",
@@ -75,7 +75,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       },
       ...(comparisonData ?? []).map((comparisonStock, index) => {
         return ({
-        //$action: 'replace',
+        $action: 'replace',
         id: `comparison-label-${comparisonStock.ticker}`,
         type: "group",
         left: "0.5%",
@@ -191,6 +191,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
         }
       },
       ...(comparisonData ?? []).map((comparisonStock, idx) => ({
+        $action: 'replace',
         id: `comparison-label-${comparisonStock.ticker}`,
         name: comparisonStock.ticker ?? `Series ${idx + 1}`,
         type: "line",
@@ -221,7 +222,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       //   }
       // }
     ]
-  };
+  }), [graphData, comparisonData]);
 
   return (
     <ReactECharts ref={chartRef} option={options} notMerge={true} style={{ height: "100%", width: "100%" }} />
