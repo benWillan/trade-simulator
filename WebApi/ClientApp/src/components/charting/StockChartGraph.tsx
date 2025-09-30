@@ -1,7 +1,7 @@
 //  internal.
 import { Stock } from '../../types/charting/types';
 import colors from '../../types/styling/glowingText';
-import { useRef, useEffect, Children } from 'react';
+import { useRef, useEffect, Children, useState } from 'react';
 //  external.
 import ReactECharts from "echarts-for-react";
 import {useMemo} from 'react';
@@ -15,6 +15,7 @@ type Props = {
 function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
+  const [seriesColours, setSeriesColours] = useState<string[]>([]);
 
   useEffect(() => {
 
@@ -22,6 +23,10 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
       const chartInstance = chartRef.current.getEchartsInstance();
       chartInstance.resize();
+
+      const option = chartInstance.getOption();
+      const seriesColors2 = option.color as string[];
+      setSeriesColours(seriesColors2);
 
     }
 
@@ -70,7 +75,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
               fill: "#999",
               font: "11px Verdana"
             }
-          }
+          },
+          
         ],
       },
       ...(comparisonData ?? []).map((comparisonStock, index) => {
@@ -87,6 +93,20 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
               text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
               fill: "#c6c6c6ff",
               font: "14px Verdana"
+            }
+          },
+          {
+            type: "circle",
+            left: "0.5%",
+            top: "5%",
+            shape: { r: 6 },
+            style: {
+              fill: `${seriesColours[index]}`,
+              cursor: "pointer",
+              stroke: "#acacacff",
+              lineWidth: 0.65,
+              shadowColor: "#000",
+              shadowBlur: 4,
             }
           },
           {
