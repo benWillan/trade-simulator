@@ -16,13 +16,12 @@ export function NavBar() {
     <Navbar style={{zIndex: 2}} bg="dark" data-bs-theme="dark" className="bg-body-tertiary px-2">
       <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
       <Nav className="mx-auto">
-        <Button
-          variant="outline-success"
-          style={{ borderRadius: "20px" }}
-          className="position-absolute top-50 start-50 translate-middle"
-        >
-          &gt;
-        </Button>
+      <Form className="d-flex">
+        <Button variant="outline-success" className="me-2">&gt;</Button>
+        <Form.Control
+          type="date"
+        />
+      </Form>
       </Nav>
     </Navbar>
   );
