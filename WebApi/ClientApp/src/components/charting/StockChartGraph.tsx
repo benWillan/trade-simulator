@@ -36,14 +36,14 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   const options = useMemo(() => ({
     title: {
       text: `${stockTicker}`,
-      subtext: "Test",
+      //subtext: "Test",
       left: "center",
       top: "4%",
       textStyle: {
         fontSize: 28,
         color: colors.teal_main,              // main text color
-        textShadowColor: colors.teal_glow,              // glow color
-        textShadowBlur: 5,                   // glow intensity
+        textShadowColor: colors.teal_glow,    // glow color
+        textShadowBlur: 5,                    // glow intensity
         textShadowOffsetX: 0,                 // optional
         textShadowOffsetY: 0
       }
@@ -51,7 +51,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     graphic: [
       {
         type: "group",
-        left: "0.5%",       // x position
+        left: "0.5%",     // x position
         top: "4%",        // y position
         children: [
           {
