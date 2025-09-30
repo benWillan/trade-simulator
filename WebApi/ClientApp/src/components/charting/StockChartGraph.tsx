@@ -15,22 +15,32 @@ type Props = {
 function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
-  const [seriesColours, setSeriesColours] = useState<string[]>([]);
+  const [chartSeriesColours, setChartSeriesColours] = useState<string[]>([]);
 
   useEffect(() => {
 
     if (chartRef.current) {
 
-      const chartInstance = chartRef.current.getEchartsInstance();
-      chartInstance.resize();
-
-      const option = chartInstance.getOption();
-      const seriesColors2 = option.color as string[];
-      setSeriesColours(seriesColors2);
+      const chartInstance = chartRef?.current?.getEchartsInstance();
+      chartInstance?.resize();
 
     }
 
   }, [isOffCanvasVisible]);
+
+  useEffect(() => {
+
+    if (chartRef.current) {
+
+      const chartInstance = chartRef?.current?.getEchartsInstance();  
+      const option = chartInstance?.getOption();
+      const seriesColors = option?.color as string[];
+
+      setChartSeriesColours(seriesColors);
+
+    }
+
+  }, [graphData, comparisonData])
 
   const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   
@@ -91,22 +101,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
             type: "text",
             style: {
               text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
-              fill: "#c6c6c6ff",
+              fill: `${chartSeriesColours[index]}`,
               font: "14px Verdana"
-            }
-          },
-          {
-            type: "circle",
-            left: "0.5%",
-            top: "5%",
-            shape: { r: 6 },
-            style: {
-              fill: `${seriesColours[index]}`,
-              cursor: "pointer",
-              stroke: "#acacacff",
-              lineWidth: 0.65,
-              shadowColor: "#000",
-              shadowBlur: 4,
             }
           },
           {
