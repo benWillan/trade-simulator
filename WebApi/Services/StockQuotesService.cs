@@ -72,7 +72,7 @@ public class StockQuoteService : IStockQuoteService
                 CQSSymbol = s.CQSSymbol,
                 NASDAQSymbol = s.NASDAQSymbol,
                 StockQuotes = s.StockQuotes
-                    .Where(sq => !startDate.HasValue || sq.Date < startDate.Value.Date)
+                    .Where(sq => !startDate.HasValue || sq.Date <= startDate.Value.Date)
                     .OrderBy(sq => sq.Date)
                     .Select(sq => new StockQuote
                     {
