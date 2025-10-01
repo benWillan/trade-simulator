@@ -37,11 +37,11 @@ public class StockController : ControllerBase
     }
 
     [HttpGet("stockdata")]
-    public async Task<IActionResult> GetStockMetaData([FromQuery] string? stockTicker, [FromQuery] string? startDate)
+    public async Task<IActionResult> GetStockMetaData([FromQuery] string? stockTicker, [FromQuery] DateTime? startDate)
     {
         if (stockTicker is null) return BadRequest();
 
-        var stockData = await _stockQuoteService.RetrieveStockData(stockTicker);
+        var stockData = await _stockQuoteService.RetrieveStockData(stockTicker, startDate);
 
         return Ok(new
         {

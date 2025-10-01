@@ -53,7 +53,7 @@ public class StockQuoteService : IStockQuoteService
         return matchedResults;
     }
 
-    public async Task<Stock?> RetrieveStockData(string stockTicker)
+    public async Task<Stock?> RetrieveStockData(string stockTicker, DateTime? startDate)
     {
         var stockData = await _context.Stocks
             .AsNoTracking()
@@ -72,6 +72,7 @@ public class StockQuoteService : IStockQuoteService
                 CQSSymbol = s.CQSSymbol,
                 NASDAQSymbol = s.NASDAQSymbol,
                 StockQuotes = s.StockQuotes
+                    .Where(sq => !startDate.HasValue || sq.Date < startDate.Value.Date)
                     .OrderBy(sq => sq.Date)
                     .Select(sq => new StockQuote
                     {
