@@ -4,18 +4,26 @@ import {StockOption, TickerSecNameCombination} from '../../types/charting/types'
 
 type Props = {
   onAutoCompleteSelect: (stock: StockOption | null) => void;
+  clearInput?: boolean;
 }
 
-function AutocompleteInput({onAutoCompleteSelect} : Props) {
+function AutocompleteInput({onAutoCompleteSelect, clearInput = false} : Props) {
 
   const [selectedOption, setSelectedOption] = useState<StockOption | null>(null);
   const timingRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const autoCompleteInputRef = useRef<any>(null);
   
   useEffect(() => {
 
     onAutoCompleteSelect(selectedOption);
 
   }, [selectedOption]);
+
+  useEffect(() => {
+
+    if (clearInput === true) setSelectedOption(null);
+
+  }, [clearInput]);
 
   async function fetchOptions(inputValue: string): Promise<StockOption[]> {
 

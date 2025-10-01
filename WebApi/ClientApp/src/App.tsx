@@ -22,21 +22,16 @@ function App() {
 
   }
 
-  // const isValidDate = (value: string): boolean => {
+  useEffect(() => {
 
-  //   if (value.length !== 10) return false;
-  //   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    //console.log(datePickerValue);
 
-  //   const date = new Date(value);
-  //   return !isNaN(date.getTime()) && value === date.toISOString().slice(0, 10);
-
-  // }
-
+  },[datePickerValue]);
 
   return (
     <>
       <NavBar startDateValue={datePickerValue} onStartDateSet={setStartDateState}></NavBar>
-      <ContentArea onWatchListShow={showOffCanvas} chartsRendered={1} isOffCanvasVisible={offCanvasVisibility}></ContentArea>
+      <ContentArea onWatchListShow={showOffCanvas} chartsRendered={1} isOffCanvasVisible={offCanvasVisibility} startDate={datePickerValue}></ContentArea>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
   );

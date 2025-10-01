@@ -21,15 +21,16 @@ type Props = {
   onMainStockPass: (selectedStock: StockOption | null) => void;
   graphData: Stock | null;
   comparisonData: Stock[] | null;
+  setClearStockSelect: boolean;
 }
 
-function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, stockChartId, graphData, comparisonData}: Props) {
+function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, stockChartId, graphData, comparisonData, setClearStockSelect}: Props) {
 
   return (
     <>
       <Row>
         <Col>
-          <AutocompleteInput onAutoCompleteSelect={onMainStockPass}></AutocompleteInput>
+          <AutocompleteInput onAutoCompleteSelect={onMainStockPass} clearInput={setClearStockSelect}></AutocompleteInput>
         </Col>
         <Col>
           <Button key={stockChartId} onClick={onCompareModalClick} variant="outline-secondary" size='sm'>Compare</Button>

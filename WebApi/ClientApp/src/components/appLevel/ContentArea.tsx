@@ -19,12 +19,14 @@ type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
   isOffCanvasVisible: boolean;
   onWatchListShow: () => void;
+  startDate: string | "";
 }
 
-export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible}: Props) {
+export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
+  const [clearStockSelect, setClearStockSelect] = useState<boolean>(false);
   
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
@@ -85,8 +87,17 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   
   const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
+    if(startDate === "") {
+      
+      showNotification('Warning', "Set start date.");
+      setSelectedMainStock(null);
+      setClearStockSelect(true);
+      return;
+
+    } 
+
     const ticker = stockOption?.value;
-    const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`);
+    const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}&startDate=${startDate}`);
     const data = await response.json() as Stock;
 
     setGraphData(data);
@@ -180,6 +191,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
                     stockChartId={1}
                     isOffCanvasVisible={isOffCanvasVisible}
                     onCompareModalClick={showCompareModal}
+                    setClearStockSelect={clearStockSelect}
                     />
                 </Col>
               </Row>

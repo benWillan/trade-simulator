@@ -25,7 +25,7 @@ export function NavBar({startDateValue, onStartDateSet}: Props) {
       <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
       <Nav className="mx-auto">
       <Button 
-        variant={isPlaying === true ? "outline-secondary" : "outline-success"}
+        variant={isPlaying === true ? "secondary" : "success"}
         onClick={() => setIsPlaying(!isPlaying)}
         className="me-2 rounded-pill"
       >
@@ -38,7 +38,6 @@ export function NavBar({startDateValue, onStartDateSet}: Props) {
           value={startDateValue || ""}
           onChange={(e) => onStartDateSet(e.target.value)}
         />
-        <Button type='button' variant="secondary" className="ms-4" size='sm' style={{height: "34px"}}>Load</Button>
       </Form>
       </Nav>
     </Navbar>
