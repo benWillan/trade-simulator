@@ -13,12 +13,14 @@ import { useState } from 'react';
 
 type Props = {
   startDateValue: string;
+  isPlaying: boolean;
+  onPlayToggle: () => void;
   onStartDateSet: (startDate: string) => void;
 }
 
-export function NavBar({startDateValue, onStartDateSet}: Props) {
+export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle}: Props) {
 
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  //const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   return (
     <Navbar style={{zIndex: 2}} bg="dark" data-bs-theme="dark" className="bg-body-tertiary px-2">
@@ -26,7 +28,7 @@ export function NavBar({startDateValue, onStartDateSet}: Props) {
       <Nav className="mx-auto">
       <Button 
         variant={isPlaying === true ? "secondary" : "success"}
-        onClick={() => setIsPlaying(!isPlaying)}
+        onClick={onPlayToggle}
         className="me-2 rounded-pill"
       >
         {isPlaying === true ? "=" : ">"}

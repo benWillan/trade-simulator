@@ -5,12 +5,16 @@ import StockChart from '../charting/StockChart';
 import '../../css/global.css'
 import CompareModal from './CompareModal';
 import Notification from '../general/Notification';
+
+import * as signalR from "@microsoft/signalr";
+import { stockSignalRService } from '../../service/signalRService';
+
 //  external.
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import OffCanvas from '../general/OffCanvas';
 import Sidebar from '../general/Sidebar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 //  types.
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType } from '../../types/charting/types';
@@ -20,9 +24,10 @@ type Props = {
   isOffCanvasVisible: boolean;
   onWatchListShow: () => void;
   startDate: string | "";
+  isPlaying: boolean;
 }
 
-export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate}: Props) {
+export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
@@ -34,6 +39,12 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
 
   const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false});
+
+  //  SignalR.
+  const [chunks, setChunks] = useState<string[][]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const connectionRef = useRef<signalR.HubConnection | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     
@@ -56,6 +67,83 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     fetchStockGraphComparisonData(selectedComparison);
     
   }, [selectedComparison]);
+
+  //  SignalR.
+  useEffect(() => {
+    // Create SignalR connection
+    const connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://localhost:5027/stockHub",
+        {
+          transport: signalR.HttpTransportType.WebSockets,
+          withCredentials: true
+        })
+      .withAutomaticReconnect()
+      .configureLogging(signalR.LogLevel.Information)
+      .build();
+
+    connectionRef.current = connection;
+
+    connection
+      .start()
+      .then(() => console.log("Connected to SignalR hub"))
+      .catch((err) => console.error("Connection failed:", err));
+
+    return () => {
+      connection.stop();
+    };
+  }, []);
+
+  const startStream = (chunkSize: number, delayMs: number) => {
+
+    if (!connectionRef.current) return;
+
+    // Reset previous data
+    setChunks([]);
+    setIsStreaming(true);
+
+    // New AbortController for cancellation
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    // Start stream
+    const stream = connectionRef.current.stream<string[]>(
+      "GetDataInChunks",
+      chunkSize,
+      delayMs,
+    );
+
+    stream.subscribe({
+      next: (chunk) => {
+        setChunks((prev) => [...prev, chunk]);
+        console.log(`Chunk recived ${chunk}`);
+      },
+      complete: () => {
+        console.log("Stream completed");
+        setIsStreaming(false);
+      },
+      error: (err) => {
+        console.error("Stream error:", err);
+        setIsStreaming(false);
+      }
+    });
+  };
+
+  const stopStream = () => {
+    abortControllerRef.current?.abort();
+    setIsStreaming(false);
+    console.log("Stream cancelled by client");
+  };
+
+  useEffect(() => {
+
+    if (isPlaying === true) {
+      startStream(1, 100);
+    } else {
+      stopStream();
+    }
+
+  }, [isPlaying]);
+  //  SignalR end.
 
   const showNotification = (header: NotificationType, body: string) => {
 

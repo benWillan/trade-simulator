@@ -9,6 +9,7 @@ import Toast from './components/general/Notification';
 
 function App() {
 
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [offCanvasVisibility, setOffCanvasVisibility] = useState<boolean>(false);
   
   const [datePickerValue, setDatePickerValue] = useState<string>('');
@@ -30,8 +31,8 @@ function App() {
 
   return (
     <>
-      <NavBar startDateValue={datePickerValue} onStartDateSet={setStartDateState}></NavBar>
-      <ContentArea onWatchListShow={showOffCanvas} chartsRendered={1} isOffCanvasVisible={offCanvasVisibility} startDate={datePickerValue}></ContentArea>
+      <NavBar startDateValue={datePickerValue} onStartDateSet={setStartDateState} isPlaying={isPlaying} onPlayToggle={() => setIsPlaying(prev => !prev)}></NavBar>
+      <ContentArea onWatchListShow={showOffCanvas} chartsRendered={1} isOffCanvasVisible={offCanvasVisibility} startDate={datePickerValue} isPlaying={isPlaying}></ContentArea>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
   );
