@@ -6,6 +6,7 @@ using Microsoft.Identity.Abstractions;
 using Microsoft.Identity.Web.Resource;
 using WebApi.Context;
 using WebApi.Services;
+using WebApi.Hubs;
 
 namespace WebApi;
 
@@ -19,6 +20,10 @@ public class Program
         // Add services to the container.
         // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
+        
+        builder.Services.AddSignalR(options => {
+            options.EnableDetailedErrors = true; // helpful for debugging
+        });
         
         var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
 
@@ -39,35 +44,40 @@ public class Program
             {
                 policy.WithOrigins("http://localhost:3000")
                     .AllowAnyHeader()
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
         });
+
+        builder.Services.AddSignalR();
         
         // APP.
         var app = builder.Build();
+        
+        // Enable static file serving from wwwroot
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+        
+        app.UseRouting();
 
         app.UseCors("ReactDevPolicy");
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            //app.UseSwagger();
-            //app.UseSwaggerUI();
-        }
+        // if (app.Environment.IsDevelopment())
+        // {
+        //     app.UseSwagger();
+        //     app.UseSwaggerUI();
+        // }
 
         //app.UseHttpsRedirection();
-
         //app.UseAuthorization();
 
-        // Enable static file serving from wwwroot
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-
         app.MapControllers();
+        app.MapHub<StockHub>("/stockHub");
         
         // Fallback to index.html for React Router support
         app.MapFallbackToFile("index.html");
+        
 
         app.Run();
     }

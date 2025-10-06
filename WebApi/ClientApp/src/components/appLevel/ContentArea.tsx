@@ -44,7 +44,8 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   const [chunks, setChunks] = useState<string[][]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const connectionRef = useRef<signalR.HubConnection | null>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const streamSubscriptionRef = useRef<signalR.ISubscription<string[]> | null>(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     
@@ -70,9 +71,9 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   //  SignalR.
   useEffect(() => {
-    // Create SignalR connection
+    
     const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:5027/stockHub",
+      .withUrl("http://localhost:5027/stockHub",
         {
           transport: signalR.HttpTransportType.WebSockets,
           withCredentials: true
@@ -91,6 +92,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     return () => {
       connection.stop();
     };
+
   }, []);
 
   const startStream = (chunkSize: number, delayMs: number) => {
@@ -101,10 +103,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     setChunks([]);
     setIsStreaming(true);
 
-    // New AbortController for cancellation
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
     // Start stream
     const stream = connectionRef.current.stream<string[]>(
       "GetDataInChunks",
@@ -112,7 +110,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       delayMs,
     );
 
-    stream.subscribe({
+    const subscription = stream.subscribe({
       next: (chunk) => {
         setChunks((prev) => [...prev, chunk]);
         console.log(`Chunk recived ${chunk}`);
@@ -126,18 +124,31 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
         setIsStreaming(false);
       }
     });
+
+    streamSubscriptionRef.current = subscription;
+
   };
 
   const stopStream = () => {
-    abortControllerRef.current?.abort();
+
+    if (streamSubscriptionRef.current) {
+      streamSubscriptionRef.current.dispose();
+      streamSubscriptionRef.current = null;
+    }
+
     setIsStreaming(false);
     console.log("Stream cancelled by client");
   };
 
   useEffect(() => {
 
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    } 
+
     if (isPlaying === true) {
-      startStream(1, 100);
+      startStream(1, 1000);
     } else {
       stopStream();
     }
