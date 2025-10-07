@@ -7,7 +7,7 @@ import CompareModal from './CompareModal';
 import Notification from '../general/Notification';
 
 import * as signalR from "@microsoft/signalr";
-import { stockSignalRService } from '../../service/signalRService';
+//import { stockSignalRService } from '../../service/signalRService';
 
 //  external.
 import Row from 'react-bootstrap/Row';
@@ -30,7 +30,7 @@ type Props = {
 export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
-  const [graphData, setGraphData] = useState<Stock | null>(null);
+  const [graphData, setGraphData] = useState<Stock | null>(null); //main stock.
   const [clearStockSelect, setClearStockSelect] = useState<boolean>(false);
   
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
@@ -41,11 +41,9 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false});
 
   //  SignalR.
-  const [chunks, setChunks] = useState<string[][]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const streamSubscriptionRef = useRef<signalR.ISubscription<string[]> | null>(null);
-  const isFirstRender = useRef(true);
 
   useEffect(() => {
     
@@ -100,7 +98,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     if (!connectionRef.current) return;
 
     // Reset previous data
-    setChunks([]);
     setIsStreaming(true);
 
     // Start stream
@@ -110,10 +107,24 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       delayMs,
     );
 
-    const subscription = stream.subscribe({
+    const stockStream = connectionRef.current.stream<StockQuote>(
+      "GetStockChunk",
+      graphData?.ticker,
+      chunkSize,
+      delayMs,
+      startDate,
+    );
+
+    const stockSubscription = stockStream.subscribe({
       next: (chunk) => {
-        setChunks((prev) => [...prev, chunk]);
-        console.log(`Chunk recived ${chunk}`);
+        setGraphData(prev => prev 
+          ? { 
+              ...prev, 
+              stockQuotes: [...prev.stockQuotes, chunk] 
+            }
+          : prev);
+
+        console.log(`Chunk recived, close price ${chunk}`);
       },
       complete: () => {
         console.log("Stream completed");
@@ -125,7 +136,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       }
     });
 
-    streamSubscriptionRef.current = subscription;
+    streamSubscriptionRef.current = stockSubscription;
 
   };
 
@@ -134,6 +145,8 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     if (streamSubscriptionRef.current) {
       streamSubscriptionRef.current.dispose();
       streamSubscriptionRef.current = null;
+    } else {
+      return;
     }
 
     setIsStreaming(false);
@@ -141,11 +154,6 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   };
 
   useEffect(() => {
-
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    } 
 
     if (isPlaying === true) {
       startStream(1, 1000);
