@@ -39,6 +39,7 @@ function Notification({ notificationState }: NotificationProps) {
         onClose={() => setShow(false)}
         show={show}
         delay={4000}
+        bg={notificationState.style}
         autohide
       >
         <Toast.Header>

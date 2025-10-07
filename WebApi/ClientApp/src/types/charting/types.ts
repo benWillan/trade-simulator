@@ -44,6 +44,7 @@ export type NotificationState = {
   isOffCanvasVisible: boolean;
   header: string;
   body: string;
+  style: string;
 }
 
 export type NotificationType =
@@ -53,3 +54,13 @@ export type NotificationType =
   | "Info"
   | "Removed"
   | "Error";
+
+export type NotificationStyle =
+  "primary"
+  |"secondary"
+  |"success"
+  |"danger"
+  |"warning"
+  |"info"
+  |"light"
+  |"dark";

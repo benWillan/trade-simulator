@@ -17,7 +17,7 @@ import Sidebar from '../general/Sidebar';
 import { useState, useEffect, useRef } from 'react';
 //  types.
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
-import { NotificationState, NotificationType } from '../../types/charting/types';
+import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
 import { cwd } from 'process';
 
 type Props = {
@@ -40,7 +40,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
 
-  const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false});
+  const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false, style: ""});
 
   //  SignalR.
   const [isStreaming, setIsStreaming] = useState(false);
@@ -161,7 +161,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   useEffect(() => {
 
     if (isPlaying === true) {
-      startStream(1, 100);
+      startStream(1, 1000);
     } else {
       stopStream();
     }
@@ -169,13 +169,14 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   }, [isPlaying]);
   //  SignalR end.
 
-  const showNotification = (header: NotificationType, body: string) => {
+  const showNotification = (header: NotificationType, body: string, style?: NotificationStyle) => {
 
     const state: NotificationState = {
       isVisible: true,
       isOffCanvasVisible: isOffCanvasVisible,
       body: `${body}`,
-      header: `${header}`
+      header: `${header}`,
+      style: style ?? "dark"
     };
 
     setNotificationState(state);
@@ -246,7 +247,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     if (typeof comparisonStockAddedSecName === "string") {
 
-      showNotification('Added', comparisonStockAddedSecName);
+      showNotification('Added', comparisonStockAddedSecName, 'success');
       return;
       
     }
@@ -274,7 +275,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     if (typeof stockRemovedSecName === "string") {
 
-      showNotification('Removed', stockRemovedSecName);
+      showNotification('Removed', stockRemovedSecName, "danger");
       return;
 
     }

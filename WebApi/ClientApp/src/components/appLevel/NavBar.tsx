@@ -28,31 +28,37 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle,
     <Navbar style={{zIndex: 2}} bg="dark" data-bs-theme="dark" className="bg-body-tertiary px-2">
       <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
       <Nav className="mx-auto">
-      <Button 
-        variant={isPlaying === true ? "secondary" : "success"}
-        onClick={onPlayToggle}
-        className="me-2 rounded-pill"
-      >
-        {isPlaying === true ? "=" : ">"}
-      </Button>
-      <Form className="d-flex">
-        <Form.Control
-          className='ms-4'
-          type="date"
-          value={startDateValue || ""}
-          onChange={(e) => onStartDateSet(e.target.value)}
-        />
-      </Form>
-      <Card className='ms-5 text-center' style={{height: "38px", width: "52px"}}>
-        <Card.Body className='p-2'>
-          <Card.Text className='text-center'>{currentDateTime.split(",")[0]}</Card.Text>
-        </Card.Body>
-      </Card>
-      <Card className='ms-1 text-center' style={{height: "38px", width: "128px"}}>
-        <Card.Body className='p-2'>
-          <Card.Text className='text-center'>{currentDateTime.split(",")[1]}</Card.Text>
-        </Card.Body>
-      </Card>
+        <Button className='me-4' style={{height: "36px", width: "36px"}} size='sm' variant='outline-secondary'>L</Button>
+        <Button 
+          variant={isPlaying === true ? "secondary" : "success"}
+          onClick={onPlayToggle}
+          className="me-2 rounded-pill"
+        >
+          {isPlaying === true ? "=" : ">"}
+        </Button>
+        <Form className="d-flex">
+          <Form.Control
+            className='ms-4'
+            type="date"
+            value={startDateValue || ""}
+            onChange={(e) => onStartDateSet(e.target.value)}
+          />
+        </Form>
+        {currentDateTime && (
+          <>
+          <Card className='ms-5 text-center' style={{height: "38px", width: "52px"}}>
+            <Card.Body className='p-2'>
+              <Card.Text className='text-center'>{currentDateTime.split(",")[0]}</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card className='ms-1 text-center' style={{height: "38px", width: "128px"}}>
+            <Card.Body className='p-2'>
+              <Card.Text className='text-center'>{currentDateTime.split(",")[1]}</Card.Text>
+            </Card.Body>
+          </Card>
+          </>
+        )
+        }
       </Nav>
     </Navbar>
   );
