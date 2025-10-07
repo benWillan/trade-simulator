@@ -18,6 +18,7 @@ import { useState, useEffect, useRef } from 'react';
 //  types.
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType } from '../../types/charting/types';
+import { cwd } from 'process';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -25,9 +26,10 @@ type Props = {
   onWatchListShow: () => void;
   startDate: string | "";
   isPlaying: boolean;
+  onGraphDataSet: (date: string | null) => void;
 }
 
-export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying}: Props) {
+export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying, onGraphDataSet}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null); //main stock.
@@ -67,6 +69,17 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     
   }, [selectedComparison]);
 
+  useEffect(() => {
+
+    //const date = graphData?.maxDate ?? null;
+    const date = graphData?.stockQuotes.at(-1)?.date.split("T")[0];
+
+    if (!date) return;
+
+    onGraphDataSet(date);
+
+  }, [graphData]);
+
   //  SignalR.
   useEffect(() => {
     
@@ -97,15 +110,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
     if (!connectionRef.current) return;
 
-    // Reset previous data
     setIsStreaming(true);
-
-    // Start stream
-    const stream = connectionRef.current.stream<string[]>(
-      "GetDataInChunks",
-      chunkSize,
-      delayMs,
-    );
 
     const stockStream = connectionRef.current.stream<StockQuote[]>(
       "GetStockChunk",
@@ -156,7 +161,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   useEffect(() => {
 
     if (isPlaying === true) {
-      startStream(1, 500);
+      startStream(1, 100);
     } else {
       stopStream();
     }
@@ -208,7 +213,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     const data = await response.json() as Stock;
 
     setGraphData(data);
-    
+
   }
 
   const fetchStockGraphComparisonData = async (stockOption: StockOption | null) => {
@@ -299,7 +304,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
                     isOffCanvasVisible={isOffCanvasVisible}
                     onCompareModalClick={showCompareModal}
                     setClearStockSelect={clearStockSelect}
-                    />
+                  />
                 </Col>
               </Row>
             </div>

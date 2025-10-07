@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import NavItem from 'react-bootstrap/NavItem';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import { useState } from 'react';
 
 type Props = {
@@ -16,9 +17,10 @@ type Props = {
   isPlaying: boolean;
   onPlayToggle: () => void;
   onStartDateSet: (startDate: string) => void;
+  currentDateTime: string;
 }
 
-export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle}: Props) {
+export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle, currentDateTime}: Props) {
 
   //const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
@@ -41,6 +43,16 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle}
           onChange={(e) => onStartDateSet(e.target.value)}
         />
       </Form>
+      <Card className='ms-5 text-center' style={{height: "38px", width: "52px"}}>
+        <Card.Body className='p-2'>
+          <Card.Text className='text-center'>{currentDateTime.split(",")[0]}</Card.Text>
+        </Card.Body>
+      </Card>
+      <Card className='ms-1 text-center' style={{height: "38px", width: "128px"}}>
+        <Card.Body className='p-2'>
+          <Card.Text className='text-center'>{currentDateTime.split(",")[1]}</Card.Text>
+        </Card.Body>
+      </Card>
       </Nav>
     </Navbar>
   );

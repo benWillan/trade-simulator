@@ -6,6 +6,7 @@ import OffCanvas from './components/general/OffCanvas';
 import { useEffect, useState } from 'react';
 import CompareModal from './components/appLevel/CompareModal';
 import Toast from './components/general/Notification';
+import { cwd } from 'process';
 
 function App() {
 
@@ -13,6 +14,9 @@ function App() {
   const [offCanvasVisibility, setOffCanvasVisibility] = useState<boolean>(false);
   
   const [datePickerValue, setDatePickerValue] = useState<string>('');
+
+  const [currentHistoricalDateTime, setCurrentHistoricalDateTime] = useState<string | null>(null);
+  const [formattedCurrentDate, setFormattedCurrentDate] = useState<string>("");
   
   const showOffCanvas = () => setOffCanvasVisibility(true);
   const hideOffCanvas = () => setOffCanvasVisibility(false);
@@ -25,14 +29,47 @@ function App() {
 
   useEffect(() => {
 
-    //console.log(datePickerValue);
+    if (currentHistoricalDateTime === null) {
 
-  },[datePickerValue]);
+      return;
+
+    } else {
+
+      //const [day, month, year] = currentHistoricalDateTime?.split("/").map(Number);
+      const [year, month, day] = currentHistoricalDateTime?.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
+
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: "short",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      };
+
+      const formatted = date.toLocaleDateString("en-GB", options).replace(/\//g, "-");
+
+      setFormattedCurrentDate(formatted);
+    }
+
+  },[currentHistoricalDateTime]);
 
   return (
     <>
-      <NavBar startDateValue={datePickerValue} onStartDateSet={setStartDateState} isPlaying={isPlaying} onPlayToggle={() => setIsPlaying(prev => !prev)}></NavBar>
-      <ContentArea onWatchListShow={showOffCanvas} chartsRendered={1} isOffCanvasVisible={offCanvasVisibility} startDate={datePickerValue} isPlaying={isPlaying}></ContentArea>
+      <NavBar
+        startDateValue={datePickerValue}
+        onStartDateSet={setStartDateState}
+        isPlaying={isPlaying}
+        onPlayToggle={() => setIsPlaying(prev => !prev)}
+        currentDateTime={formattedCurrentDate}
+      ></NavBar>
+      <ContentArea 
+        onWatchListShow={showOffCanvas}
+        chartsRendered={1}
+        isOffCanvasVisible={offCanvasVisibility}
+        startDate={datePickerValue}
+        isPlaying={isPlaying}
+        onGraphDataSet={setCurrentHistoricalDateTime}
+      ></ContentArea>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
   );
