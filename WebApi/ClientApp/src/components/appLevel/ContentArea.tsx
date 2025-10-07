@@ -107,7 +107,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       delayMs,
     );
 
-    const stockStream = connectionRef.current.stream<StockQuote>(
+    const stockStream = connectionRef.current.stream<StockQuote[]>(
       "GetStockChunk",
       graphData?.ticker,
       chunkSize,
@@ -120,7 +120,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
         setGraphData(prev => prev 
           ? { 
               ...prev, 
-              stockQuotes: [...prev.stockQuotes, chunk] 
+              stockQuotes: [...prev.stockQuotes, ...chunk] 
             }
           : prev);
 
@@ -156,7 +156,7 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   useEffect(() => {
 
     if (isPlaying === true) {
-      startStream(1, 1000);
+      startStream(1, 500);
     } else {
       stopStream();
     }

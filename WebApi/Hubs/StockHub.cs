@@ -41,7 +41,7 @@ public class StockHub : Hub
         }
     }
 
-    public async IAsyncEnumerable<StockQuote?> GetStockChunk(
+    public async IAsyncEnumerable<List<StockQuote>?> GetStockChunk(
         string? ticker,
         int chunkSize,
         int delayMs,
@@ -71,7 +71,6 @@ public class StockHub : Hub
             })
             .ToListAsync();
 
-        //for (var i = 0; i < stockData.FirstOrDefault()?.StockQuotes.Count; i += chunkSize)
         for (var i = 0; i < stockData.FirstOrDefault()?.StockQuotes.Count; i += chunkSize)
         {
             if (cancellationToken.IsCancellationRequested)
@@ -80,8 +79,10 @@ public class StockHub : Hub
             if (delayMs > 0)
                 await Task.Delay(delayMs, cancellationToken);
 
-            var chunk = stockData.FirstOrDefault()?.StockQuotes.ElementAt(i);
-            //var chunk = stockData.First().StockQuotes.Skip(i).Take(chunkSize).First();
+            //var chunk = stockData.FirstOrDefault()?.StockQuotes.ElementAt(i);
+            var chunk = stockData.FirstOrDefault()?.StockQuotes.Skip(i).Take(chunkSize).ToList();
+
+            if (chunk is null) yield break;
             
             yield return chunk;
         }
