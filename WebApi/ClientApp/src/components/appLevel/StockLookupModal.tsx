@@ -7,6 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+
+
 type Props = {
   isVisible: boolean;
   stockLookupData: Stock[] | null;
@@ -16,6 +18,8 @@ type Props = {
 }
 
 function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelect, onStockRemove, stockLookupData}: Props) {
+
+  
   
   return (
     <Modal
@@ -37,11 +41,19 @@ function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelec
         </div>
         {stockLookupData &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
+            <thead>
+              <th>Ticker</th>
+              <th>Security Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+            </thead>
             <tbody>
               {stockLookupData?.map((item, index) => (
                 <tr key={index}>
                   <td>{item.ticker}</td>
                   <td>{item.securityName}</td>
+                  <td>{item.minDate}</td>
+                  <td>{item.maxDate}</td>
                   <td><Button variant='danger' onClick={() => onStockRemove(item.ticker)} size='sm'>X</Button></td>
                 </tr>))}
             </tbody>
