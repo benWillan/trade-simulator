@@ -32,7 +32,15 @@ type Props = {
   onCloseLookupButtonClick: () => void;
 }
 
-export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying, onGraphDataSet, isStockLookupModalVisible, onCloseLookupButtonClick}: Props) {
+export function ContentArea({
+  onWatchListShow,
+  chartsRendered,
+  isOffCanvasVisible,
+  startDate,
+  isPlaying,
+  onGraphDataSet,
+  isStockLookupModalVisible,
+  onCloseLookupButtonClick}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
@@ -45,6 +53,8 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
 
   const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false, style: ""});
+
+  const [currentHistoricalDate, setCurrentHistoricalDate] = useState<string>("");
 
   //  SignalR.
   const [isStreaming, setIsStreaming] = useState(false);
@@ -84,6 +94,12 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   }, [graphData]);
 
+  useEffect(() => {
+
+    setCurrentHistoricalDate(startDate);
+
+  }, [startDate]);
+
   //  SignalR.
   useEffect(() => {
     
@@ -121,27 +137,28 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
       graphData?.ticker,
       chunkSize,
       delayMs,
-      startDate,
+      currentHistoricalDate,
     );
 
     const stockSubscription = stockStream.subscribe({
       next: (chunk) => {
-        setGraphData(prev => prev 
-          ? { 
-              ...prev, 
-              stockQuotes: [...prev.stockQuotes, ...chunk] 
-            }
-          : prev);
+        
+        setGraphData(prev => prev ? {...prev, stockQuotes: [...prev.stockQuotes, ...chunk]} : prev);
 
-        console.log(`Chunk recived, close price ${chunk}`);
+        setCurrentHistoricalDate(chunk[0].date)
+        //console.log(`Chunk recived, close price ${chunk}`);
       },
       complete: () => {
+
         console.log("Stream completed");
         setIsStreaming(false);
+
       },
       error: (err) => {
+
         console.error("Stream error:", err);
         setIsStreaming(false);
+
       }
     });
 

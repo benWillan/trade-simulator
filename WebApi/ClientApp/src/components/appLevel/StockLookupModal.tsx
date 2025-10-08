@@ -26,8 +26,8 @@ function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelec
       //size='lg'
       dialogClassName="modal-wider-width"
       backdrop={false}
-      // backdrop='static'                        // keeps the dim overlay
-      className="modal-click-through"             // class added to the .modal element
+      // backdrop='static'                                              // keeps the dim overlay
+      className="modal-click-through custom-modal-position"             // class added to the .modal element
       backdropClassName="backdrop-click-through"
     >
       <Modal.Header closeButton>
@@ -40,10 +40,12 @@ function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelec
         {stockLookupData && stockLookupData.length > 0 &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
             <thead>
-              <th>Ticker</th>
-              <th>Security Name</th>
-              <th>Earliest Quote</th>
-              <th>Final Quote</th>
+              <tr>
+                <th>Ticker</th>
+                <th>Security Name</th>
+                <th>Earliest Quote</th>
+                <th>Final Quote</th>
+              </tr>
             </thead>
             <tbody>
               {stockLookupData?.map((item, index) => (

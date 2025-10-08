@@ -34,3 +34,8 @@
   max-width: 60% !important;
   width: 60% !important;
 }
+
+/* pushes modals with this class 3% of viewport height from top */
+.custom-modal-position {
+  margin-top: 3vh !important;
+}
