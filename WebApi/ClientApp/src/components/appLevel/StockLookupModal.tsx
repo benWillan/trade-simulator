@@ -7,17 +7,16 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-
-
 type Props = {
   isVisible: boolean;
   stockLookupData: Stock[] | null;
   onStockLookupModalCloseClick: () => void;
   onStockSelect: (stock: StockOption | null) => void;
   onStockRemove: (ticker: string) => void;
+  clearLookupSelect: boolean;
 }
 
-function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelect, onStockRemove, stockLookupData}: Props) {
+function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelect, onStockRemove, stockLookupData, clearLookupSelect}: Props) {
 
   return (
     <Modal
@@ -35,7 +34,7 @@ function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelec
       </Modal.Header>
       <Modal.Body>
         <div style={{width: "50%"}}>
-          <AutocompleteInput onAutoCompleteSelect={onStockSelect}></AutocompleteInput>
+          <AutocompleteInput clearInput={clearLookupSelect} onAutoCompleteSelect={onStockSelect}></AutocompleteInput>
         </div>
         {stockLookupData && stockLookupData.length > 0 &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>

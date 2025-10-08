@@ -44,7 +44,10 @@ export function ContentArea({
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
+
   const [clearStockSelect, setClearStockSelect] = useState<boolean>(false);
+  const [clearComparisonSelect, setComparisonSelectClear] = useState<boolean>(false);
+  const [clearLookupSelect, setClearLookupSelect] = useState<boolean>(false);
   
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
@@ -55,6 +58,7 @@ export function ContentArea({
   const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false, style: ""});
 
   const [currentHistoricalDate, setCurrentHistoricalDate] = useState<string>("");
+
 
   //  SignalR.
   const [isStreaming, setIsStreaming] = useState(false);
@@ -258,7 +262,7 @@ export function ContentArea({
     const ticker = stockOption?.value;
     const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`)
     const data = await response.json() as Stock;
-
+    
     setStockLookupData(prev => prev ? [...prev, data] : [data]);
 
   }
@@ -269,6 +273,20 @@ export function ContentArea({
 
       showNotification("Warning", "Assign a primary stock.");
       return;
+
+    }
+
+    if (comparisonGraphData !== null) {
+
+      const doesComparisonAlreadyExist = comparisonGraphData.some(stock => stock.ticker == stockOption?.value);
+
+      if (doesComparisonAlreadyExist) {
+
+        showNotification("Error", "Stock already added.", 'danger');
+        setComparisonSelectClear(true);
+        return;
+
+      }
 
     }
 
@@ -319,9 +337,17 @@ export function ContentArea({
 
     if (stockOption !== null) {
       
-      fetchLookupData(stockOption);
-      return;
+      const hasStockAlreadyBeenAdded = stockLookupData?.some(stock => stock.ticker == stockOption?.value);
 
+      if (hasStockAlreadyBeenAdded) {
+        setClearLookupSelect(true);
+        showNotification('Error', "Stock already added.", "danger");
+        return;
+      }
+      
+      fetchLookupData(stockOption);
+      showNotification('Added', stockOption.label, 'success');
+      
     }
 
     return;
@@ -382,6 +408,7 @@ export function ContentArea({
             onComparisonStockSelect={handleComparisonSelect}
             onComparisonModalCloseClick={hideCompareModal}
             onComparisonStockRemove={removeComparisonStock}
+            clearComparisonSelect={clearComparisonSelect}
           />
 
           <StockLookupModal
@@ -390,6 +417,7 @@ export function ContentArea({
             onStockSelect={handleLookupSelect}
             onStockLookupModalCloseClick={onCloseLookupButtonClick}
             onStockRemove={removeLookupStock}
+            clearLookupSelect={clearLookupSelect}
           />
 
         </Container>

@@ -13,9 +13,15 @@ type Props = {
   onComparisonModalCloseClick: () => void;
   onComparisonStockSelect: (stock: StockOption | null) => void;
   onComparisonStockRemove: (ticker: string) => void;
+  clearComparisonSelect: boolean;
 }
 
-function CompareModal({isVisible, comparisonGraphData, onComparisonStockSelect, onComparisonModalCloseClick, onComparisonStockRemove}: Props) {
+function CompareModal({isVisible,
+  comparisonGraphData,
+  onComparisonStockSelect,
+  onComparisonModalCloseClick,
+  onComparisonStockRemove,
+  clearComparisonSelect}: Props) {
   
   return (
     <Modal
@@ -31,7 +37,7 @@ function CompareModal({isVisible, comparisonGraphData, onComparisonStockSelect, 
         <Modal.Title>Compare</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AutocompleteInput onAutoCompleteSelect={onComparisonStockSelect}></AutocompleteInput>
+        <AutocompleteInput clearInput={clearComparisonSelect} onAutoCompleteSelect={onComparisonStockSelect}></AutocompleteInput>
         {comparisonGraphData &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
             <tbody>
