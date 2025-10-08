@@ -28,3 +28,9 @@
 .modal-click-through .modal-dialog, .modal-click-through .modal-content {
   pointer-events: auto;
 }
+
+/* This class allows Modals from React-Bootsrap to have custom width when using dialogClassName="modal-width" in the component */
+.modal-wider-width {
+  max-width: 60% !important;
+  width: 60% !important;
+}

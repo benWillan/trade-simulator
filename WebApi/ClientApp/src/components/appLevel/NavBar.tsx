@@ -18,9 +18,10 @@ type Props = {
   onPlayToggle: () => void;
   onStartDateSet: (startDate: string) => void;
   currentDateTime: string;
+  onLookupButtonClick: () => void;
 }
 
-export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle, currentDateTime}: Props) {
+export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle, currentDateTime, onLookupButtonClick}: Props) {
 
   //const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
@@ -28,7 +29,15 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle,
     <Navbar style={{zIndex: 2}} bg="dark" data-bs-theme="dark" className="bg-body-tertiary px-2">
       <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
       <Nav className="mx-auto">
-        <Button className='me-4' style={{height: "36px", width: "36px"}} size='sm' variant='outline-secondary'>L</Button>
+        <Button
+          className='me-4'
+          style={{height: "36px", width: "auto"}}
+          size='sm'
+          variant='outline-secondary'
+          onClick={onLookupButtonClick}
+        >
+          Lookup
+        </Button>
         <Button 
           variant={isPlaying === true ? "secondary" : "success"}
           onClick={onPlayToggle}

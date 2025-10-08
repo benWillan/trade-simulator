@@ -19,6 +19,7 @@ import { useState, useEffect, useRef } from 'react';
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
 import { cwd } from 'process';
+import StockLookupModal from './StockLookupModal';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -27,16 +28,19 @@ type Props = {
   startDate: string | "";
   isPlaying: boolean;
   onGraphDataSet: (date: string | null) => void;
+  isStockLookupModalVisible: boolean;
+  onCloseLookupButtonClick: () => void;
 }
 
-export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying, onGraphDataSet}: Props) {
+export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible, startDate, isPlaying, onGraphDataSet, isStockLookupModalVisible, onCloseLookupButtonClick}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
-  const [graphData, setGraphData] = useState<Stock | null>(null); //main stock.
+  const [graphData, setGraphData] = useState<Stock | null>(null);
   const [clearStockSelect, setClearStockSelect] = useState<boolean>(false);
   
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
+  const [stockLookupData, setStockLookupData] = useState<Stock[] | null>([]);
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
 
@@ -232,6 +236,16 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
 
   }
 
+  const fetchLookupData = async (stockOption: StockOption | null) => {
+
+    const ticker = stockOption?.value;
+    const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`)
+    const data = await response.json() as Stock;
+
+    setStockLookupData(prev => prev ? [...prev, data] : [data]);
+
+  }
+
   const handleComparisonSelect = (stockOption: StockOption | null) => {
 
     if(selectedMainStock === null) {
@@ -284,6 +298,36 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
     
   }
 
+  const handleLookupSelect = (stockOption: StockOption | null) => {
+
+    if (stockOption !== null) {
+      
+      fetchLookupData(stockOption);
+      return;
+
+    }
+
+    return;
+
+  }
+
+  const removeLookupStock = (ticker: string) => {
+    
+    const stockRemovedSecName = stockLookupData?.find(stock => stock.ticker === ticker)?.securityName;
+    
+    setStockLookupData(prev => prev ? prev.filter(stock => stock.ticker !== ticker) : null);
+
+    if (typeof stockRemovedSecName === "string") {
+
+      showNotification('Removed', stockRemovedSecName, "danger");
+      return;
+
+    }
+
+    showNotification('Error', "An unexpected error occured.");
+    
+  }
+
   switch(chartsRendered) {
 
     case 1:
@@ -321,6 +365,14 @@ export function ContentArea({onWatchListShow, chartsRendered, isOffCanvasVisible
             onComparisonStockSelect={handleComparisonSelect}
             onComparisonModalCloseClick={hideCompareModal}
             onComparisonStockRemove={removeComparisonStock}
+          />
+
+          <StockLookupModal
+            isVisible={isStockLookupModalVisible}
+            stockLookupData={stockLookupData}
+            onStockSelect={handleLookupSelect}
+            onStockLookupModalCloseClick={onCloseLookupButtonClick}
+            onStockRemove={removeLookupStock}
           />
 
         </Container>

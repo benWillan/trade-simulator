@@ -12,6 +12,7 @@ function App() {
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [offCanvasVisibility, setOffCanvasVisibility] = useState<boolean>(false);
+  const [lookupModalIsVisible, toggleLookupModalVisibility] = useState<boolean>(false);
   
   const [datePickerValue, setDatePickerValue] = useState<string>('');
 
@@ -20,6 +21,8 @@ function App() {
   
   const showOffCanvas = () => setOffCanvasVisibility(true);
   const hideOffCanvas = () => setOffCanvasVisibility(false);
+
+  const toggleLookupModal = () => toggleLookupModalVisibility(!lookupModalIsVisible);
 
   const setStartDateState = (startDate: string) => {
 
@@ -61,6 +64,7 @@ function App() {
         isPlaying={isPlaying}
         onPlayToggle={() => setIsPlaying(prev => !prev)}
         currentDateTime={formattedCurrentDate}
+        onLookupButtonClick={toggleLookupModal}
       ></NavBar>
       <ContentArea 
         onWatchListShow={showOffCanvas}
@@ -69,6 +73,8 @@ function App() {
         startDate={datePickerValue}
         isPlaying={isPlaying}
         onGraphDataSet={setCurrentHistoricalDateTime}
+        isStockLookupModalVisible={lookupModalIsVisible}
+        onCloseLookupButtonClick={toggleLookupModal}
       ></ContentArea>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>
