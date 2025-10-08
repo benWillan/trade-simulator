@@ -29,15 +29,6 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle,
     <Navbar style={{zIndex: 2}} bg="dark" data-bs-theme="dark" className="bg-body-tertiary px-2">
       <Navbar.Brand href="#home"><span style={{fontFamily: "Verdana", fontSize: 18}}>Trade Simulator</span></Navbar.Brand>
       <Nav className="mx-auto">
-        <Button
-          className='me-4'
-          style={{height: "36px", width: "auto"}}
-          size='sm'
-          variant='outline-secondary'
-          onClick={onLookupButtonClick}
-        >
-          Lookup
-        </Button>
         <Button 
           variant={isPlaying === true ? "secondary" : "success"}
           onClick={onPlayToggle}
@@ -68,6 +59,15 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle,
           </>
         )
         }
+        <Button
+          className='ms-4'
+          style={{height: "38px", width: "auto"}}
+          size='sm'
+          variant='outline-secondary'
+          onClick={onLookupButtonClick}
+        >
+          Lookup
+        </Button>
       </Nav>
     </Navbar>
   );

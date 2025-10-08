@@ -19,8 +19,6 @@ type Props = {
 
 function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelect, onStockRemove, stockLookupData}: Props) {
 
-  
-  
   return (
     <Modal
       show={isVisible}
@@ -39,13 +37,13 @@ function StockLookupModal({isVisible, onStockLookupModalCloseClick, onStockSelec
         <div style={{width: "50%"}}>
           <AutocompleteInput onAutoCompleteSelect={onStockSelect}></AutocompleteInput>
         </div>
-        {stockLookupData &&
+        {stockLookupData && stockLookupData.length > 0 &&
           <table style={{ borderCollapse: 'separate', borderSpacing: '20px' }}>
             <thead>
               <th>Ticker</th>
               <th>Security Name</th>
-              <th>Start Date</th>
-              <th>End Date</th>
+              <th>Earliest Quote</th>
+              <th>Final Quote</th>
             </thead>
             <tbody>
               {stockLookupData?.map((item, index) => (
