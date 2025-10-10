@@ -32,7 +32,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
     if (chartRef.current) {
 
-      const chartInstance = chartRef?.current?.getEchartsInstance();  
+      const chartInstance = chartRef?.current?.getEchartsInstance();
       const option = chartInstance?.getOption();
       const seriesColors = option?.color as string[];
 
@@ -40,7 +40,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
     }
 
-  }, [graphData, comparisonData])
+  }, []);
 
   const dates = graphData?.stockQuotes.map(sq => sq.date.split("T")[0]);
   
@@ -51,7 +51,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   const options = useMemo(() => ({
     title: {
       text: `${stockTicker}`,
-      //subtext: "Test",
+      //subtext: "[Main Stock]",
       left: "center",
       top: "4%",
       textStyle: {
@@ -92,7 +92,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       ...(comparisonData ?? []).map((comparisonStock, index) => {
         return ({
         $action: 'replace',
-        id: `comparison-label-${comparisonStock.ticker}`,
+        id: `graphic-comparison-label-${comparisonStock.ticker}`,
         type: "group",
         left: "0.5%",
         top: `${(primaryStockTopValue + (index*3.4)).toString()}%`,
@@ -205,10 +205,16 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
           borderColor0: "#8A0000",
           borderColor: "#008F28"
         }
+        // itemStyle: {
+        //   color: "#000000",       // rising
+        //   color0: "#FFFFFF",      // falling
+        //   borderColor: "#D3D3D3",
+        //   borderColor0: "#000000"
+        // }
       },
       ...(comparisonData ?? []).map((comparisonStock, idx) => ({
-        $action: 'replace',
-        id: `comparison-label-${comparisonStock.ticker}`,
+        $action: "replace",
+        id: `series-comparison-label-${comparisonStock.ticker}`,
         name: comparisonStock.ticker ?? `Series ${idx + 1}`,
         type: "line",
         data: comparisonStock.stockQuotes.map(q => q.closePrice),
@@ -238,10 +244,85 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       //   }
       // }
     ]
-  }), [graphData, comparisonData]);
+  }), []);
+
+  useEffect(() =>{
+
+    const chart = chartRef.current?.getEchartsInstance();
+    if (!chart || !graphData) return;
+
+    const cd = (comparisonData ?? []).map((comparisonStock, idx) => ({
+        $action: "replace",
+        id: `series-comparison-label-${comparisonStock.ticker}`,
+        name: comparisonStock.ticker ?? `Series ${idx + 1}`,
+        type: "line",
+        data: comparisonStock.stockQuotes.map(q => q.closePrice),
+      }))
+
+    chart.setOption({
+      xAxis: { data: dates },
+      //series: ...prev, cd,
+    });
+
+  }, [comparisonData]);
+
+  useEffect(() => {
+
+    const chart = chartRef.current?.getEchartsInstance();
+    if (!chart || !graphData) return;
+
+    const dates = graphData.stockQuotes.map((sq) => sq.date.split("T")[0]);
+    
+    const ohlcData = graphData.stockQuotes.map(
+      ({ openPrice, closePrice, lowPrice, highPrice }) => [
+        openPrice,
+        closePrice,
+        lowPrice,
+        highPrice,
+      ]
+    );
+
+    // Initial load
+    chart.setOption({
+      xAxis: { data: dates },
+      series: [{ data: ohlcData }],
+    });
+
+  }, [graphData, comparisonData]);
+
+  // useEffect(() => {
+  //   const chart = chartRef.current?.getEchartsInstance();
+  //   if (!chart || !graphData) return;
+
+  //   // Get the last quote (new data point)
+  //   const latestQuote = graphData.stockQuotes[graphData.stockQuotes.length - 1];
+  //   if (!latestQuote) return;
+
+  //   const newDate = latestQuote.date.split("T")[0];
+  //   const newOhlc = [
+  //     latestQuote.openPrice,
+  //     latestQuote.closePrice,
+  //     latestQuote.lowPrice,
+  //     latestQuote.highPrice,
+  //   ];
+
+  //   // Append new data without full re-render
+  //   chart.appendData({
+  //     seriesIndex: 0,
+  //     data: [newOhlc],
+  //   });
+
+  //   // Append new x-axis label (keep zoom intact)
+  //   const option = chart.getOption();
+  //   const xData = option as any;
+  //   const xData2 = xData?.xAxis?.[0]?.data ?? [];
+  //   xData2.push(newDate);
+  //   chart.setOption({ xAxis: [{ data: xData2 }] }, false);
+
+  // }, [graphData, comparisonData]);
 
   return (
-    <ReactECharts ref={chartRef} option={options} notMerge={true} style={{ height: "100%", width: "100%" }} />
+    <ReactECharts ref={chartRef} option={options} notMerge={false} style={{ height: "100%", width: "100%" }} />
   );
 }
 

@@ -288,18 +288,20 @@ export function ContentArea({
 
       }
 
+      setComparison(stockOption);
+
+      const comparisonStockAddedSecName = stockOption?.label;
+  
+      if (typeof comparisonStockAddedSecName === "string") {
+  
+        showNotification('Added', comparisonStockAddedSecName, 'success');
+        return;
+        
+      }
+
     }
 
-    setComparison(stockOption);
-
-    const comparisonStockAddedSecName = stockOption?.label;
-
-    if (typeof comparisonStockAddedSecName === "string") {
-
-      showNotification('Added', comparisonStockAddedSecName, 'success');
-      return;
-      
-    }
+    return;
 
   }
 

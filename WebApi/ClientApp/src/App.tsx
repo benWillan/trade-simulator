@@ -66,7 +66,7 @@ function App() {
         currentDateTime={formattedCurrentDate}
         onLookupButtonClick={toggleLookupModal}
       ></NavBar>
-      <ContentArea 
+      <ContentArea
         onWatchListShow={showOffCanvas}
         chartsRendered={1}
         isOffCanvasVisible={offCanvasVisibility}
