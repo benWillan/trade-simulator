@@ -288,7 +288,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     if (!chart || !graphData) return;
     if (comparisonData === null || comparisonData.length === 0) return;
 
-    //  confirms only one object is being added.
+    //  confirms action is adding.
     if (comparisonData.length == comparisonStockCount.current + 1) {
 
       const comparisonObjectToAdd = comparisonData?.at(-1);
@@ -329,75 +329,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
         type: "line",
         data: comparisonObjectToAdd?.stockQuotes.map(q => q.closePrice),
       };
-
-      const option = chart.getOption();
-      const currentGraphics = (option.graphic as any[]) || [];
-      const currentSeries = (option.series as any[]) || [];
-
-      const testGraphic = {
-        id: `graphic-comparison-label-${comparisonObjectToAdd?.ticker}`,
-        type: "group",
-        left: "0.5%",
-        // style: {
-        //   fill: '#777',
-        //   // text: [
-        //   //     'This is text',
-        //   //     'This is text',
-        //   //     'Print some text'
-        //   // ].join('\n'),
-        //   font: '14px Microsoft YaHei'
-        // },
-        top: `${(primaryStockTopValue + ((comparisonData.length - 1) * 3.4)).toString()}%`,
-        textContent: "content test",
-        children: [
-          {
-            id: `child1-${comparisonObjectToAdd?.ticker}`,
-            type: "text",
-            style: {
-              text: `test`,
-              fill: `#777`,
-              font: "14px Verdana"
-            }
-          },
-          {
-            id: `child2-${comparisonObjectToAdd?.ticker}`,
-            type: "text",
-            top: 18,
-            style: {
-              text: `date test`,
-              fill: "#999",
-              font: "10px Verdana"
-            }
-          }
-        ]
-      }
-
-      // const testGraphics_Works = {
-      //   id: `graphic-comparison-label-${comparisonObjectToAdd?.ticker}`,
-      //   type: 'text',
-      //   style: {
-      //     text: 'This text lol',
-      //     x: 100,
-      //     y: 200,
-      //     font: '14px Microsoft YaHei',
-      //     fill: `${chartSeriesColours[comparisonStockCount.current]}`
-      //   },
-      //   left: "0.5%",
-      //   top: `$20%`,
-      // }
-      
-      
-      //1. graphic: [...currentGraphics, comparisonGraphicObjectToAdd],
-      
-      //2. graphic: {
-      //   elements: [...options.graphic.elements, testGraphics_Works],
-      // }
-      
-      //3. graphic: testGraphics_Works,
-      
-      //4. graphic: {
-      //     elements: [...options.graphic.elements, testGraphic]
-      //   },
 
       chart.setOption({
         graphic: [comparisonGraphicObjectToAdd],
