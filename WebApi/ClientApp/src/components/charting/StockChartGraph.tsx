@@ -52,7 +52,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   const ohlcData = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
   const stockTicker = graphData?.ticker;
   const primaryStockTopValue = 9.6;
-  //const targetPrice = 1.5;
 
   const options = useMemo(() => {
     return {
@@ -97,51 +96,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
               },
             ],
           }
-        // ...(comparisonData ?? []).map((comparisonStock, index) => {
-        //   return ({
-        //   $action: 'replace',
-        //   id: `graphic-comparison-label-${comparisonStock.ticker}`,
-        //   type: "group",
-        //   left: "0.5%",
-        //   top: `${(primaryStockTopValue + (index*3.4)).toString()}%`,
-        //   children : [
-        //     {
-        //       type: "text",
-        //       style: {
-        //         text: `${comparisonStock?.securityName} [${comparisonStock?.ticker}]`,
-        //         fill: `${chartSeriesColours[index]}`,
-        //         font: "14px Verdana"
-        //       }
-        //     },
-        //     {
-        //       type: "text",
-        //       top: 18,
-        //       style: {
-        //         text: `(${comparisonStock?.minDate} - ${comparisonStock?.maxDate})`,
-        //         fill: "#999",
-        //         font: "10px Verdana"
-        //       }
-        //     }
-        //   ]
-        // })}),
-        //  Rectangle graphic.
-        // {
-        //   type: "rect",
-        //   left: "80%",
-        //   top: "5%",
-        //   shape: { width: 20, height: 20 },
-        //   style: {
-        //     fill: "#393a3aff",
-        //     cursor: "pointer",
-        //     stroke: "#acacacff",
-        //     lineWidth: 1,
-        //     shadowColor: "#000",
-        //     shadowBlur: 4,
-        //   },
-        //   onclick: function () {
-        //     alert("Download clicked!");
-        //   }
-        // }
         ],
       },
       tooltip: {
@@ -223,37 +177,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
           //   borderColor0: "#000000"
           // }
         },
-        // ...(comparisonData ?? []).map((comparisonStock, idx) => ({
-        //   $action: "replace",
-        //   id: `series-comparison-label-${comparisonStock.ticker}`,
-        //   name: comparisonStock.ticker ?? `Series ${idx + 1}`,
-        //   type: "line",
-        //   data: comparisonStock.stockQuotes.map(q => q.closePrice),
-        // })),
-        // {
-        //   name: "Price",
-        //   type: "line",
-        //   data: [30, 40, 50],
-        //   markLine: {
-        //     symbol: "none",
-        //     lineStyle: {
-        //       color: "#d7caccff",
-        //       width: 1,
-        //       type: "dashed"
-        //     },
-        //     label: {
-        //       formatter: `Target: ${targetPrice}`,
-        //       position: "end",
-        //       color: "#ad9ea0ff",
-        //       fontWeight: "bold"
-        //     },
-        //     data: [
-        //       {
-        //         yAxis: targetPrice
-        //       }
-        //     ],
-        //   }
-        // }
       ]}
   }, []);
 
@@ -340,37 +263,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     comparisonStockCount.current = comparisonData?.length;
 
   }, [comparisonData]);
-
-  // useEffect(() => {
-  //   const chart = chartRef.current?.getEchartsInstance();
-  //   if (!chart || !graphData) return;
-
-  //   // Get the last quote (new data point)
-  //   const latestQuote = graphData.stockQuotes[graphData.stockQuotes.length - 1];
-  //   if (!latestQuote) return;
-
-  //   const newDate = latestQuote.date.split("T")[0];
-  //   const newOhlc = [
-  //     latestQuote.openPrice,
-  //     latestQuote.closePrice,
-  //     latestQuote.lowPrice,
-  //     latestQuote.highPrice,
-  //   ];
-
-  //   // Append new data without full re-render
-  //   chart.appendData({
-  //     seriesIndex: 0,
-  //     data: [newOhlc],
-  //   });
-
-  //   // Append new x-axis label (keep zoom intact)
-  //   const option = chart.getOption();
-  //   const xData = option as any;
-  //   const xData2 = xData?.xAxis?.[0]?.data ?? [];
-  //   xData2.push(newDate);
-  //   chart.setOption({ xAxis: [{ data: xData2 }] }, false);
-
-  // }, [graphData, comparisonData]);
 
   return (
     <ReactECharts ref={chartRef} option={options} style={{ height: "100%", width: "100%" }} />
