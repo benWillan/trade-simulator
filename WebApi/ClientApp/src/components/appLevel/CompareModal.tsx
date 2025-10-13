@@ -29,7 +29,7 @@ function CompareModal({isVisible,
       onHide={onComparisonModalCloseClick}
       size='lg'
       backdrop={false}
-      // backdrop='static'                        // keeps the dim overlay
+      // backdrop='static'                                              // keeps the dim overlay
       className="modal-click-through custom-modal-position"             // class added to the .modal element
       backdropClassName="backdrop-click-through"
     >
