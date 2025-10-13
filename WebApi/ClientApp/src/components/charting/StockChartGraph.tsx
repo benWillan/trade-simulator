@@ -211,7 +211,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     if (!chart || !graphData) return;
     if (comparisonData === null || comparisonData.length === 0) return;
 
-    //  confirms action is adding.
+    //  confirms action is adding a stock.
     if (comparisonData.length == comparisonStockCount.current + 1) {
 
       const comparisonObjectToAdd = comparisonData?.at(-1);
@@ -242,7 +242,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
               font: "10px Verdana"
             }
           }
-        ]
+        ],
+        zlevel: 2
       };
 
       //  Series.
@@ -251,6 +252,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
         name: comparisonObjectToAdd?.ticker ?? `Series ${comparisonObjectToAdd?.ticker}`,
         type: "line",
         data: comparisonObjectToAdd?.stockQuotes.map(q => q.closePrice),
+        zlevel: 1
       };
 
       chart.setOption({
@@ -258,9 +260,20 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
         series: [comparisonSeriesObjectToAdd]
       }, false);
 
+      comparisonStockCount.current = comparisonData?.length;
+
+      return;
+
     }
 
-    comparisonStockCount.current = comparisonData?.length;
+    //  confirms action is removing a stock.
+    if (comparisonData.length == comparisonStockCount.current - 1) {
+
+      
+
+    }
+
+    //comparisonStockCount.current = comparisonData?.length;
 
   }, [comparisonData]);
 
