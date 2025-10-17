@@ -4,7 +4,10 @@ import colors from '../../types/styling/glowingText';
 import { useRef, useEffect, Children, useState } from 'react';
 //  external.
 import ReactECharts from "echarts-for-react";
-import {useMemo} from 'react';
+
+import type { EChartsOption, ECharts } from "echarts";
+
+import { useMemo } from 'react';
 
 type Props = {
   graphData: Stock | null;
@@ -78,6 +81,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
             top: "4%",
             children: [
               {
+                id: `child1-${graphData?.ticker}`,
                 type: "text",
                 style: {
                   text: `${graphData?.securityName} [${graphData?.ticker}]`,
@@ -86,6 +90,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
                 }
               },
               {
+                id: `child2-${graphData?.ticker}`,
                 type: "text",
                 top: 24,
                 style: {
@@ -204,78 +209,137 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
   }, [graphData]);
 
-  useEffect(() =>{
+  useEffect(() => {
 
-    const chart = chartRef.current?.getEchartsInstance();
+    const result = determineIfComparisonDataIsBeingAddedOrRemoved();
+    
+    if (result === null) return;
+    
+    const chart = chartRef.current?.getEchartsInstance() as ECharts;
 
-    if (!chart || !graphData) return;
-    if (comparisonData === null || comparisonData.length === 0) return;
-
-    //  confirms action is adding a stock.
-    if (comparisonData.length == comparisonStockCount.current + 1) {
-
-      const comparisonObjectToAdd = comparisonData?.at(-1);
-
-      //  Graphic.
-      const comparisonGraphicObjectToAdd = {
-        id: `graphic-comparison-label-${comparisonObjectToAdd?.ticker}`,
-        type: "group",
-        left: "0.5%",
-        top: `${(primaryStockTopValue + ((comparisonData.length - 1) * 3.4)).toString()}%`,
-        children : [
-          {
-            id: `child1-${comparisonObjectToAdd?.ticker}`,
-            type: "text",
-            style: {
-              text: `${comparisonObjectToAdd?.securityName} [${comparisonObjectToAdd?.ticker}]`,
-              fill: `${chartSeriesColours[comparisonData.length - 1]}`,
-              font: "14px Verdana"
-            }
-          },
-          {
-            id: `child2-${comparisonObjectToAdd?.ticker}`,
-            type: "text",
-            top: 18,
-            style: {
-              text: `(${comparisonObjectToAdd?.minDate} - ${comparisonObjectToAdd?.maxDate})`,
-              fill: "#999",
-              font: "10px Verdana"
-            }
-          }
-        ],
-        zlevel: 2
-      };
-
-      //  Series.
-      const comparisonSeriesObjectToAdd = {
-        id: `series-comparison-label-${comparisonObjectToAdd?.ticker}`,
-        name: comparisonObjectToAdd?.ticker ?? `Series ${comparisonObjectToAdd?.ticker}`,
-        type: "line",
-        data: comparisonObjectToAdd?.stockQuotes.map(q => q.closePrice),
-        zlevel: 1
-      };
-
-      chart.setOption({
-        graphic: [comparisonGraphicObjectToAdd],
-        series: [comparisonSeriesObjectToAdd]
-      }, false);
-
-      comparisonStockCount.current = comparisonData?.length;
-
+    if (result === "Added") {
+      addComparisonDataToChart(chart);
       return;
-
     }
-
-    //  confirms action is removing a stock.
-    if (comparisonData.length == comparisonStockCount.current - 1) {
-
       
-
-    }
-
-    //comparisonStockCount.current = comparisonData?.length;
+    removeComparisonDataFromChart(chart);
 
   }, [comparisonData]);
+
+  const determineIfComparisonDataIsBeingAddedOrRemoved = (): string | null => {
+
+    return comparisonData?.length == comparisonStockCount.current + 1
+      ?
+      "Added"
+      : comparisonData?.length == comparisonStockCount.current -1
+      ? "Removed"
+      : null;
+
+  }
+  
+  const getTickerOfRemovedSecurity = (option: EChartsOption): string => {
+
+    if (Array.isArray(option.series)) {
+
+      //  to remove the graph data.
+      const seriesData = option.series?.filter(so => so.id?.toString().includes("series-comparison"));
+      
+      const seriesDataOfSecurityRemoved = seriesData?.filter(seriesObject => !comparisonData?.find(cd => cd.ticker === seriesObject?.name));
+      const tickerOfRemovedSecurity = seriesDataOfSecurityRemoved[0]?.name?.toString() ?? "";
+
+      if (tickerOfRemovedSecurity === "") throw new Error("Error determining removed security ticker.")
+
+      return tickerOfRemovedSecurity;
+
+    }
+
+    console.log("series was not array, single object - needs work");
+    return "Not array";
+
+  }
+
+  const addComparisonDataToChart = (chart: ECharts) => {
+
+    if (!chart || !graphData) return;
+    if (comparisonData === null) return;
+
+    const comparisonObjectToAdd = comparisonData?.at(-1);
+
+    //  Graphic.
+    const comparisonGraphicObjectToAdd = {
+      id: `graphic-comparison-label-${comparisonObjectToAdd?.ticker}`,
+      type: "group",
+      left: "0.5%",
+      top: `${(primaryStockTopValue + ((comparisonData.length - 1) * 3.4)).toString()}%`,
+      children : [
+        {
+          id: `child1-${comparisonObjectToAdd?.ticker}`,
+          type: "text",
+          style: {
+            text: `${comparisonObjectToAdd?.securityName} [${comparisonObjectToAdd?.ticker}]`,
+            fill: `${chartSeriesColours[comparisonData.length - 1]}`,
+            font: "14px Verdana"
+          }
+        },
+        {
+          id: `child2-${comparisonObjectToAdd?.ticker}`,
+          type: "text",
+          top: 18,
+          style: {
+            text: `(${comparisonObjectToAdd?.minDate} - ${comparisonObjectToAdd?.maxDate})`,
+            fill: "#999",
+            font: "10px Verdana"
+          }
+        }
+      ],
+    };
+
+    //  Series.
+    // const comparisonSeriesObjectToAdd = {
+    //   id: `series-comparison-label-${comparisonObjectToAdd?.ticker}`,
+    //   name: comparisonObjectToAdd?.ticker ?? `Series ${comparisonObjectToAdd?.ticker}`,
+    //   type: "line",
+    //   data: comparisonObjectToAdd?.stockQuotes.map(q => q.closePrice),
+    // };
+
+    let testOptions = chart.getOption();
+
+    chart.setOption({
+      graphic: comparisonGraphicObjectToAdd,
+      //series: comparisonSeriesObjectToAdd
+    }, false);
+
+    comparisonStockCount.current = comparisonData?.length;
+
+  }
+
+  const removeComparisonDataFromChart = (chart: ECharts) => {
+
+    if (comparisonData === null) return;
+
+    const options = chart.getOption() as EChartsOption;
+    
+    const ticker = getTickerOfRemovedSecurity(options);
+
+    // let updatedSeries;
+
+    // if (Array.isArray(options.series)) {
+    //   updatedSeries = options.series?.filter(s => !s.id?.toString().includes(`${ticker}`));
+    // }
+    
+    const graphicDataToRemoveObj = {
+      $action: 'remove',
+      id:`graphic-comparison-label-${ticker}`,
+    }
+
+    chart.setOption({
+      graphic: graphicDataToRemoveObj,
+      //series: updatedSeries
+    }, false);
+    
+    comparisonStockCount.current = comparisonData?.length;
+
+  }
 
   return (
     <ReactECharts ref={chartRef} option={options} style={{ height: "100%", width: "100%" }} />
