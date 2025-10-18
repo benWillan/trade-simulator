@@ -212,41 +212,34 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   useEffect(() => {
 
     const result = determineIfComparisonDataIsBeingAddedOrRemoved();
-    
-    if (result === "") return;
-    
-    const chart = chartRef.current?.getEchartsInstance() as ECharts;
 
+    if (result === "Error") throw new Error("Error: neither add or remove could be determined.");
+    
     if (result === "Added") {
-      removeAllGraphicsFromChart();
-      addComparisonDataToChart();
+      
+      addComparisonGraphicsToChart();
       return;
+      
     } else if (result === "Removed") {
-      removeAllGraphicsFromChart();
+      
       removeComparisonGraphicsFromChart();
       addComparisonGraphicsToChart();
-    }
+      return;
       
-
+    }
+    
   }, [comparisonData]);
 
   const determineIfComparisonDataIsBeingAddedOrRemoved = (): string | void => {
 
     if (comparisonData === null) return;
+    if (comparisonData?.length === 0 && comparisonStockCount.current === 0) return;
 
     return comparisonData?.length > comparisonStockCount?.current
       ? "Added"
       : comparisonData?.length < comparisonStockCount?.current
       ? "Removed"
-      : "";
-      
-  }
-
-  const removeAllGraphicsFromChart = () => {
-
-    const tickerOfRemovedSec = getTickerOfRemovedSecurity();
-
-    let y = comparisonData;
+      : "Error";
 
   }
 
@@ -327,65 +320,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }
 
     return "Not array";
-
-  }
-
-  const addComparisonDataToChart = () => {
-
-    const chart = chartRef.current?.getEchartsInstance();
-
-    if (!chart || !graphData) return;
-    if (comparisonData === null) return;
-
-    const comparisonObjectToAdd = comparisonData?.at(-1);
-
-    //  Graphic.
-    const comparisonGraphicObjectToAdd = {
-      $action: 'merge',
-      id: `graphic-comparison-label-${comparisonObjectToAdd?.ticker}`,
-      ticker: `${comparisonObjectToAdd?.ticker}`,
-      type: "group",
-      left: "0.5%",
-      top: `${(primaryStockTopValue + ((comparisonData.length - 1) * 3.4)).toString()}%`,
-      children: [
-        {
-          $action: 'merge',
-          id: `child1-${comparisonObjectToAdd?.ticker}`,
-          type: "text",
-          style: {
-            text: `${comparisonObjectToAdd?.securityName} [${comparisonObjectToAdd?.ticker}]`,
-            fill: `${chartSeriesColours[comparisonData.length - 1]}`,
-            font: "14px Verdana"
-          }
-        },
-        {
-          $action: 'merge',
-          id: `child2-${comparisonObjectToAdd?.ticker}`,
-          type: "text",
-          top: 18,
-          style: {
-            text: `(${comparisonObjectToAdd?.minDate} - ${comparisonObjectToAdd?.maxDate})`,
-            fill: "#999",
-            font: "10px Verdana"
-          }
-        }
-      ],
-    };
-
-    //  Series.
-    // const comparisonSeriesObjectToAdd = {
-    //   id: `series-comparison-label-${comparisonObjectToAdd?.ticker}`,
-    //   name: comparisonObjectToAdd?.ticker ?? `Series ${comparisonObjectToAdd?.ticker}`,
-    //   type: "line",
-    //   data: comparisonObjectToAdd?.stockQuotes.map(q => q.closePrice),
-    // };
-
-    chart.setOption({
-      graphic: comparisonGraphicObjectToAdd,
-      //series: comparisonSeriesObjectToAdd
-    }, false);
-
-    comparisonStockCount.current = comparisonData?.length;
 
   }
 
