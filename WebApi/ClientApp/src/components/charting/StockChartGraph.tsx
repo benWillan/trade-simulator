@@ -217,7 +217,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     
     if (result === "Added") {
       
-      addComparisonGraphicsToChart();
+      //addComparisonGraphicsToChart();
+      addComparisonSeriesToChart();
       return;
       
     } else if (result === "Removed") {
@@ -229,6 +230,25 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }
     
   }, [comparisonData]);
+
+  const addComparisonSeriesToChart = () => {
+
+    const chart = chartRef.current?.getEchartsInstance();
+
+    if (!chart) return;
+
+    //const ohlcData = comparisonData?. stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
+    //let compD = comparisonData;
+    //let opt = chart.getOption();
+    
+    //let series = opt?.ser
+
+    // const seriesToAdd = comparisonData?.map(comparisonStock => {
+    //   comparisonStock.stockQuotes
+    // });
+
+
+  }
 
   const determineIfComparisonDataIsBeingAddedOrRemoved = (): string | void => {
 
@@ -251,7 +271,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
     if (!chart) return;
 
-    const dataToAdd = comparisonData?.map((comparisonStock, index) => ({
+    const graphicsToAdd = comparisonData?.map((comparisonStock, index) => ({
       $action: 'merge',
       id: `graphic-comparison-label-${comparisonStock?.ticker}`,
       ticker: `${comparisonStock?.ticker}`,
@@ -284,7 +304,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }));
 
     chart?.setOption({
-      graphic: dataToAdd
+      graphic: graphicsToAdd
     }, false);
 
     comparisonStockCount.current = comparisonData?.length;

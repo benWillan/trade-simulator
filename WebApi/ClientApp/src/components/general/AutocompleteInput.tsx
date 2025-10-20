@@ -11,7 +11,6 @@ function AutocompleteInput({onAutoCompleteSelect, clearInput = false} : Props) {
 
   const [selectedOption, setSelectedOption] = useState<StockOption | null>(null);
   const timingRef = useRef<ReturnType<typeof setTimeout>>(null);
-  const autoCompleteInputRef = useRef<any>(null);
   
   useEffect(() => {
 
@@ -21,7 +20,9 @@ function AutocompleteInput({onAutoCompleteSelect, clearInput = false} : Props) {
 
   useEffect(() => {
 
-    if (clearInput === true) setSelectedOption(null);
+    if (clearInput === true) {
+      setSelectedOption(null);
+    }
 
   }, [clearInput]);
 

@@ -295,6 +295,13 @@ export function ContentArea({
       if (typeof comparisonStockAddedSecName === "string") {
   
         showNotification('Added', comparisonStockAddedSecName, 'success');
+        setComparisonSelectClear(true);
+
+        //  to reset the clear of AutocompleteInput.
+        setTimeout(() => {
+          setComparisonSelectClear(false);
+        }, 2000);
+
         return;
         
       }
