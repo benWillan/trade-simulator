@@ -216,6 +216,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       addComparisonGraphicsToChart();
       addComparisonSeriesToChart();
       
+      comparisonStockCount.current = comparisonData?.length ?? 0;
+      
       return;
       
     } else if (result === "Removed") {
@@ -225,6 +227,8 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
       addComparisonSeriesToChart();
       addComparisonGraphicsToChart();
+
+      comparisonStockCount.current = comparisonData?.length ?? 0;
       
       return;
       
@@ -311,8 +315,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     chart?.setOption({
       graphic: graphicsToAdd
     }, false);
-
-    comparisonStockCount.current = comparisonData?.length;
 
   }
 
@@ -415,8 +417,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     removeGraphicChildren(ticker);
     removeGraphicParent(ticker);
 
-    //comparisonStockCount.current = comparisonData?.length;
-
   }
 
   const removeComparisonSeriesFromChart = () => {
@@ -427,8 +427,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     const ticker = getTickerOfRemovedSecurity();
 
     removeSeriesParent(ticker);
-
-    //comparisonStockCount.current = comparisonData?.length;
 
   }
 
