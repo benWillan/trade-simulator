@@ -21,10 +21,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
   const comparisonStockCount = useRef<number>(0);
   const [chartSeriesColours, setChartSeriesColours] = useState<string[]>([]);
 
-  // const onChartReady = (chart: ReactECharts) => {
-  //   chartRef.current = chart;
-  // };
-
   useEffect(() => {
 
     if (chartRef.current) {
@@ -219,12 +215,17 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       
       addComparisonGraphicsToChart();
       addComparisonSeriesToChart();
+      
       return;
       
     } else if (result === "Removed") {
       
+      removeComparisonSeriesFromChart();
       removeComparisonGraphicsFromChart();
+
+      addComparisonSeriesToChart();
       addComparisonGraphicsToChart();
+      
       return;
       
     }
@@ -237,41 +238,19 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
     if (!chart) return;
 
-    //const ohlcData = comparisonData?. stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
-    let compD = comparisonData;
-    let opt = chart.getOption();
-    const stockAddedTicker = getTickerOfAddedSecurity();
-
-    if (stockAddedTicker === 'Error') throw Error("Error reading stock added ticker.")
-    
-    //let series = opt?.ser
-
-    // const seriesToAdd = comparisonData?.map(comparisonStock => {
-    //   comparisonStock.stockQuotes
-    // });
-
-    const ohlcComparisonClosePriceData = comparisonData?.at(-1)?.stockQuotes.map(({closePrice}) => Object.values({closePrice}));
-    const gd = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
-
-    const x = {
+    const seriesToAdd = comparisonData?.map((stock, index) => ({
       $action: 'merge',
-      id: `series-graphData-label-${stockAddedTicker}`,
-      name: `${comparisonData?.at(-1)?.ticker}`,
+      id: `series-comparison-label-${stock.ticker}`,
+      name: `${stock?.ticker}`,
       type: "line",
-      data: ohlcComparisonClosePriceData,
+      data: stock.stockQuotes.map(q => q.closePrice),
       itemStyle: {
-        color: `${chartSeriesColours[0]}`,
+        color: `${chartSeriesColours[index]}`,
       }
-      // itemStyle: {
-      //   color: "#000000",       // rising
-      //   color0: "#FFFFFF",      // falling
-      //   borderColor: "#D3D3D3",
-      //   borderColor0: "#000000"
-      // }
-    }
+    }));
 
     chart.setOption({
-      series: [x]
+      series: seriesToAdd
     }, false)
 
   }
@@ -334,17 +313,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }, false);
 
     comparisonStockCount.current = comparisonData?.length;
-
-  }
-
-  const getTickerOfAddedSecurity = () : string => {
-
-    const stockAdded = comparisonData?.at(-1);
-    const ticker = stockAdded?.ticker;
-
-    if (typeof ticker === 'string') return ticker;
-
-    return 'Error';
 
   }
 
@@ -416,6 +384,28 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
   }
 
+  const removeSeriesParent = (ticker: string) => {
+
+    const comparisonSeriesDataToRemain = comparisonData?.filter(stock => stock?.ticker !== ticker);
+
+    const seriesParentToRemove = comparisonSeriesDataToRemain?.map(stock => ({
+      id: `series-comparison-label-${stock.ticker}`
+    })) || [];
+
+    const graphDataSeriesToRemain = {
+      id: `series-graphData-label-${graphData?.ticker}`
+    }
+
+    const combined = [...seriesParentToRemove, graphDataSeriesToRemain];
+
+    const chart = chartRef.current?.getEchartsInstance();
+
+    chart?.setOption({
+      series: combined
+    }, {replaceMerge: 'series'});
+
+  }
+
   const removeComparisonGraphicsFromChart = () => {
 
     if (comparisonData === null) return;
@@ -425,7 +415,20 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     removeGraphicChildren(ticker);
     removeGraphicParent(ticker);
 
-    comparisonStockCount.current = comparisonData?.length;
+    //comparisonStockCount.current = comparisonData?.length;
+
+  }
+
+  const removeComparisonSeriesFromChart = () => {
+
+    if (comparisonData === null) return;
+
+    //  uses graphics data to return ticker not series data.
+    const ticker = getTickerOfRemovedSecurity();
+
+    removeSeriesParent(ticker);
+
+    //comparisonStockCount.current = comparisonData?.length;
 
   }
 
