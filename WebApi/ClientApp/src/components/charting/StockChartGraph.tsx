@@ -217,7 +217,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     
     if (result === "Added") {
       
-      //addComparisonGraphicsToChart();
+      addComparisonGraphicsToChart();
       addComparisonSeriesToChart();
       return;
       
@@ -238,8 +238,11 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     if (!chart) return;
 
     //const ohlcData = comparisonData?. stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
-    //let compD = comparisonData;
-    //let opt = chart.getOption();
+    let compD = comparisonData;
+    let opt = chart.getOption();
+    const stockAddedTicker = getTickerOfAddedSecurity();
+
+    if (stockAddedTicker === 'Error') throw Error("Error reading stock added ticker.")
     
     //let series = opt?.ser
 
@@ -247,6 +250,29 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     //   comparisonStock.stockQuotes
     // });
 
+    const ohlcComparisonClosePriceData = comparisonData?.at(-1)?.stockQuotes.map(({closePrice}) => Object.values({closePrice}));
+    const gd = graphData?.stockQuotes.map(({openPrice, closePrice, lowPrice, highPrice}) => Object.values({openPrice, closePrice, lowPrice, highPrice}));
+
+    const x = {
+      $action: 'merge',
+      id: `series-graphData-label-${stockAddedTicker}`,
+      name: `${comparisonData?.at(-1)?.ticker}`,
+      type: "line",
+      data: ohlcComparisonClosePriceData,
+      itemStyle: {
+        color: `${chartSeriesColours[0]}`,
+      }
+      // itemStyle: {
+      //   color: "#000000",       // rising
+      //   color0: "#FFFFFF",      // falling
+      //   borderColor: "#D3D3D3",
+      //   borderColor0: "#000000"
+      // }
+    }
+
+    chart.setOption({
+      series: [x]
+    }, false)
 
   }
 
@@ -308,6 +334,17 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }, false);
 
     comparisonStockCount.current = comparisonData?.length;
+
+  }
+
+  const getTickerOfAddedSecurity = () : string => {
+
+    const stockAdded = comparisonData?.at(-1);
+    const ticker = stockAdded?.ticker;
+
+    if (typeof ticker === 'string') return ticker;
+
+    return 'Error';
 
   }
 

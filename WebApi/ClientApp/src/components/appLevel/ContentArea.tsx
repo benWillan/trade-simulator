@@ -59,7 +59,6 @@ export function ContentArea({
 
   const [currentHistoricalDate, setCurrentHistoricalDate] = useState<string>("");
 
-
   //  SignalR.
   const [isStreaming, setIsStreaming] = useState(false);
   const connectionRef = useRef<signalR.HubConnection | null>(null);
@@ -227,10 +226,13 @@ export function ContentArea({
 
     if(startDate === "") {
       
-      showNotification('Warning', "Set start date.");
-      setSelectedMainStock(null);
-      setClearStockSelect(true);
-      return;
+      //  for testing.
+      startDate = "2000-01-01";
+      
+      // showNotification('Warning', "Set start date.");
+      // setSelectedMainStock(null);
+      // setClearStockSelect(true);
+      // return;
 
     } 
 
