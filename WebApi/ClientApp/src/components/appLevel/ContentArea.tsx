@@ -227,12 +227,12 @@ export function ContentArea({
     if(startDate === "") {
       
       //  for testing.
-      startDate = "2000-01-01";
+      //startDate = "2000-01-01";
       
-      // showNotification('Warning', "Set start date.");
-      // setSelectedMainStock(null);
-      // setClearStockSelect(true);
-      // return;
+      showNotification('Warning', "Set start date.");
+      setSelectedMainStock(null);
+      setClearStockSelect(true);
+      return;
 
     } 
 
