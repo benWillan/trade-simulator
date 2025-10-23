@@ -18,8 +18,8 @@ import { useState, useEffect, useRef } from 'react';
 //  types.
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
-import { cwd } from 'process';
 import StockLookupModal from './StockLookupModal';
+import TradeModal from './TradeModal';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -54,6 +54,7 @@ export function ContentArea({
   const [stockLookupData, setStockLookupData] = useState<Stock[] | null>([]);
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
+  const [isTradeModalVisible, setTradeModalVisibility] = useState<boolean>(false);
 
   const [notificationState, setNotificationState] = useState<NotificationState>({body: "", header: "", isOffCanvasVisible: false, isVisible: false, style: ""});
 
@@ -221,6 +222,8 @@ export function ContentArea({
   }
   
   const hideCompareModal = () => setCompareModalVisibility(false);
+  const showTradeModal = () => setTradeModalVisibility(true);
+  const hideTradeModal = () => setTradeModalVisibility(false);
   
   const fetchStockGraphData = async (stockOption: StockOption | null) => {
 
@@ -382,6 +385,8 @@ export function ContentArea({
     
   }
 
+  
+
   switch(chartsRendered) {
 
     case 1:
@@ -395,13 +400,14 @@ export function ContentArea({
               <Row>
                 <Col>
                   <StockChart
-                    key={1}
+                    key={chartsRendered}
                     graphData={graphData}
                     comparisonData={comparisonGraphData}
                     onMainStockPass={handleStockSelect}
-                    stockChartId={1}
+                    stockChartId={chartsRendered}
                     isOffCanvasVisible={isOffCanvasVisible}
-                    onCompareModalClick={showCompareModal}
+                    onCompareButtonClick={showCompareModal}
+                    onTradeButtonClick={showTradeModal}
                     setClearStockSelect={clearStockSelect}
                   />
                 </Col>
@@ -429,6 +435,11 @@ export function ContentArea({
             onStockLookupModalCloseClick={onCloseLookupButtonClick}
             onStockRemove={removeLookupStock}
             clearLookupSelect={clearLookupSelect}
+          />
+
+          <TradeModal
+            isVisible={isTradeModalVisible}
+            onTradeModalHide={hideTradeModal}
           />
 
         </Container>

@@ -204,12 +204,12 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     subtextStyle: {
       rich: {
         bid: {
-          color: '#7274ecff', // green
+          color: '#7274ecff',
           fontWeight: 'bold',
           fontSize: 14
         },
         ask: {
-          color: '#a84d43ff', // red
+          color: '#a84d43ff',
           fontWeight: 'bold',
           fontSize: 14
         }
@@ -220,8 +220,6 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
       xAxis: { data: dates },
       series: [{ data: ohlcData }],
     });
-
-    //console.log(`${graphData.securityName} => Close Price:${graphData.stockQuotes.at(-1)?.closePrice} | Bid: ${graphData.stockQuotes.at(-1)?.bidPrice} | Ask:${graphData.stockQuotes.at(-1)?.askPrice}`);
 
   }, [graphData]);
 

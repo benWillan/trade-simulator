@@ -17,14 +17,23 @@ import StockChartDate from './StockChartDate';
 type Props = {
   stockChartId: number;
   isOffCanvasVisible: boolean;
-  onCompareModalClick: () => void;
+  onCompareButtonClick: () => void;
+  onTradeButtonClick: () => void;
   onMainStockPass: (selectedStock: StockOption | null) => void;
   graphData: Stock | null;
   comparisonData: Stock[] | null;
   setClearStockSelect: boolean;
 }
 
-function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, stockChartId, graphData, comparisonData, setClearStockSelect}: Props) {
+function StockChart({
+  onMainStockPass,
+  onCompareButtonClick,
+  onTradeButtonClick,
+  isOffCanvasVisible,
+  stockChartId,
+  graphData,
+  comparisonData,
+  setClearStockSelect}: Props) {
 
   return (
     <>
@@ -33,7 +42,8 @@ function StockChart({onMainStockPass, onCompareModalClick, isOffCanvasVisible, s
           <AutocompleteInput onAutoCompleteSelect={onMainStockPass} clearInput={setClearStockSelect}></AutocompleteInput>
         </Col>
         <Col>
-          <Button key={stockChartId} onClick={onCompareModalClick} variant="outline-secondary" size='sm'>Compare</Button>
+          <Button key={stockChartId} onClick={onCompareButtonClick} variant="outline-secondary" size='sm'>Compare</Button>
+          <Button key={stockChartId} className='ms-2' onClick={onTradeButtonClick} variant="outline-success" size='sm'>Trade</Button>
         </Col>
       </Row>
       <Row>
