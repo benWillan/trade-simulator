@@ -46,16 +46,16 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle,
         </Form>
         {currentDateTime && (
           <>
-          <Card className='ms-5 text-center' style={{height: "38px", width: "52px"}}>
-            <Card.Body className='p-2'>
-              <Card.Text className='text-center'>{currentDateTime.split(",")[0]}</Card.Text>
-            </Card.Body>
-          </Card>
-          <Card className='ms-1 text-center' style={{height: "38px", width: "128px"}}>
-            <Card.Body className='p-2'>
-              <Card.Text className='text-center'>{currentDateTime.split(",")[1]}</Card.Text>
-            </Card.Body>
-          </Card>
+            <Card className='ms-5 text-center' style={{height: "38px", width: "52px"}}>
+              <Card.Body className='p-2'>
+                <Card.Text className='text-center'>{currentDateTime.split(",")[0]}</Card.Text>
+              </Card.Body>
+            </Card>
+            <Card className='ms-1 text-center' style={{height: "38px", width: "128px"}}>
+              <Card.Body className='p-2'>
+                <Card.Text className='text-center'>{currentDateTime.split(",")[1]}</Card.Text>
+              </Card.Body>
+            </Card>
           </>
         )
         }

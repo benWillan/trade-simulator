@@ -37,7 +37,6 @@ public class StockHub : Hub
             var chunk = allData.Skip(i).Take(chunkSize).ToList();
             
             yield return chunk;
-
         }
     }
 
@@ -65,7 +64,7 @@ public class StockHub : Hub
                         OpenPrice = sq.OpenPrice,
                         HighPrice = sq.HighPrice,
                         LowPrice = sq.LowPrice,
-                        Volume = sq.Volume
+                        Volume = sq.Volume,
                     })
                     .ToList()
             })
