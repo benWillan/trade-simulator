@@ -56,7 +56,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     return {
       title: {
         text: `${stockTicker}`,
-        //subtext: "[Main Stock]",
+        subtext: "",
         left: "center",
         top: "4%",
         textStyle: {
@@ -199,9 +199,29 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
 
     //  Initial load.
     chart.setOption({
+      title: {
+    subtext: `{bid|Bid:} $${graphData.stockQuotes.at(-1)?.bidPrice.toFixed(3)}  -  {ask|Ask:} $${graphData.stockQuotes.at(-1)?.askPrice.toFixed(3)}`,
+    subtextStyle: {
+      rich: {
+        bid: {
+          color: '#7274ecff', // green
+          fontWeight: 'bold',
+          fontSize: 14
+        },
+        ask: {
+          color: '#a84d43ff', // red
+          fontWeight: 'bold',
+          fontSize: 14
+        }
+      },
+      fontSize: 14
+    }
+  },
       xAxis: { data: dates },
       series: [{ data: ohlcData }],
     });
+
+    //console.log(`${graphData.securityName} => Close Price:${graphData.stockQuotes.at(-1)?.closePrice} | Bid: ${graphData.stockQuotes.at(-1)?.bidPrice} | Ask:${graphData.stockQuotes.at(-1)?.askPrice}`);
 
   }, [graphData]);
 
