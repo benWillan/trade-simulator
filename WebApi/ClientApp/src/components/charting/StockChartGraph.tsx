@@ -63,7 +63,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
           fontSize: 28,
           color: colors.teal_main,              // main text color
           textShadowColor: colors.teal_glow,    // glow color
-          textShadowBlur: 5,                    // glow intensity
+          textShadowBlur: 2,                    // glow intensity
           textShadowOffsetX: 0,                 // optional
           textShadowOffsetY: 0
         }

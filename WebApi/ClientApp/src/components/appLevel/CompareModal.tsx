@@ -34,7 +34,7 @@ function CompareModal({isVisible,
       backdropClassName="backdrop-click-through"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Compare</Modal.Title>
+        <Modal.Title>Stock Comparison</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <AutocompleteInput clearInput={clearComparisonSelect} onAutoCompleteSelect={onComparisonStockSelect}></AutocompleteInput>

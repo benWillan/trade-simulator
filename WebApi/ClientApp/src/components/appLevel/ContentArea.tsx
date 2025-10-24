@@ -440,6 +440,7 @@ export function ContentArea({
           <TradeModal
             isVisible={isTradeModalVisible}
             onTradeModalHide={hideTradeModal}
+            graphData={graphData}
           />
 
         </Container>
