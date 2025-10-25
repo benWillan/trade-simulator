@@ -42,8 +42,8 @@ function StockChart({
           <AutocompleteInput onAutoCompleteSelect={onMainStockPass} clearInput={setClearStockSelect}></AutocompleteInput>
         </Col>
         <Col>
-          <Button key={stockChartId} onClick={onCompareButtonClick} variant="outline-secondary" size='sm'>Compare</Button>
-          <Button key={stockChartId} className='ms-2' onClick={onTradeButtonClick} variant="outline-success" size='sm'>Trade</Button>
+          <Button key={`compare-btn-${stockChartId}`} onClick={onCompareButtonClick} variant="outline-secondary" size='sm'>Compare</Button>
+          <Button key={`trade-btn-${stockChartId}`} className='ms-2' onClick={onTradeButtonClick} variant="outline-success" size='sm'>Trade</Button>
         </Col>
       </Row>
       <Row>

@@ -18,6 +18,9 @@ function App() {
 
   const [currentHistoricalDateTime, setCurrentHistoricalDateTime] = useState<string | null>(null);
   const [formattedCurrentDate, setFormattedCurrentDate] = useState<string>("");
+
+  //  default to dev (1).
+  const [userId, setUserId] = useState<number>(1);
   
   const showOffCanvas = () => setOffCanvasVisibility(true);
   const hideOffCanvas = () => setOffCanvasVisibility(false);
@@ -75,6 +78,7 @@ function App() {
         onGraphDataSet={setCurrentHistoricalDateTime}
         isStockLookupModalVisible={lookupModalIsVisible}
         onCloseLookupButtonClick={toggleLookupModal}
+        userId={userId}
       ></ContentArea>
       <OffCanvas visibility={offCanvasVisibility} onWatchListHide={hideOffCanvas} ></OffCanvas>
     </>

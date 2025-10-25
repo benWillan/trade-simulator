@@ -30,6 +30,7 @@ type Props = {
   onGraphDataSet: (date: string | null) => void;
   isStockLookupModalVisible: boolean;
   onCloseLookupButtonClick: () => void;
+  userId: number;
 }
 
 export function ContentArea({
@@ -40,7 +41,8 @@ export function ContentArea({
   isPlaying,
   onGraphDataSet,
   isStockLookupModalVisible,
-  onCloseLookupButtonClick}: Props) {
+  onCloseLookupButtonClick,
+  userId}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
@@ -441,6 +443,7 @@ export function ContentArea({
             isVisible={isTradeModalVisible}
             onTradeModalHide={hideTradeModal}
             graphData={graphData}
+            userId={userId}
           />
 
         </Container>
