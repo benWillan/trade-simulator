@@ -57,8 +57,7 @@ export function NavBar({startDateValue, onStartDateSet, isPlaying, onPlayToggle,
               </Card.Body>
             </Card>
           </>
-        )
-        }
+        )}
         <Button
           className='ms-4'
           style={{height: "38px", width: "auto"}}

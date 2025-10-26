@@ -31,6 +31,7 @@ type Props = {
   isStockLookupModalVisible: boolean;
   onCloseLookupButtonClick: () => void;
   userId: number;
+  currentHistoricalDateTime: string | null;
 }
 
 export function ContentArea({
@@ -42,7 +43,9 @@ export function ContentArea({
   onGraphDataSet,
   isStockLookupModalVisible,
   onCloseLookupButtonClick,
-  userId}: Props) {
+  userId,
+  currentHistoricalDateTime
+}: Props) {
 
   const [selectedMainStock, setSelectedMainStock] = useState<StockOption | null>(null);
   const [graphData, setGraphData] = useState<Stock | null>(null);
@@ -91,8 +94,10 @@ export function ContentArea({
 
   useEffect(() => {
 
-    //const date = graphData?.maxDate ?? null;
+    //console.log(graphData?.stockQuotes.at(-1)?.date);
+    
     const date = graphData?.stockQuotes.at(-1)?.date.split("T")[0];
+    //sconst date = graphData?.stockQuotes.at(-1)?.date;
 
     if (!date) return;
 
@@ -444,6 +449,7 @@ export function ContentArea({
             onTradeModalHide={hideTradeModal}
             graphData={graphData}
             userId={userId}
+            currentHistoricalDateTime={currentHistoricalDateTime}
           />
 
         </Container>

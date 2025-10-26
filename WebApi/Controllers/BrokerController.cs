@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApi.DTO;
 
 namespace WebApi.Controllers;
 
@@ -6,10 +7,17 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class BrokerController: ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> Execute([FromBody] string? payload)
+    [HttpPost("execute")]
+    public async Task<IActionResult> Execute([FromBody] TradeOrderDto? payload)
     {
-        Console.WriteLine(payload);
+        if (payload is null) return BadRequest();
+        
+        Console.WriteLine("Payload");        
+        Console.WriteLine("--------");
+        
+        Console.WriteLine($"StockId: {payload.UserId}");
+        Console.WriteLine($"StockId: {payload.StockId}");
+        Console.WriteLine($"StockId: {payload.OrderType}");
         
         return Ok();
     }

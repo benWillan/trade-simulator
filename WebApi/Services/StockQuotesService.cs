@@ -60,6 +60,7 @@ public class StockQuoteService : IStockQuoteService
             .Include(s => s.StockQuotes)
             .Select(s => new Stock
             {
+                Id = s.Id,
                 Ticker = s.Ticker,
                 SecurityName = s.SecurityName,
                 MarketCategory = s.MarketCategory,

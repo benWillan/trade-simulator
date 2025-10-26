@@ -1,6 +1,6 @@
 //  internal.
 import {Stock} from '../../types/charting/types';
-import { actionType, orderType } from '../../types/appLevel/TradeModalTypes';
+import { side, orderType } from '../../types/appLevel/TradeModalTypes';
 //  external.
 import { useEffect, useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal';
@@ -16,14 +16,15 @@ type Props = {
   onTradeModalHide: () => void;
   graphData: Stock | null;
   userId: number;
+  currentHistoricalDateTime: string | null;
 }
 
-function TradeModal({isVisible, onTradeModalHide, graphData, userId}: Props) {
+function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime}: Props) {
 
   const [checked, setChecked] = useState(false);
 
-  const [orderTypeValue, setOrderTypeValue] = useState('1');
-  const [actionTypeValue, setActionTypeValue] = useState('1');
+  const [orderTypeValue, setOrderTypeValue] = useState(1);
+  const [actionTypeValue, setActionTypeValue] = useState(1);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -33,20 +34,27 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId}: Props) {
 
     e.preventDefault();
 
-    //const formData = new FormData(e.target);
-    //const payload = Object.fromEntries(formData.entries());
-    const payload = "test";
+    const formData = new FormData(e.currentTarget);
+    const entries = Object.fromEntries(formData.entries());
 
+    const payload = {
+      userId: formData.get('userId'),
+      stockId: formData.get('stockId'),
+      orderType: Number(formData.get('orderType')),
+    };
+    
     // payload.userId = userId;
     // payload.actionType = actionTypeValue;
     // payload.orderType = orderTypeValue;
     // payload.ticker = graphData?.ticker;
 
-    await fetch("http://localhost:5027/api/broker/execute", {
+    const res = await fetch("https://localhost:7133/api/broker/execute", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+
+    let x = 2;
 
   }
 
@@ -72,21 +80,25 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId}: Props) {
 
       <Form ref={formRef} onSubmit={handleTradeSubmit}>
         <Modal.Body>
+          <Form.Control type='hidden' name='userId' value={userId}></Form.Control>
+          <Form.Control type='hidden' name='stockId' value={graphData?.id}></Form.Control>
+          <Form.Control type='hidden' name='createdAt' value={currentHistoricalDateTime ?? "date error"}></Form.Control>
+          <Form.Control type='hidden' name='stockId' value={graphData?.id}></Form.Control>
           <h6 style={{textAlign:"center"}}>{graphData?.securityName}</h6>
           <h5 style={{textAlign:"center"}}>{graphData?.ticker}</h5>
             <Row>
               <div>
                 <ButtonGroup>
-                {actionType.map((radio, idx) => (
+                {side.map((radio, idx) => (
                   <ToggleButton
-                  key={`actionType-key-${idx}`}
-                  id={`actionType-${idx}`}
-                  type="radio"
-                  variant={radio.value === '1' ? 'outline-success' : 'outline-danger'}
-                  name="actionType"
-                  value={radio.value}
-                  checked={actionTypeValue === radio.value}
-                  onChange={(e) => setActionTypeValue(e.currentTarget.value)}
+                    key={`actionType-key-${idx}`}
+                    id={`actionType-${idx}`}
+                    type="radio"
+                    variant={radio.value === 1 ? 'outline-success' : 'outline-danger'}
+                    name="side"
+                    value={radio.value}
+                    checked={actionTypeValue === radio.value}
+                    onChange={(e) => setActionTypeValue(Number(e.currentTarget.value))}
                   >
                     {radio.name}
                   </ToggleButton>
@@ -108,7 +120,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId}: Props) {
                   name="orderType"
                   value={radio.value}
                   checked={orderTypeValue === radio.value}
-                  onChange={(e) => setOrderTypeValue(e.currentTarget.value)}
+                  onChange={(e) => setOrderTypeValue(Number(e.currentTarget.value))}
                 >
                   {radio.name}
                 </ToggleButton>
@@ -119,21 +131,34 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId}: Props) {
               <Col>
                 <Form.Group>
                   <Form.Label>Price</Form.Label>
-                  <Form.Control type='number' placeholder='$'></Form.Control>
+                  <Form.Control type='number' name='price' placeholder='$'></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
-                  <Form.Control type='number' placeholder='Units'></Form.Control>
+                  <Form.Control type='number' name='quantity' placeholder='Units'></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Stop Loss</Form.Label>
+                  <Form.Control type='number' name='stopLoss' placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Take Profit</Form.Label>
+                  <Form.Control type='number' name='takeProfit' placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
             </Row>
         </Modal.Body>
-
         <Modal.Footer className="d-flex justify-content-between">
-          <Button className='ms-5' onClick={handleExecuteClick} variant="primary" size='sm'>Execute</Button>
-          <Button className='me-5' onClick={onTradeModalHide} variant="danger" size='sm'>Cancel</Button>
+          <Button className='ms-5' type='button' onClick={handleExecuteClick} variant="primary" size='sm'>Execute</Button>
+          <Button className='me-5' type='button' onClick={onTradeModalHide} variant="danger" size='sm'>Cancel</Button>
         </Modal.Footer>
 
       </Form>
