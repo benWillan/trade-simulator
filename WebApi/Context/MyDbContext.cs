@@ -39,6 +39,7 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.recorded_at)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.status).HasDefaultValue(1);
             entity.Property(e => e.stop_loss).HasPrecision(18, 4);
             entity.Property(e => e.take_profit).HasPrecision(18, 4);
 

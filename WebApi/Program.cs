@@ -31,7 +31,9 @@ public class Program
             options.UseNpgsql(connectionString));
         
         builder.Services.AddScoped<IStockQuoteService, StockQuoteService>();
+        builder.Services.AddScoped<ITradeOrderService, TradeOrderService>();
 
+        
         builder.Services.AddControllers();
         
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,6 +1,7 @@
 //  internal.
 import {Stock} from '../../types/charting/types';
 import { side, orderType } from '../../types/appLevel/TradeModalTypes';
+import { Order } from '../../types/appLevel/orderTypes';
 //  external.
 import React, { useEffect, useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal';
@@ -54,13 +55,13 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
     // payload.orderType = orderTypeValue;
     // payload.ticker = graphData?.ticker;
 
-    const res = await fetch("https://localhost:7133/api/broker/execute", {
+    const response = await fetch("https://localhost:7133/api/broker/execute", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
-    let x = 2;
+    const data = await response.json() as Order;
 
   }
 
