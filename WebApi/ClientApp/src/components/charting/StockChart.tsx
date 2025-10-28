@@ -23,6 +23,8 @@ type Props = {
   graphData: Stock | null;
   comparisonData: Stock[] | null;
   setClearStockSelect: boolean;
+  onTestButtonClick: () => void;
+  tradeOrderData: number;
 }
 
 function StockChart({
@@ -33,7 +35,10 @@ function StockChart({
   stockChartId,
   graphData,
   comparisonData,
-  setClearStockSelect}: Props) {
+  setClearStockSelect,
+  onTestButtonClick,
+  tradeOrderData,
+}: Props) {
 
   return (
     <>
@@ -44,11 +49,12 @@ function StockChart({
         <Col>
           <Button key={`compare-btn-${stockChartId}`} onClick={onCompareButtonClick} variant="outline-secondary" size='sm'>Compare</Button>
           <Button key={`trade-btn-${stockChartId}`} className='ms-2' onClick={onTradeButtonClick} variant="outline-success" size='sm'>Trade</Button>
+          <Button key={`test-btn-${stockChartId}`} className='ms-2' onClick={onTestButtonClick} variant="outline-warning" size='sm'>Test</Button>
         </Col>
       </Row>
       <Row>
         <Col style={{height: `calc(100vh - 144px)`}}>
-          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} comparisonData={comparisonData}></StockChartGraph>}
+          {graphData && <StockChartGraph isOffCanvasVisible={isOffCanvasVisible} graphData={graphData} comparisonData={comparisonData} tradeOrderData={tradeOrderData}></StockChartGraph>}
         </Col>
       </Row>
     </>

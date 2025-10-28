@@ -13,9 +13,10 @@ type Props = {
   graphData: Stock | null;
   comparisonData: Stock[] | null;
   isOffCanvasVisible: boolean;
+  tradeOrderData: number;
 }
 
-function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props) {
+function StockChartGraph({graphData, comparisonData, isOffCanvasVisible, tradeOrderData}: Props) {
 
   const chartRef = useRef<ReactECharts>(null);
   const comparisonStockCount = useRef<number>(0);
@@ -253,6 +254,87 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible}: Props)
     }
     
   }, [comparisonData]);
+
+  useEffect(() => {
+
+    const chart = chartRef.current?.getEchartsInstance();
+
+    if (!chart) return;
+
+    // const tota = {
+    //   id: 'main-series', // use the ID of your chart series if you have one
+    //   markLine: {
+    //     symbol: 'none',
+    //     label: {
+    //       show: true,
+    //       formatter: 'Trade Order (MSFT)',
+    //       position: 'end'
+    //     },
+    //     lineStyle: {
+    //       color: chartSeriesColours[5],
+    //       type: 'solid',
+    //       width: 2
+    //     },
+    //     data: [
+    //       { yAxis: tradeOrderData } // horizontal line at that Y value
+    //     ]
+    //   }
+    // }
+
+    // const xAxisData = chart.getModel().getComponent('xAxis').axis.scale.getExtent();
+    // const [xMin, xMax] = xAxisData;
+
+    const seriesToAdd = [{
+      id: 'trade-label-msft',
+      name: 'MSFT',
+      type: 'line',
+      data: [], // no actual data points needed
+      markLine: {
+        symbol: 'none',
+        label: {
+          show: true,
+          formatter: 'MSFT @ 9.45',
+          position: 'end'
+        },
+        lineStyle: {
+          color: chartSeriesColours[1],
+          width: 1,
+          type: 'dashed'
+        },
+        data: [
+          { yAxis: 9.45 }
+        ]
+      }
+    }];
+
+    if (tradeOrderData === 9.54) {
+
+      chart.setOption({
+        series: seriesToAdd
+      }, false);
+
+    }
+
+    // chart.setOption({
+    //   graphic: [
+    //     {
+    //       id: 'MSFT',
+    //       type: 'line',
+    //       shape: {
+    //         x1: 0,
+    //         y1: chart.convertToPixel({ yAxisIndex: 0 }, tradeOrderData),
+    //         x2: chart.getWidth(),
+    //         y2: chart.convertToPixel({ yAxisIndex: 0 }, tradeOrderData)
+    //       },
+    //       style: {
+    //         stroke: chartSeriesColours[5],
+    //         lineWidth: 2
+    //       }
+    //     }
+    //   ]
+    // }, false)
+
+  }, [tradeOrderData]);
 
   const addComparisonSeriesToChart = () => {
 

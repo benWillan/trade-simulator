@@ -19,10 +19,10 @@ type Props = {
   graphData: Stock | null;
   userId: number;
   currentHistoricalDateTime: string | null;
-  onInvokeNotification: (header: NotificationType, body: string, style?: NotificationStyle) => void;
+  showNotification: (header: NotificationType, body: string, style?: NotificationStyle) => void;
 }
 
-function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime, onInvokeNotification}: Props) {
+function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime, showNotification}: Props) {
 
   const [checked, setChecked] = useState(false);
 
@@ -65,7 +65,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
 
     const data = await response.json() as Order;
 
-    onInvokeNotification('Trade Placed', `At price: ${data.price}`, 'success');
+    showNotification('Trade Placed', `At price: ${data.price}`, 'success');
     onTradeModalHide();
 
   }
@@ -90,7 +90,6 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
   const sideStateOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     setSideValue(Number(e.currentTarget.value));
-
 
   }
 

@@ -19,6 +19,7 @@ import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
 import StockLookupModal from './StockLookupModal';
 import TradeModal from './TradeModal';
+import { cwd } from 'process';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -56,6 +57,8 @@ export function ContentArea({
   const [selectedComparison, setComparison] = useState<StockOption | null>(null);
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
   const [stockLookupData, setStockLookupData] = useState<Stock[] | null>([]);
+
+  const [tradeOrderData, setTradeOrderData] = useState<number>(4.88);
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
   const [isTradeModalVisible, setTradeModalVisibility] = useState<boolean>(false);
@@ -391,6 +394,13 @@ export function ContentArea({
     
   }
 
+  const doSomethingTest = () => {
+
+    console.log("do something test ran");
+    setTradeOrderData(9.54);
+
+  }
+
   switch(chartsRendered) {
 
     case 1:
@@ -413,6 +423,8 @@ export function ContentArea({
                     onCompareButtonClick={showCompareModal}
                     onTradeButtonClick={showTradeModal}
                     setClearStockSelect={clearStockSelect}
+                    onTestButtonClick={doSomethingTest}
+                    tradeOrderData={tradeOrderData}
                   />
                 </Col>
               </Row>
@@ -447,7 +459,8 @@ export function ContentArea({
             graphData={graphData}
             userId={userId}
             currentHistoricalDateTime={currentHistoricalDateTime}
-            onInvokeNotification={showNotification}
+            showNotification={showNotification}
+            //updateStockChartTradeGraphic={}
           />
 
         </Container>
