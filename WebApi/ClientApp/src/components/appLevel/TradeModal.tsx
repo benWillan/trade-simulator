@@ -24,7 +24,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
   const [checked, setChecked] = useState(false);
 
   const [orderTypeValue, setOrderTypeValue] = useState(1);
-  const [actionTypeValue, setActionTypeValue] = useState(1);
+  const [sideValue, setSideValue] = useState(1);
 
   const [stopLossIsDisabled, setStopLossIsDisabled] = useState<boolean>(true);
   const [takeProfitIsDisabled, setTakeProfitIsDisabled] = useState<boolean>(true);
@@ -81,6 +81,13 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
 
   }
 
+  const sideStateOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    setSideValue(Number(e.currentTarget.value));
+
+
+  }
+
   return (
     <Modal
       show={isVisible}
@@ -115,8 +122,8 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
                     variant={radio.value === 1 ? 'outline-success' : 'outline-danger'}
                     name="side"
                     value={radio.value}
-                    checked={actionTypeValue === radio.value}
-                    onChange={(e) => setActionTypeValue(Number(e.currentTarget.value))}
+                    checked={sideValue === radio.value}
+                    onChange={sideStateOnChange}
                   >
                     {radio.name}
                   </ToggleButton>
@@ -159,7 +166,9 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
                 </Form.Group>
               </Col>
             </Row>
-          <div className='mt-4'>
+            {/* <div style={{marginTop: "12px"}}>
+              <hr></hr>
+            </div> */}
             <Row>
               <Col>
                 <Form.Group>
@@ -230,11 +239,10 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
                 </Form.Group>
               </Col>
             </Row>
-          </div>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-between">
-          <Button className='ms-5' type='button' onClick={handleExecuteClick} variant="primary" size='sm'>Execute</Button>
-          <Button className='me-5' type='button' onClick={onTradeModalHide} variant="danger" size='sm'>Cancel</Button>
+          <Button className='ms-5' style={{width:"58px"}} type='button' onClick={handleExecuteClick} variant={sideValue === 1 ? 'success' : 'danger'} size='sm'>{sideValue === 1 ? "Buy" : "Sell"}</Button>
+          <Button className='me-5' style={{width:"58px"}} type='button' onClick={onTradeModalHide} variant="secondary" size='sm'>Cancel</Button>
         </Modal.Footer>
 
       </Form>
