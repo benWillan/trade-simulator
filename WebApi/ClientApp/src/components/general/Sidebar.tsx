@@ -43,6 +43,12 @@ const Sidebar = ({onWatchListShow}: Props) => {
         <Nav.Link href="/contact" className="text-white">Contact</Nav.Link> */}
         <div style={{position: "absolute", top: "62px", width: "100%", textAlign: "center"}}>
           <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary" style={{width: "80%"}}>W</Button>
+          {/* <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary mt-3" style={{width: "80%"}}>D</Button>
+          <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary mt-3" style={{width: "80%"}}>S</Button>
+          <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary mt-3" style={{width: "80%"}}>A</Button>
+          <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary mt-3" style={{width: "80%"}}>Q</Button>
+          <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary mt-3" style={{width: "80%"}}>X</Button>
+          <Button onClick={onWatchListShow} variant="secondary" className="bg-body-secondary mt-3" style={{width: "80%"}}>K</Button> */}
         </div>
         {/* <div style={{position: "absolute", top: "108px", width: "100%", textAlign: "center"}}>
           <Button style={{width: "80%", backgroundColor: "black"}}>D</Button>

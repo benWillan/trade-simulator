@@ -12,12 +12,15 @@ public class BrokerController: ControllerBase
     {
         if (payload is null) return BadRequest();
         
-        Console.WriteLine("Payload");        
+        Console.WriteLine("Payload");
         Console.WriteLine("--------");
         
-        Console.WriteLine($"StockId: {payload.UserId}");
+        Console.WriteLine($"UserId: {payload.UserId}");
         Console.WriteLine($"StockId: {payload.StockId}");
-        Console.WriteLine($"StockId: {payload.OrderType}");
+        Console.WriteLine($"OrderType: {payload.OrderType}");
+        Console.WriteLine($"Price: {payload.Price}");
+        Console.WriteLine($"Quantity: {payload.Quantity}");
+        Console.WriteLine($"Side: {payload.Side}");
         
         return Ok();
     }

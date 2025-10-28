@@ -2,7 +2,7 @@
 import {Stock} from '../../types/charting/types';
 import { side, orderType } from '../../types/appLevel/TradeModalTypes';
 //  external.
-import { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -26,6 +26,9 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
   const [orderTypeValue, setOrderTypeValue] = useState(1);
   const [actionTypeValue, setActionTypeValue] = useState(1);
 
+  const [stopLossIsDisabled, setStopLossIsDisabled] = useState<boolean>(true);
+  const [takeProfitIsDisabled, setTakeProfitIsDisabled] = useState<boolean>(true);
+
   const formRef = useRef<HTMLFormElement>(null);
 
   //const [graphData, setGraphData] = useState<Stock | null>(null);
@@ -41,6 +44,9 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
       userId: formData.get('userId'),
       stockId: formData.get('stockId'),
       orderType: Number(formData.get('orderType')),
+      price: formData.get('price'),
+      quantity: formData.get('quantity'),
+      side: Number(formData.get('side'))
     };
     
     // payload.userId = userId;
@@ -62,6 +68,18 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
     // trigger form submit programmatically
     formRef.current?.requestSubmit();
   };
+
+  const handleStopLossChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    setStopLossIsDisabled(!e.target.checked);
+
+  }
+
+  const handleTakeProfitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    setTakeProfitIsDisabled(!e.target.checked);
+
+  }
 
   return (
     <Modal
@@ -131,30 +149,88 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
               <Col>
                 <Form.Group>
                   <Form.Label>Price</Form.Label>
-                  <Form.Control type='number' name='price' placeholder='$'></Form.Control>
+                  <Form.Control type='number' name='price' min={0.01} step={0.01} placeholder='$'></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
-                  <Form.Control type='number' name='quantity' placeholder='Units'></Form.Control>
+                  <Form.Control type='number' name='quantity' step={0.001} placeholder='Units'></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+          <div className='mt-4'>
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Stop Loss</Form.Label>
+                  <Form.Check type='checkbox' onChange={handleStopLossChange}></Form.Check>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Take Profit</Form.Label>
+                  <Form.Check type='checkbox' onChange={handleTakeProfitChange}></Form.Check>
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col>
                 <Form.Group>
-                  <Form.Label>Stop Loss</Form.Label>
-                  <Form.Control type='number' name='stopLoss' placeholder=''></Form.Control>
+                  <Form.Label>Ticks</Form.Label>
+                  <Form.Control type='number' disabled={stopLossIsDisabled} name='ticksStopLoss' step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
-                  <Form.Label>Take Profit</Form.Label>
-                  <Form.Control type='number' name='takeProfit' placeholder=''></Form.Control>
+                  <Form.Label>Ticks</Form.Label>
+                  <Form.Control type='number' disabled={takeProfitIsDisabled} name='ticksTakeProfit' step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
             </Row>
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Price</Form.Label>
+                  <Form.Control type='number' disabled={stopLossIsDisabled} name='priceStopLoss' step={0.01} placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Price</Form.Label>
+                  <Form.Control type='number' disabled={takeProfitIsDisabled} name='priceTakeProfit' step={0.01} placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>USD</Form.Label>
+                  <Form.Control type='number' disabled={stopLossIsDisabled} name='currencyStopLoss' step={0.01} placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Label>USD</Form.Label>
+                  <Form.Control type='number' disabled={takeProfitIsDisabled} name='currencyTakeProfit' step={0.01} placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>%</Form.Label>
+                  <Form.Control type='number' disabled={stopLossIsDisabled} name='percentageStopLoss' step={0.01} placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Label>%</Form.Label>
+                  <Form.Control type='number' disabled={takeProfitIsDisabled} name='percentageTakeProfit' step={0.01} placeholder=''></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+          </div>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-between">
           <Button className='ms-5' type='button' onClick={handleExecuteClick} variant="primary" size='sm'>Execute</Button>
