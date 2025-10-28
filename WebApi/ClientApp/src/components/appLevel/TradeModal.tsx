@@ -2,6 +2,7 @@
 import {Stock} from '../../types/charting/types';
 import { side, orderType } from '../../types/appLevel/TradeModalTypes';
 import { Order } from '../../types/appLevel/orderTypes';
+import {NotificationType, NotificationStyle} from '../../types/charting/types';
 //  external.
 import React, { useEffect, useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal';
@@ -18,9 +19,10 @@ type Props = {
   graphData: Stock | null;
   userId: number;
   currentHistoricalDateTime: string | null;
+  onInvokeNotification: (header: NotificationType, body: string, style?: NotificationStyle) => void;
 }
 
-function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime}: Props) {
+function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime, onInvokeNotification}: Props) {
 
   const [checked, setChecked] = useState(false);
 
@@ -62,6 +64,9 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
     });
 
     const data = await response.json() as Order;
+
+    onInvokeNotification('Trade Placed', `At price: ${data.price}`, 'success');
+    onTradeModalHide();
 
   }
 

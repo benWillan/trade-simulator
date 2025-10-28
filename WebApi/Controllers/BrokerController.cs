@@ -28,8 +28,8 @@ public class BrokerController: ControllerBase
         // Console.WriteLine($"Quantity: {payload.Quantity}");
         // Console.WriteLine($"Side: {payload.Side}");
 
-        var res = await _tradeOrderService.CreateTradeOrder(payload);
+        var orderAdded = await _tradeOrderService.CreateTradeOrder(payload);
         
-        return Ok(res);
+        return Ok(orderAdded);
     }
 }

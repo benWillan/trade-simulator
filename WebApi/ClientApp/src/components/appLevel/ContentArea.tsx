@@ -6,15 +6,14 @@ import '../../css/global.css'
 import CompareModal from './CompareModal';
 import Notification from '../general/Notification';
 
-import * as signalR from "@microsoft/signalr";
-//import { stockSignalRService } from '../../service/signalRService';
-
 //  external.
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import OffCanvas from '../general/OffCanvas';
 import Sidebar from '../general/Sidebar';
 import { useState, useEffect, useRef } from 'react';
+import * as signalR from "@microsoft/signalr";
+
 //  types.
 import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
@@ -392,8 +391,6 @@ export function ContentArea({
     
   }
 
-  
-
   switch(chartsRendered) {
 
     case 1:
@@ -450,6 +447,7 @@ export function ContentArea({
             graphData={graphData}
             userId={userId}
             currentHistoricalDateTime={currentHistoricalDateTime}
+            onInvokeNotification={showNotification}
           />
 
         </Container>

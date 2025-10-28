@@ -55,6 +55,7 @@ export type NotificationType =
   | "Warning"
   | "Info"
   | "Removed"
+  | "Trade Placed"
   | "Error";
 
 export type NotificationStyle =
