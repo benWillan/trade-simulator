@@ -2,6 +2,8 @@
 import { Stock } from '../../types/charting/types';
 import colors from '../../types/styling/glowingText';
 import { useRef, useEffect, Children, useState } from 'react';
+import { Order } from '../../types/appLevel/orderTypes';
+import { OrderTypeEnum, SideEnum } from '../../types/appLevel/TradeModalTypes'
 //  external.
 import ReactECharts from "echarts-for-react";
 
@@ -13,7 +15,7 @@ type Props = {
   graphData: Stock | null;
   comparisonData: Stock[] | null;
   isOffCanvasVisible: boolean;
-  tradeOrderData: number;
+  tradeOrderData: Order[];
 }
 
 function StockChartGraph({graphData, comparisonData, isOffCanvasVisible, tradeOrderData}: Props) {
@@ -260,79 +262,42 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible, tradeOr
     const chart = chartRef.current?.getEchartsInstance();
 
     if (!chart) return;
+    if (tradeOrderData.length === 0) return;
 
-    // const tota = {
-    //   id: 'main-series', // use the ID of your chart series if you have one
-    //   markLine: {
-    //     symbol: 'none',
-    //     label: {
-    //       show: true,
-    //       formatter: 'Trade Order (MSFT)',
-    //       position: 'end'
-    //     },
-    //     lineStyle: {
-    //       color: chartSeriesColours[5],
-    //       type: 'solid',
-    //       width: 2
-    //     },
-    //     data: [
-    //       { yAxis: tradeOrderData } // horizontal line at that Y value
-    //     ]
-    //   }
-    // }
+    const tradeOrderObjectJustAdded = tradeOrderData.at(-1);
 
-    // const xAxisData = chart.getModel().getComponent('xAxis').axis.scale.getExtent();
-    // const [xMin, xMax] = xAxisData;
+    if (!tradeOrderObjectJustAdded) return;
 
-    const seriesToAdd = [{
-      id: 'trade-label-msft',
-      name: 'MSFT',
+    const tradeOrderDataToAdd = [{
+      $action: 'merge',
+      id: `trade-order-${Math.floor(Math.random() * 1000) + 1}-${tradeOrderObjectJustAdded?.stockTicker}`,
+      name: `${tradeOrderObjectJustAdded?.stockTicker}`,
       type: 'line',
-      data: [], // no actual data points needed
+      data: [], // no data points needed.
       markLine: {
         symbol: 'none',
         label: {
           show: true,
-          formatter: 'MSFT @ 9.45',
-          position: 'end'
+          formatter: `@ $${tradeOrderObjectJustAdded?.price} | ${SideEnum[tradeOrderObjectJustAdded.side]} | ${OrderTypeEnum[tradeOrderObjectJustAdded.orderType]}`,
+          position: 'middle',
+          color: '#ddddddff',         // <-- set font color here
+          fontSize: 14,             // optional font size
+          fontWeight: 'bold'
         },
         lineStyle: {
-          color: chartSeriesColours[1],
-          width: 1,
-          type: 'dashed'
+          color: chartSeriesColours[2],
+          width: 0.5,
+          type: 'solid'
         },
         data: [
-          { yAxis: 9.45 }
+          { yAxis: tradeOrderObjectJustAdded?.price }
         ]
       }
     }];
 
-    if (tradeOrderData === 9.54) {
-
-      chart.setOption({
-        series: seriesToAdd
-      }, false);
-
-    }
-
-    // chart.setOption({
-    //   graphic: [
-    //     {
-    //       id: 'MSFT',
-    //       type: 'line',
-    //       shape: {
-    //         x1: 0,
-    //         y1: chart.convertToPixel({ yAxisIndex: 0 }, tradeOrderData),
-    //         x2: chart.getWidth(),
-    //         y2: chart.convertToPixel({ yAxisIndex: 0 }, tradeOrderData)
-    //       },
-    //       style: {
-    //         stroke: chartSeriesColours[5],
-    //         lineWidth: 2
-    //       }
-    //     }
-    //   ]
-    // }, false)
+    chart.setOption({
+      series: tradeOrderDataToAdd
+    }, false);
 
   }, [tradeOrderData]);
 

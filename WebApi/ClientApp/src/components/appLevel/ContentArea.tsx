@@ -5,6 +5,7 @@ import StockChart from '../charting/StockChart';
 import '../../css/global.css'
 import CompareModal from './CompareModal';
 import Notification from '../general/Notification';
+import { Order } from '../../types/appLevel/orderTypes';
 
 //  external.
 import Row from 'react-bootstrap/Row';
@@ -19,7 +20,6 @@ import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
 import StockLookupModal from './StockLookupModal';
 import TradeModal from './TradeModal';
-import { cwd } from 'process';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -58,7 +58,7 @@ export function ContentArea({
   const [comparisonGraphData, setComparisonGraphData] = useState<Stock[] | null>([]);
   const [stockLookupData, setStockLookupData] = useState<Stock[] | null>([]);
 
-  const [tradeOrderData, setTradeOrderData] = useState<number>(4.88);
+  const [tradeOrderData, setTradeOrderData] = useState<Order[]>([]);
   
   const [isCompareModalVisible, setCompareModalVisibility] = useState<boolean>(false);
   const [isTradeModalVisible, setTradeModalVisibility] = useState<boolean>(false);
@@ -394,10 +394,11 @@ export function ContentArea({
     
   }
 
-  const doSomethingTest = () => {
+  const fetchTradeOrderData = () => {}
 
-    console.log("do something test ran");
-    setTradeOrderData(9.54);
+  const handleNewTradeOrder = (order: Order) => {
+
+    setTradeOrderData(prev => [...prev ?? [], order])
 
   }
 
@@ -423,7 +424,7 @@ export function ContentArea({
                     onCompareButtonClick={showCompareModal}
                     onTradeButtonClick={showTradeModal}
                     setClearStockSelect={clearStockSelect}
-                    onTestButtonClick={doSomethingTest}
+                    //onTestButtonClick={doSomethingTest}
                     tradeOrderData={tradeOrderData}
                   />
                 </Col>
@@ -460,7 +461,7 @@ export function ContentArea({
             userId={userId}
             currentHistoricalDateTime={currentHistoricalDateTime}
             showNotification={showNotification}
-            //updateStockChartTradeGraphic={}
+            onTradeOrderPost={handleNewTradeOrder}
           />
 
         </Container>

@@ -1,6 +1,7 @@
 using WebApi.DTO;
 using WebApi.Context;
 using WebApi.EFModels;
+using WebApi.Enums;
 
 namespace WebApi.Services;
 
@@ -13,7 +14,7 @@ public class TradeOrderService : ITradeOrderService
         _context = context;
     }
 
-    public async Task<Order?> CreateTradeOrder(TradeOrderDto? tradeOrder)
+    public async Task<TradeOrderDto?> CreateTradeOrder(TradeOrderDto? tradeOrder)
     {
         if (tradeOrder is null) return null;
 
@@ -28,10 +29,21 @@ public class TradeOrderService : ITradeOrderService
         };
 
         await _context.Orders.AddAsync(orderToAdd);
-        var res = await _context.SaveChangesAsync();
+        var result = await _context.SaveChangesAsync();
 
-        if (res == 0) return null;
+        if (result == 0) return null;
 
-        return orderToAdd;
+        //  to add the ticker.
+        await _context.Entry(orderToAdd).Reference(order => order.stock).LoadAsync();
+
+        var response = new TradeOrderDto
+        {
+            Price = orderToAdd.price,
+            StockTicker = orderToAdd.stock.Ticker,
+            Side = (Side)orderToAdd.side,
+            OrderType = (OrderType)orderToAdd.order_type
+        };
+        
+        return response;
     }
 }

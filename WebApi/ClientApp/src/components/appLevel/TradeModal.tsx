@@ -20,11 +20,10 @@ type Props = {
   userId: number;
   currentHistoricalDateTime: string | null;
   showNotification: (header: NotificationType, body: string, style?: NotificationStyle) => void;
+  onTradeOrderPost: (order: Order) => void;
 }
 
-function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime, showNotification}: Props) {
-
-  const [checked, setChecked] = useState(false);
+function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHistoricalDateTime, showNotification, onTradeOrderPost}: Props) {
 
   const [orderTypeValue, setOrderTypeValue] = useState(1);
   const [sideValue, setSideValue] = useState(1);
@@ -33,8 +32,6 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
   const [takeProfitIsDisabled, setTakeProfitIsDisabled] = useState<boolean>(true);
 
   const formRef = useRef<HTMLFormElement>(null);
-
-  //const [graphData, setGraphData] = useState<Stock | null>(null);
 
   const handleTradeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
@@ -52,11 +49,6 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
       side: Number(formData.get('side'))
     };
     
-    // payload.userId = userId;
-    // payload.actionType = actionTypeValue;
-    // payload.orderType = orderTypeValue;
-    // payload.ticker = graphData?.ticker;
-
     const response = await fetch("https://localhost:7133/api/broker/execute", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -65,13 +57,22 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
 
     const data = await response.json() as Order;
 
-    showNotification('Trade Placed', `At price: ${data.price}`, 'success');
+    if (response.status === 200 && data) {
+
+      onTradeOrderPost(data);
+      showNotification('Trade Placed', `At price: ${data.price}`, 'success');
+      onTradeModalHide();
+      return;
+
+    }
+
+    showNotification('Error', `An error occured while placing trade`, 'danger');
     onTradeModalHide();
 
   }
 
   const handleExecuteClick = () => {
-    // trigger form submit programmatically
+    //  trigger form submit programmatically.
     formRef.current?.requestSubmit();
   };
 

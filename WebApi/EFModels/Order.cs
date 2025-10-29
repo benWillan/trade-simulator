@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WebApi.EFModels;
 
@@ -31,13 +32,17 @@ public partial class Order
 
     public int side { get; set; }
 
+    [JsonIgnore]
     public virtual order_type order_typeNavigation { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual side sideNavigation { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual status statusNavigation { get; set; } = null!;
 
     public virtual Stock stock { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual user user { get; set; } = null!;
 }

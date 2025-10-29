@@ -1,3 +1,4 @@
+using WebApi.EFModels;
 using WebApi.Enums;
 
 namespace WebApi.DTO;
@@ -14,4 +15,5 @@ public class TradeOrderDto
     // public decimal TakeProfit { get; set; }
     // public DateTime? CreatedAt { get; set; }
     public Side Side { get; set; }
+    public string? StockTicker { get; set; }
 }

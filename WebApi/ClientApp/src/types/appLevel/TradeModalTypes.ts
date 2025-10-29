@@ -15,3 +15,16 @@ export const orderType: RadioOption[] = [
   // { name: 'Stop Limit', value: '4'},
   // { name: 'Trailing Stop', value: '5'}
 ];
+
+export const OrderTypeEnum: Record<number, string> = {
+  1: "Market",
+  2: "Limit",
+  3: "Stop",
+  4: "StopLimit",
+  5: "TrailingStop",
+};
+
+export const SideEnum: Record<number, string> = {
+  1: "Buy",
+  2: "Sell",
+};

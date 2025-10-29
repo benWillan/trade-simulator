@@ -5,5 +5,5 @@ namespace WebApi.Services;
 
 public interface ITradeOrderService
 {
-    Task<Order?> CreateTradeOrder(TradeOrderDto? tradeOrder);
+    Task<TradeOrderDto?> CreateTradeOrder(TradeOrderDto? tradeOrder);
 }

@@ -3,6 +3,7 @@ import AutocompleteInput from '../general/AutocompleteInput';
 import StockChartHeader from './StockChartHeader';
 import StockChartGraph from './StockChartGraph';
 import '../../css/global.css';
+import { Order } from '../../types/appLevel/orderTypes';
 //  external.
 import {useState, useEffect} from 'react'
 import Container from 'react-bootstrap/Container';
@@ -23,8 +24,7 @@ type Props = {
   graphData: Stock | null;
   comparisonData: Stock[] | null;
   setClearStockSelect: boolean;
-  onTestButtonClick: () => void;
-  tradeOrderData: number;
+  tradeOrderData: Order[];
 }
 
 function StockChart({
@@ -36,7 +36,6 @@ function StockChart({
   graphData,
   comparisonData,
   setClearStockSelect,
-  onTestButtonClick,
   tradeOrderData,
 }: Props) {
 
@@ -49,7 +48,7 @@ function StockChart({
         <Col>
           <Button key={`compare-btn-${stockChartId}`} onClick={onCompareButtonClick} variant="outline-secondary" size='sm'>Compare</Button>
           <Button key={`trade-btn-${stockChartId}`} className='ms-2' onClick={onTradeButtonClick} variant="outline-success" size='sm'>Trade</Button>
-          <Button key={`test-btn-${stockChartId}`} className='ms-2' onClick={onTestButtonClick} variant="outline-warning" size='sm'>Test</Button>
+          {/* <Button key={`test-btn-${stockChartId}`} className='ms-2' variant="outline-warning" size='sm'>Test</Button> */}
         </Col>
       </Row>
       <Row>
