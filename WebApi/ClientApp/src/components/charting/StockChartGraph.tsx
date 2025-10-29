@@ -3,7 +3,7 @@ import { Stock } from '../../types/charting/types';
 import colors from '../../types/styling/glowingText';
 import { useRef, useEffect, Children, useState } from 'react';
 import { Order } from '../../types/appLevel/orderTypes';
-import { OrderTypeEnum, SideEnum } from '../../types/appLevel/TradeModalTypes'
+import { OrderTypeEnum, SideEnum, TradeOrderLineColour } from '../../types/appLevel/TradeModalTypes'
 //  external.
 import ReactECharts from "echarts-for-react";
 
@@ -280,13 +280,13 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible, tradeOr
           show: true,
           formatter: `@ $${tradeOrderObjectJustAdded?.price} | ${SideEnum[tradeOrderObjectJustAdded.side]} | ${OrderTypeEnum[tradeOrderObjectJustAdded.orderType]}`,
           position: 'middle',
-          color: '#ddddddff',         // <-- set font color here
-          fontSize: 14,             // optional font size
+          color: '#ddddddff',
+          fontSize: 14,
           fontWeight: 'bold'
         },
         lineStyle: {
-          color: chartSeriesColours[2],
-          width: 0.5,
+          color: `${tradeOrderObjectJustAdded.side === 1 ? TradeOrderLineColour["Green"] : TradeOrderLineColour["Red"]}`,
+          width: 0.75,
           type: 'solid'
         },
         data: [
