@@ -26,6 +26,7 @@ public class TradeOrderService : ITradeOrderService
             price = tradeOrder.Price,
             order_type = (int)tradeOrder.OrderType,
             side = (int)tradeOrder.Side,
+            created_at = DateTime.Now
         };
 
         await _context.Orders.AddAsync(orderToAdd);
@@ -46,4 +47,9 @@ public class TradeOrderService : ITradeOrderService
         
         return response;
     }
+
+    // public async Task<TradeOrderDto?> GetTradeOrders()
+    // {
+    //     
+    // }
 }

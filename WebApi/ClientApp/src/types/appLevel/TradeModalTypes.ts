@@ -30,6 +30,8 @@ export const SideEnum: Record<number, string> = {
 };
 
 export const TradeOrderLineColour: Record<string, string> = {
+  "BidColour": "#7274ecff",
+  "AskColour": "#a84d43ff",
   "Green": "#198754",
   "Red": "#dc3545"
 }

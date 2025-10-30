@@ -285,7 +285,7 @@ function StockChartGraph({graphData, comparisonData, isOffCanvasVisible, tradeOr
           fontWeight: 'bold'
         },
         lineStyle: {
-          color: `${tradeOrderObjectJustAdded.side === 1 ? TradeOrderLineColour["Green"] : TradeOrderLineColour["Red"]}`,
+          color: `${tradeOrderObjectJustAdded.side === 1 ? TradeOrderLineColour["AskColour"] : TradeOrderLineColour["BidColour"]}`,
           width: 0.75,
           type: 'solid'
         },

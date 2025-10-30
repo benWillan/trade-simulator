@@ -281,6 +281,8 @@ export function ContentArea({
 
   }
 
+  const fetchTradeOrderData = () => {}
+
   const handleComparisonSelect = (stockOption: StockOption | null) => {
 
     if(selectedMainStock === null) {
@@ -355,7 +357,7 @@ export function ContentArea({
     showNotification('Error', "An unexpected error occured.");
     
   }
-
+  
   const handleLookupSelect = (stockOption: StockOption | null) => {
 
     if (stockOption !== null) {
@@ -393,8 +395,6 @@ export function ContentArea({
     showNotification('Error', "An unexpected error occured.");
     
   }
-
-  const fetchTradeOrderData = () => {}
 
   const handleNewTradeOrder = (order: Order) => {
 
