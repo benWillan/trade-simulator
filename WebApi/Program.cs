@@ -21,19 +21,20 @@ public class Program
         // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
         
-        builder.Services.AddSignalR(options => {
-            options.EnableDetailedErrors = true; // helpful for debugging
-        });
+        // builder.Services.AddSignalR(options => {
+        //     options.EnableDetailedErrors = true; // helpful for debugging
+        // });
         
-        var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+        builder.Services.AddSignalR();
+        
+        // var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+        //
+        // builder.Services.AddDbContext<MyDbContext>(options =>
+        //     options.UseNpgsql(connectionString));
+        //
+        // builder.Services.AddScoped<IStockQuoteService, StockQuoteService>();
+        // builder.Services.AddScoped<ITradeOrderService, TradeOrderService>();
 
-        builder.Services.AddDbContext<MyDbContext>(options =>
-            options.UseNpgsql(connectionString));
-        
-        builder.Services.AddScoped<IStockQuoteService, StockQuoteService>();
-        builder.Services.AddScoped<ITradeOrderService, TradeOrderService>();
-
-        
         builder.Services.AddControllers();
         
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,7 +52,7 @@ public class Program
             });
         });
 
-        builder.Services.AddSignalR();
+        //builder.Services.AddSignalR();
         
         // APP.
         var app = builder.Build();
