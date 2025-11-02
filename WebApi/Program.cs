@@ -24,15 +24,29 @@ public class Program
         builder.Services.AddSignalR(options => {
             options.EnableDetailedErrors = true; // helpful for debugging
         });
-        
-        var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
 
-        builder.Services.AddDbContext<MyDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        if (builder.Environment.EnvironmentName == "Development")
+        {
+            var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+
+            builder.Services.AddDbContext<MyDbContext>(options =>
+                options.UseNpgsql(connectionString));
+        }
+        else if (builder.Environment.EnvironmentName == "Production")
+        {
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+
+            builder.Services.AddDbContext<MyDbContext>(options =>
+                options.UseNpgsql(connectionString));
+        }
+        else
+        {
+            Console.WriteLine("Environment name set incorrectly");
+            return;
+        }
         
         builder.Services.AddScoped<IStockQuoteService, StockQuoteService>();
         builder.Services.AddScoped<ITradeOrderService, TradeOrderService>();
-
         
         builder.Services.AddControllers();
         
