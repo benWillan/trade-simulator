@@ -32,7 +32,7 @@ function AutocompleteInput({onAutoCompleteSelect, clearInput = false} : Props) {
 
     try {
 
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/stock/search?securitySearch=${inputValue}`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/stock/search?securitySearch=${inputValue}`);
       
       const data: TickerSecNameCombination[] = await response.json() as TickerSecNameCombination[];
 
