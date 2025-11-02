@@ -25,6 +25,8 @@ public class Program
             options.EnableDetailedErrors = true; // helpful for debugging
         });
 
+        Console.WriteLine(builder.Environment.EnvironmentName);
+
         if (builder.Environment.EnvironmentName == "Development")
         {
             var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
