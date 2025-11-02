@@ -49,7 +49,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
       side: Number(formData.get('side'))
     };
     
-    const response = await fetch("https://localhost:7133/api/broker/execute", {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/broker/execute`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

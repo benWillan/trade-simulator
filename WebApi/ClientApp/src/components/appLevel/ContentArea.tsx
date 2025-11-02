@@ -20,6 +20,7 @@ import { StockOption, Stock, StockQuote } from '../../types/charting/types';
 import { NotificationState, NotificationType, NotificationStyle } from '../../types/charting/types';
 import StockLookupModal from './StockLookupModal';
 import TradeModal from './TradeModal';
+import { env } from 'process';
 
 type Props = {
   chartsRendered: 1 | 2 | 3 | 4 | 6 | 8 | 12;
@@ -115,9 +116,9 @@ export function ContentArea({
 
   //  SignalR.
   useEffect(() => {
-    
+
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7133/stockHub",
+      .withUrl(`${process.env.REACT_APP_API_BASE_URL}/stockHub`,
         {
           transport: signalR.HttpTransportType.WebSockets,
           withCredentials: true
@@ -249,7 +250,7 @@ export function ContentArea({
     } 
 
     const ticker = stockOption?.value;
-    const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}&startDate=${startDate}`);
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/stock/stockdata?stockTicker=${ticker}&startDate=${startDate}`);
     const data = await response.json() as Stock;
 
     setGraphData(data);
@@ -261,7 +262,7 @@ export function ContentArea({
     const comparisonTicker = stockOption?.value;
     const mainStockTicker = graphData?.ticker;
 
-    const response = await fetch(`https://localhost:7133/api/stock/comparisondata?mainTicker=${mainStockTicker}&comparisonTicker=${comparisonTicker}`);
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/stock/comparisondata?mainTicker=${mainStockTicker}&comparisonTicker=${comparisonTicker}`);
     const data = await response.json() as Stock;
 
     setComparisonGraphData(prev => {
@@ -274,7 +275,7 @@ export function ContentArea({
   const fetchLookupData = async (stockOption: StockOption | null) => {
 
     const ticker = stockOption?.value;
-    const response = await fetch(`https://localhost:7133/api/stock/stockdata?stockTicker=${ticker}`)
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/stock/stockdata?stockTicker=${ticker}`)
     const data = await response.json() as Stock;
     
     setStockLookupData(prev => prev ? [...prev, data] : [data]);
