@@ -117,7 +117,7 @@ export function ContentArea({
   useEffect(() => {
     
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5027/stockHub",
+      .withUrl("https://localhost:7133/stockHub",
         {
           transport: signalR.HttpTransportType.WebSockets,
           withCredentials: true

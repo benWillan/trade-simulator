@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{A89F8442-9D06-4560-A287-6AE130724976}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrownianBridge", "BrownianBridge\BrownianBridge.csproj", "{0E32D081-D53F-4E93-A509-29FB70D58D8F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,9 +12,5 @@ Global
 		{A89F8442-9D06-4560-A287-6AE130724976}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A89F8442-9D06-4560-A287-6AE130724976}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A89F8442-9D06-4560-A287-6AE130724976}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E32D081-D53F-4E93-A509-29FB70D58D8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E32D081-D53F-4E93-A509-29FB70D58D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E32D081-D53F-4E93-A509-29FB70D58D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E32D081-D53F-4E93-A509-29FB70D58D8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
