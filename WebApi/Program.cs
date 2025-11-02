@@ -67,8 +67,6 @@ public class Program
             });
         });
 
-        builder.Services.AddSignalR();
-        
         // APP.
         var app = builder.Build();
         
