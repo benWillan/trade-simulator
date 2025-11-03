@@ -17,8 +17,8 @@ public class Program
         //  BUILDER.
         var builder = WebApplication.CreateBuilder(args);
         
-        builder.Logging.ClearProviders();
-        builder.Logging.AddConsole();
+        // builder.Logging.ClearProviders();
+        // builder.Logging.AddConsole();
         
         // Add services to the container.
         // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -74,24 +74,26 @@ public class Program
         // APP.
         var app = builder.Build();
         
-        app.MapGet("/diagnostics", (IConfiguration config, IWebHostEnvironment env) =>
+        app.MapGet("/d", (IConfiguration config, IWebHostEnvironment env) =>
         {
             var conn = config.GetConnectionString("DefaultConnection");
+            
             return new
             {
                 Environment = env.EnvironmentName,
                 ConnectionStringLoaded = !string.IsNullOrEmpty(conn),
-                ConnectionStringPreview = conn?.Substring(0, Math.Min(conn.Length, 50))
+                ConnectionStringPreview = conn?.Substring(0, Math.Min(conn.Length, 50)),
+                ConnectionString = conn
             };
         });
 
-        var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        
-        logger.LogInformation("Hosting environment: {env}", builder.Environment.EnvironmentName);
-
-        // Example: log first part of connection string (mask sensitive info)
-        var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-        logger.LogInformation("Connection string (first 20 chars): {conn}", conn?.Substring(0, 20) + "...");
+        // var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        //
+        // logger.LogInformation("Hosting environment: {env}", builder.Environment.EnvironmentName);
+        //
+        // // Example: log first part of connection string (mask sensitive info)
+        // var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+        // logger.LogInformation("Connection string (first 20 chars): {conn}", conn?.Substring(0, 20) + "...");
         
         // Enable static file serving from wwwroot
         app.UseDefaultFiles();
