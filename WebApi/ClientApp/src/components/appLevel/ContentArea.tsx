@@ -115,93 +115,93 @@ export function ContentArea({
   }, [startDate]);
 
   //  SignalR.
-  useEffect(() => {
+  // useEffect(() => {
 
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`${process.env.REACT_APP_API_BASE_URL}/stockHub`,
-        {
-          transport: signalR.HttpTransportType.WebSockets,
-          withCredentials: true
-        })
-      .withAutomaticReconnect()
-      .configureLogging(signalR.LogLevel.Information)
-      .build();
+  //   const connection = new signalR.HubConnectionBuilder()
+  //     .withUrl(`${process.env.REACT_APP_API_BASE_URL}/stockHub`,
+  //       {
+  //         transport: signalR.HttpTransportType.WebSockets,
+  //         withCredentials: true
+  //       })
+  //     .withAutomaticReconnect()
+  //     .configureLogging(signalR.LogLevel.Information)
+  //     .build();
 
-    connectionRef.current = connection;
+  //   connectionRef.current = connection;
 
-    connection
-      .start()
-      .then(() => console.log("Connected to SignalR hub"))
-      .catch((err) => console.error("Connection failed:", err));
+  //   connection
+  //     .start()
+  //     .then(() => console.log("Connected to SignalR hub"))
+  //     .catch((err) => console.error("Connection failed:", err));
 
-    return () => {
-      connection.stop();
-    };
+  //   return () => {
+  //     connection.stop();
+  //   };
 
-  }, []);
+  // }, []);
 
-  const startStream = (chunkSize: number, delayMs: number) => {
+  // const startStream = (chunkSize: number, delayMs: number) => {
 
-    if (!connectionRef.current) return;
+  //   if (!connectionRef.current) return;
 
-    setIsStreaming(true);
+  //   setIsStreaming(true);
 
-    const stockStream = connectionRef.current.stream<StockQuote[]>(
-      "GetStockChunk",
-      graphData?.ticker,
-      chunkSize,
-      delayMs,
-      currentHistoricalDate,
-    );
+  //   const stockStream = connectionRef.current.stream<StockQuote[]>(
+  //     "GetStockChunk",
+  //     graphData?.ticker,
+  //     chunkSize,
+  //     delayMs,
+  //     currentHistoricalDate,
+  //   );
 
-    const stockSubscription = stockStream.subscribe({
-      next: (chunk) => {
+  //   const stockSubscription = stockStream.subscribe({
+  //     next: (chunk) => {
         
-        setGraphData(prev => prev ? {...prev, stockQuotes: [...prev.stockQuotes, ...chunk]} : prev);
+  //       setGraphData(prev => prev ? {...prev, stockQuotes: [...prev.stockQuotes, ...chunk]} : prev);
 
-        setCurrentHistoricalDate(chunk[0].date)
-        //console.log(`Chunk recived, close price ${chunk}`);
-      },
-      complete: () => {
+  //       setCurrentHistoricalDate(chunk[0].date)
+  //       //console.log(`Chunk recived, close price ${chunk}`);
+  //     },
+  //     complete: () => {
 
-        console.log("Stream completed");
-        setIsStreaming(false);
+  //       console.log("Stream completed");
+  //       setIsStreaming(false);
 
-      },
-      error: (err) => {
+  //     },
+  //     error: (err) => {
 
-        console.error("Stream error:", err);
-        setIsStreaming(false);
+  //       console.error("Stream error:", err);
+  //       setIsStreaming(false);
 
-      }
-    });
+  //     }
+  //   });
 
-    streamSubscriptionRef.current = stockSubscription;
+  //   streamSubscriptionRef.current = stockSubscription;
 
-  };
+  // };
 
-  const stopStream = () => {
+  // const stopStream = () => {
 
-    if (streamSubscriptionRef.current) {
-      streamSubscriptionRef.current.dispose();
-      streamSubscriptionRef.current = null;
-    } else {
-      return;
-    }
+  //   if (streamSubscriptionRef.current) {
+  //     streamSubscriptionRef.current.dispose();
+  //     streamSubscriptionRef.current = null;
+  //   } else {
+  //     return;
+  //   }
 
-    setIsStreaming(false);
-    console.log("Stream cancelled by client");
-  };
+  //   setIsStreaming(false);
+  //   console.log("Stream cancelled by client");
+  // };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (isPlaying === true) {
-      startStream(1, 1000);
-    } else {
-      stopStream();
-    }
+  //   if (isPlaying === true) {
+  //     startStream(1, 1000);
+  //   } else {
+  //     stopStream();
+  //   }
 
-  }, [isPlaying]);
+  // }, [isPlaying]);
   //  SignalR end.
 
   const showNotification = (header: NotificationType, body: string, style?: NotificationStyle) => {
