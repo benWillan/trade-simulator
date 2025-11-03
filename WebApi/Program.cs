@@ -17,9 +17,6 @@ public class Program
         //  BUILDER.
         var builder = WebApplication.CreateBuilder(args);
         
-        // builder.Logging.ClearProviders();
-        // builder.Logging.AddConsole();
-        
         // Add services to the container.
         // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
@@ -86,14 +83,6 @@ public class Program
         //         ConnectionString = conn
         //     };
         // });
-
-        // var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        //
-        // logger.LogInformation("Hosting environment: {env}", builder.Environment.EnvironmentName);
-        //
-        // // Example: log first part of connection string (mask sensitive info)
-        // var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-        // logger.LogInformation("Connection string (first 20 chars): {conn}", conn?.Substring(0, 20) + "...");
         
         // Enable static file serving from wwwroot
         app.UseDefaultFiles();
