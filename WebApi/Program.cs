@@ -74,18 +74,18 @@ public class Program
         // APP.
         var app = builder.Build();
         
-        app.MapGet("/d", (IConfiguration config, IWebHostEnvironment env) =>
-        {
-            var conn = config.GetConnectionString("DefaultConnection");
-            
-            return new
-            {
-                Environment = env.EnvironmentName,
-                ConnectionStringLoaded = !string.IsNullOrEmpty(conn),
-                ConnectionStringPreview = conn?.Substring(0, Math.Min(conn.Length, 50)),
-                ConnectionString = conn
-            };
-        });
+        // app.MapGet("/d", (IConfiguration config, IWebHostEnvironment env) =>
+        // {
+        //     var conn = config.GetConnectionString("DefaultConnection");
+        //     
+        //     return new
+        //     {
+        //         Environment = env.EnvironmentName,
+        //         ConnectionStringLoaded = !string.IsNullOrEmpty(conn),
+        //         ConnectionStringPreview = conn?.Substring(0, Math.Min(conn.Length, 50)),
+        //         ConnectionString = conn
+        //     };
+        // });
 
         // var logger = app.Services.GetRequiredService<ILogger<Program>>();
         //
