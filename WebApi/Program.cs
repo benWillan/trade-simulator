@@ -73,6 +73,17 @@ public class Program
 
         // APP.
         var app = builder.Build();
+        
+        app.MapGet("/diagnostics", (IConfiguration config, IWebHostEnvironment env) =>
+        {
+            var conn = config.GetConnectionString("DefaultConnection");
+            return new
+            {
+                Environment = env.EnvironmentName,
+                ConnectionStringLoaded = !string.IsNullOrEmpty(conn),
+                ConnectionStringPreview = conn?.Substring(0, Math.Min(conn.Length, 50))
+            };
+        });
 
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
         
