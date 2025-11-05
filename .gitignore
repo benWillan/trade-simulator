@@ -1,7 +1,10 @@
 # Build Folders
 bin/
 obj/
+
 #BrownianBridge/
+CoreLib/
+StockDataHarvester/
 
 # Visual Studio
 .vs/
