@@ -9,15 +9,13 @@ public class Program
     {
         var builder = Host.CreateApplicationBuilder(args);
 
-        var httpClientName = builder.Configuration["FmpClientName"];
-        
         builder.Services.AddHostedService<Worker>();
-
+        
         builder.Services.AddHttpClient(
-            httpClientName,
+            "FmpClientName",
             client =>
             {
-                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com");
+                client.BaseAddress = new Uri("https://financialmodelingprep.com/stable/");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });
         
