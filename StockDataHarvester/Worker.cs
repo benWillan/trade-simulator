@@ -1,5 +1,5 @@
 using System.Text.Json;
-using CoreLib.Fmp;
+using CoreLib.DTO.Fmp;
 
 namespace StockDataHarvester;
 
@@ -21,7 +21,7 @@ public class Worker : BackgroundService
         var client = _httpClientFactory.CreateClient("FmpClient");
         var fmpApiKey = _config.GetValue<string>("FmpApiKey");
         var stockTicker = "AAPL";
-        
+
         using HttpResponseMessage response = await client.GetAsync($"profile?symbol={stockTicker}&apikey={fmpApiKey}");
         
         var res = response.EnsureSuccessStatusCode();

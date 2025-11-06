@@ -1,3 +1,8 @@
+using CoreLib.Services;
+using Microsoft.EntityFrameworkCore;
+using CoreLib.Context;
+using CoreLib.EFModels;
+using CoreLib.DTO;
 
 namespace StockDataHarvester;
 
@@ -9,8 +14,15 @@ public class Program
 
         builder.Services.AddHostedService<Worker>();
         
+        var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb_Dev") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+
+        builder.Services.AddDbContext<MyDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        builder.Services.AddScoped<IFmpService, FmpService>();
+        
         builder.Services.AddHttpClient(
-            "FmpClientName",
+            "FmpClient",
             client =>
             {
                 client.BaseAddress = new Uri("https://financialmodelingprep.com/stable/");
