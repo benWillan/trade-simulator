@@ -1,6 +1,7 @@
 using CoreLib.Services;
 using Microsoft.EntityFrameworkCore;
-using CoreLib.Context;
+
+//using CoreLib.Context;
 using CoreLib.EFModels;
 using CoreLib.DTO;
 
@@ -16,8 +17,8 @@ public class Program
         
         var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb_Dev") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
 
-        builder.Services.AddDbContext<MyDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        // builder.Services.AddDbContext<MyDbContext>(options =>
+        //     options.UseNpgsql(connectionString));
 
         builder.Services.AddScoped<IFmpService, FmpService>();
         

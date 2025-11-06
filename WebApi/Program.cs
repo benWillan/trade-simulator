@@ -8,7 +8,7 @@ using Microsoft.Identity.Web.Resource;
 using WebApi.Services;
 using WebApi.Hubs;
 
-using CoreLib.Context;
+//using CoreLib.Context;
 
 namespace WebApi;
 
@@ -29,29 +29,29 @@ public class Program
 
         Console.WriteLine(builder.Environment.EnvironmentName);
 
-        if (builder.Environment.EnvironmentName == "Development")
-        {
-            var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
-
-            builder.Services.AddDbContext<MyDbContext>(options =>
-                options.UseNpgsql(connectionString));
-        }
-        else if (builder.Environment.EnvironmentName == "Production")
-        {
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
-            Console.WriteLine($"conn string is: {connectionString}");
-
-            builder.Services.AddDbContext<MyDbContext>(options =>
-                options.UseNpgsql(connectionString));
-        }
-        else
-        {
-            Console.WriteLine("Environment name set incorrectly");
-            return;
-        }
+        // if (builder.Environment.EnvironmentName == "Development")
+        // {
+        //     var connectionString = builder.Configuration.GetConnectionString("TradeSimulatorDb") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+        //
+        //     builder.Services.AddDbContext<MyDbContext>(options =>
+        //         options.UseNpgsql(connectionString));
+        // }
+        // else if (builder.Environment.EnvironmentName == "Production")
+        // {
+        //     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+        //     Console.WriteLine($"conn string is: {connectionString}");
+        //
+        //     builder.Services.AddDbContext<MyDbContext>(options =>
+        //         options.UseNpgsql(connectionString));
+        // }
+        // else
+        // {
+        //     Console.WriteLine("Environment name set incorrectly");
+        //     return;
+        // }
         
-        builder.Services.AddScoped<IStockQuoteService, StockQuoteService>();
-        builder.Services.AddScoped<ITradeOrderService, TradeOrderService>();
+        // builder.Services.AddScoped<IStockQuoteService, StockQuoteService>();
+        // builder.Services.AddScoped<ITradeOrderService, TradeOrderService>();
         
         builder.Services.AddControllers();
         
