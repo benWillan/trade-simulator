@@ -12,7 +12,7 @@ namespace WebApi.Hubs;
 
 public class StockHub : Hub
 {
-     private readonly MyDbContext _context;
+    private readonly MyDbContext _context;
     private static ConcurrentDictionary<string, CancellationTokenSource> _userStreams = new();
 
      public StockHub(MyDbContext dbContext)
