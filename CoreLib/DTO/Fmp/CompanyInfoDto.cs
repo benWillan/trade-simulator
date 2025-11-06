@@ -5,7 +5,6 @@ public class CompanyInfoDto
     public int Id { get; set; }
     public string Symbol { get; set; } = null!;
     public decimal Price { get; set; }
-    public long MarketCap { get; set; }
     public double Beta { get; set; }
     public decimal LastDividend { get; set; }
     public string? Range { get; set; }

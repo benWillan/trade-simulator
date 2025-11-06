@@ -11,7 +11,7 @@ public partial class stock_fmp_datum
 
     public decimal? price { get; set; }
 
-    public long? market_cap { get; set; }
+    //public long? market_cap { get; set; }
 
     public double? beta { get; set; }
 

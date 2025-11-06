@@ -7,19 +7,43 @@ namespace StockDataHarvester;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
-    private readonly IFmpService _fmpService;
+    //private readonly IFmpService _fmpService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public Worker(ILogger<Worker> logger, IFmpService fmpService)
+    public Worker(ILogger<Worker> logger, IServiceProvider serviceProvider)
     {
         _logger = logger;
-        _fmpService = fmpService;
+        //_fmpService = fmpService;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var res = await _fmpService.GetFmpDataForStock("AAPL");
-        
-        while (!stoppingToken.IsCancellationRequested)
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var _fmpService = scope.ServiceProvider.GetRequiredService<IFmpService>();
+
+            var ticker = "MSFT";
+            var data = await _fmpService.GetFmpDataForStock(ticker);
+            var first = data.FirstOrDefault();
+
+            if (first is not null)
+            {
+                var saveChangesResult = await _fmpService.CreateStockFmpRecord(first);
+
+                if (saveChangesResult == 1)
+                {
+                    Console.WriteLine($"{ticker} fmp record created");
+                    return;
+                }
+
+                Console.WriteLine($"{ticker} failed to save.");
+            }
+
+            return;
+        }
+
+    while (!stoppingToken.IsCancellationRequested)
         {
             if (_logger.IsEnabled(LogLevel.Information))
             {
