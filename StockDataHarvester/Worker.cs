@@ -7,32 +7,17 @@ namespace StockDataHarvester;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IConfiguration _config;
+    private readonly IFmpService _fmpService;
 
-    public Worker(ILogger<Worker> logger, IHttpClientFactory httpClientFactory, IConfiguration config)
+    public Worker(ILogger<Worker> logger, IFmpService fmpService)
     {
-        _httpClientFactory = httpClientFactory;
         _logger = logger;
-        _config = config;
+        _fmpService = fmpService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var client = _httpClientFactory.CreateClient("FmpClient");
-        var fmpApiKey = _config.GetValue<string>("FmpApiKey");
-        var stockTicker = "AAPL";
-
-        using HttpResponseMessage response = await client.GetAsync($"profile?symbol={stockTicker}&apikey={fmpApiKey}");
-        
-        var res = response.EnsureSuccessStatusCode();
-
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-
-        var deserializedDto = JsonSerializer.Deserialize<IEnumerable<CompanyInfoDto>>(jsonResponse, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var res = await _fmpService.GetFmpDataForStock("AAPL");
         
         while (!stoppingToken.IsCancellationRequested)
         {

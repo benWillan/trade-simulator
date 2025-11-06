@@ -4,5 +4,6 @@ namespace CoreLib.Services;
 
 public interface IFmpService
 {
-    Task<CompanyInfoDto?> GetFmpDataForStock();
+    Task<IEnumerable<CompanyInfoDto?>> GetFmpDataForStock(string stockTicker);
+    Task CreateStockFmpRecord();
 }
