@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using WebApi.EFModels;
+
+//using WebApi.EFModels;
+using CoreLib.EFModels;
 
 namespace WebApi.Context;
 

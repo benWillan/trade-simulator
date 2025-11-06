@@ -1,6 +1,6 @@
-namespace WebApi.DTO;
-
 using WebApi.EFModels;
+
+namespace WebApi.DTO;
 
 public class StockDto
 {

@@ -1,5 +1,8 @@
-using WebApi.DTO;
-using WebApi.EFModels;
+// using WebApi.EFModels;
+// using WebApi.DTO;
+
+using CoreLib.EFModels;
+using CoreLib.DTO;
 
 namespace WebApi.Services;
 
