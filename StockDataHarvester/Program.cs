@@ -1,5 +1,3 @@
-using WebApi.EFModels;
-using WebApi.Services;
 
 namespace StockDataHarvester;
 

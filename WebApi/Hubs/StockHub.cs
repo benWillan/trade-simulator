@@ -8,9 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using CoreLib.Context;
 using CoreLib.EFModels;
 
-// using WebApi.Context;
-// using WebApi.EFModels;
-
 namespace WebApi.Hubs;
 
 public class StockHub : Hub

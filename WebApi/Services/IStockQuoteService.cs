@@ -1,6 +1,3 @@
-// using WebApi.EFModels;
-// using WebApi.DTO;
-
 using CoreLib.EFModels;
 using CoreLib.DTO;
 

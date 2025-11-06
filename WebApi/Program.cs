@@ -5,7 +5,6 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Abstractions;
 using Microsoft.Identity.Web.Resource;
 
-//using WebApi.Context;
 using WebApi.Services;
 using WebApi.Hubs;
 
