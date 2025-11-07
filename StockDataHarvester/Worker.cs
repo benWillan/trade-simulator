@@ -23,22 +23,24 @@ public class Worker : BackgroundService
         {
             var _fmpService = scope.ServiceProvider.GetRequiredService<IFmpService>();
 
-            var ticker = "MSFT";
-            var data = await _fmpService.GetFmpDataForStock(ticker);
-            var first = data.FirstOrDefault();
+            await _fmpService.CreateStockFmpRecord_Test();
 
-            if (first is not null)
-            {
-                var saveChangesResult = await _fmpService.CreateStockFmpRecord(first);
+            //var ticker = "MSFT";
+            //var data = await _fmpService.GetFmpDataForStock(ticker);
+            //var first = data.FirstOrDefault();
 
-                if (saveChangesResult == 1)
-                {
-                    Console.WriteLine($"{ticker} fmp record created");
-                    return;
-                }
-
-                Console.WriteLine($"{ticker} failed to save.");
-            }
+            // if (first is not null)
+            // {
+            //     var saveChangesResult = await _fmpService.CreateStockFmpRecord(first);
+            //
+            //     if (saveChangesResult == 1)
+            //     {
+            //         Console.WriteLine($"{ticker} fmp record created");
+            //         return;
+            //     }
+            //
+            //     Console.WriteLine($"{ticker} failed to save.");
+            // }
 
             return;
         }

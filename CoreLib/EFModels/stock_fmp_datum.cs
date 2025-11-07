@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreLib.EFModels;
 
+[Table("stock_fmp_data", Schema = "public")]
 public partial class stock_fmp_datum
 {
     public int id { get; set; }
