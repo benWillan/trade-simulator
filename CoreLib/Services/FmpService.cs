@@ -86,10 +86,7 @@ public class FmpService: IFmpService
             is_fund = false,
         };
 
-        var res = _context.stock_fmp_data.Add(recordToAdd);
-        var dbConnectionString = _context.Database.GetConnectionString();
-        var dbConnection = _context.Database.GetDbConnection();
-        
+        var res = await _context.stock_fmp_data.AddAsync(recordToAdd);
 
         return await _context.SaveChangesAsync();
     }
