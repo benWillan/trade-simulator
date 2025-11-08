@@ -21,7 +21,7 @@ public class Worker : BackgroundService
     {
         Console.WriteLine($"Stock Harvester Started @{DateTime.Now}");
         var random = new Random();
-        var upperRange = random.Next(8_000, 100_000);
+        var upperRange = random.Next(8_000, 10_000);
         
         while (!stoppingToken.IsCancellationRequested)
         {
