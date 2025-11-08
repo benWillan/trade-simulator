@@ -141,7 +141,7 @@ public class FmpService: IFmpService
         return companyInfo;
     }
 
-    public async Task<int> CreateStockFmpRecords(CompanyInfoDto companyInfoDto)
+    public async Task<int> CreateStockFmpRecords(CompanyInfoDto? companyInfoDto)
     {
         var recordToAdd = new stock_fmp_datum
         {

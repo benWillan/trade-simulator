@@ -19,45 +19,52 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        Console.WriteLine($"Stock Harvester Started @{DateTime.Now}");
+        var random = new Random();
+        var upperRange = random.Next(8_000, 100_000);
+        
         while (!stoppingToken.IsCancellationRequested)
         {
-            // if (_logger.IsEnabled(LogLevel.Information))
-            // {
-            //     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            // }
-        
-            using var scope = _serviceProvider.CreateScope();
-            var _fmpService = scope.ServiceProvider.GetRequiredService<IFmpService>();
-        
-            var stock = await _fmpService.GetRandomStockWithNoSecurityName();
-            var tickerOfRandomStock = stock.Ticker;
-            
-            //var fmpData = await _fmpService.GetFmpDataForStock_Test();
-            var fmpData = await _fmpService.GetFmpDataForStock(tickerOfRandomStock);
-            
-            if (fmpData is null) return;
-            
-            var saveChangesResult = await _fmpService.CreateStockFmpRecords(fmpData);
-            
-            if (saveChangesResult == 2)
+            try
             {
-                Console.WriteLine($"{tickerOfRandomStock} fmp record created at {DateTime.Now}");
-                await Task.Delay(180_000, stoppingToken);
+                using var scope = _serviceProvider.CreateScope();
+                var _fmpService = scope.ServiceProvider.GetRequiredService<IFmpService>();
+
+                var stock = await _fmpService.GetRandomStockWithNoSecurityName();
+                var tickerOfRandomStock = stock.Ticker;
+
+                //var fmpData = await _fmpService.GetFmpDataForStock_Test();
+                var fmpData = await _fmpService.GetFmpDataForStock(tickerOfRandomStock);
+
+                if (fmpData is null)
+                {
+                    Console.WriteLine($"Fmp fetch data was null at {DateTime.Now}");
+                    await Task.Delay(random.Next(2000, upperRange), stoppingToken);
+                    continue;
+                }
+
+                var saveChangesResult = await _fmpService.CreateStockFmpRecords(fmpData);
+
+                var logMessage = saveChangesResult == 2
+                    ? $"{tickerOfRandomStock} fmp record created at {DateTime.Now}"
+                    : $"{tickerOfRandomStock} failed to save to db after fetching fmp data at {DateTime.Now}.";
+
+                Console.WriteLine(logMessage);
+
+                await Task.Delay(random.Next(2000, upperRange), stoppingToken);
             }
-            
-            Console.WriteLine($"{tickerOfRandomStock} failed to save at {DateTime.Now}.");
-            await Task.Delay(180_000, stoppingToken);
+            catch (JsonException jex)
+            {
+                // catch JSON parsing errors
+                Console.WriteLine($"JSON parsing error for stock: {jex.Message}");
+                await Task.Delay(random.Next(2000, upperRange), stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                // catch all other exceptions
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                await Task.Delay(random.Next(2000, upperRange), stoppingToken);
+            }
         }
-        
-        // while (!stoppingToken.IsCancellationRequested)
-        // {
-        //     if (_logger.IsEnabled(LogLevel.Information))
-        //     {
-        //         _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-        //     }
-        //     
-        //     await Task.Delay(1000, stoppingToken);
-        // }
-        
     }
 }
