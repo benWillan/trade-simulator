@@ -19,40 +19,45 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using (var scope = _serviceProvider.CreateScope())
+        while (!stoppingToken.IsCancellationRequested)
         {
-            var _fmpService = scope.ServiceProvider.GetRequiredService<IFmpService>();
-
-            await _fmpService.CreateStockFmpRecord_Test();
-
-            //var ticker = "MSFT";
-            //var data = await _fmpService.GetFmpDataForStock(ticker);
-            //var first = data.FirstOrDefault();
-
-            // if (first is not null)
+            // if (_logger.IsEnabled(LogLevel.Information))
             // {
-            //     var saveChangesResult = await _fmpService.CreateStockFmpRecord(first);
-            //
-            //     if (saveChangesResult == 1)
-            //     {
-            //         Console.WriteLine($"{ticker} fmp record created");
-            //         return;
-            //     }
-            //
-            //     Console.WriteLine($"{ticker} failed to save.");
+            //     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             // }
-
-            return;
-        }
-
-    while (!stoppingToken.IsCancellationRequested)
-        {
-            if (_logger.IsEnabled(LogLevel.Information))
+        
+            using var scope = _serviceProvider.CreateScope();
+            var _fmpService = scope.ServiceProvider.GetRequiredService<IFmpService>();
+        
+            var stock = await _fmpService.GetRandomStockWithNoSecurityName();
+            var tickerOfRandomStock = stock.Ticker;
+            
+            //var fmpData = await _fmpService.GetFmpDataForStock_Test();
+            var fmpData = await _fmpService.GetFmpDataForStock(tickerOfRandomStock);
+            
+            if (fmpData is null) return;
+            
+            var saveChangesResult = await _fmpService.CreateStockFmpRecords(fmpData);
+            
+            if (saveChangesResult == 2)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                Console.WriteLine($"{tickerOfRandomStock} fmp record created at {DateTime.Now}");
+                await Task.Delay(180_000, stoppingToken);
             }
-
-            await Task.Delay(1000, stoppingToken);
+            
+            Console.WriteLine($"{tickerOfRandomStock} failed to save at {DateTime.Now}.");
+            await Task.Delay(180_000, stoppingToken);
         }
+        
+        // while (!stoppingToken.IsCancellationRequested)
+        // {
+        //     if (_logger.IsEnabled(LogLevel.Information))
+        //     {
+        //         _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+        //     }
+        //     
+        //     await Task.Delay(1000, stoppingToken);
+        // }
+        
     }
 }

@@ -1,9 +1,11 @@
 using CoreLib.Context;
 using CoreLib.DTO.Fmp;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using CoreLib.EFModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using CoreLib.DTO;
 
 namespace CoreLib.Services;
 
@@ -21,7 +23,7 @@ public class FmpService: IFmpService
          _fmpApiKey = config.GetValue<string>("FmpApiKey");
      }
     
-    public async Task<IEnumerable<CompanyInfoDto?>> GetFmpDataForStock(string stockTicker)
+    public async Task<CompanyInfoDto?> GetFmpDataForStock(string stockTicker)
     {
         var client = _httpClientFactory.CreateClient("FmpClient");
 
@@ -42,14 +44,16 @@ public class FmpService: IFmpService
             PropertyNameCaseInsensitive = true
         });
 
-        return deserializedDto;
+        var data = deserializedDto?.FirstOrDefault() ?? null;
+
+        return data;
     }
     
     public async Task<int> CreateStockFmpRecord_Test()
     {
         var recordToAdd = new stock_fmp_datum
         {
-            symbol = "AAPL",
+            symbol = "AAAP",
             price = 172.50m,
             beta = 1.25,
             last_dividend = 0.88m,
@@ -91,7 +95,53 @@ public class FmpService: IFmpService
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<int> CreateStockFmpRecord(CompanyInfoDto companyInfoDto)
+    public async Task<CompanyInfoDto?> GetFmpDataForStock_Test()
+    {
+        var companyInfo = new CompanyInfoDto
+        {
+            Symbol = "AAAP",
+            Price = 172.50m,
+            Beta = 1.25,
+            LastDividend = 0.88m,
+            Range = "170-180",
+            Change = -1.15m,
+            ChangePercentage = -0.66,
+            Volume = 25000000,
+            AverageVolume = 30000000,
+            CompanyName = "Test Company",
+            Currency = "USD",
+            Cik = "0000320193",
+            Isin = "US0378331005",
+            Cusip = "037833100",
+            ExchangeFullName = "NASDAQ Stock Exchange",
+            Exchange = "NASDAQ",
+            Industry = "Technology",
+            Website = "https://www.apple.com",
+            Description = "Apple Inc. designs, manufactures, and markets consumer electronics and software products.",
+            Ceo = "Tim Cook",
+            Sector = "Technology",
+            Country = "USA",
+            FullTimeEmployees = "164000",
+            Phone = "1-408-996-1010",
+            Address = "One Apple Park Way",
+            City = "Cupertino",
+            State = "CA",
+            Zip = "95014",
+            Image = "https://logo.clearbit.com/apple.com",
+            IpoDate = new DateTime(1980, 12, 12),
+            DefaultImage = true,
+            IsEtf = false,
+            IsActivelyTrading = true,
+            IsAdr = false,
+            IsFund = false
+        };
+
+        await Task.Delay(1000);
+
+        return companyInfo;
+    }
+
+    public async Task<int> CreateStockFmpRecords(CompanyInfoDto companyInfoDto)
     {
         var recordToAdd = new stock_fmp_datum
         {
@@ -132,13 +182,64 @@ public class FmpService: IFmpService
             is_fund = companyInfoDto.IsFund
         };
 
-        var res = await _context.stock_fmp_data.AddAsync(recordToAdd);
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            await _context.stock_fmp_data.AddAsync(recordToAdd);
+
+            var stock = new Stock
+            {
+                Ticker = companyInfoDto.Symbol,
+                SecurityName = companyInfoDto.CompanyName
+            };
+            
+            await _context.Stocks.AddAsync(stock);
+
+            var saveResult =  await _context.SaveChangesAsync();
+
+            if (saveResult != 2) await transaction.RollbackAsync();
+            
+            await transaction.CommitAsync();
+            
+            return saveResult;
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+
+    public async Task<int> CreateSecnameReference(string ticker, string companyName)
+    {
+        var stock = await _context.Stocks
+            .FirstOrDefaultAsync(s => s.Ticker == ticker);
+
+        if (stock != null)
+        {
+            stock.SecurityName = companyName;
+        }
 
         return await _context.SaveChangesAsync();
     }
 
-    // public Task<string> GetRandomStockWithNoSecurityName()
-    // {
-    //     throw new NotImplementedException();
-    // }
+    public async Task<SelectedStockDto> GetRandomStockWithNoSecurityName()
+    {
+        var stocksWithoutSecurityName = await _context.StockQuotes
+            .Where(sq => !_context.Stocks
+                .Any(s => s.Ticker == sq.StockSymbol))
+            .GroupBy(sq => sq.StockSymbol)
+            .Select(g => new SelectedStockDto()
+            {
+                Ticker = g.Key,
+                SecurityName = ""
+            })
+            .ToListAsync();
+        
+        var random = new Random();
+        var randomQuote = stocksWithoutSecurityName[random.Next(stocksWithoutSecurityName.Count)];
+
+        return randomQuote;
+    }
 }

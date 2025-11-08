@@ -19,5 +19,5 @@ public partial class StockQuote
 
     public long? Volume { get; set; }
 
-    public virtual Stock StockSymbolNavigation { get; set; } = null!;
+    public virtual Stock? StockSymbolNavigation { get; set; } = null!;
 }
