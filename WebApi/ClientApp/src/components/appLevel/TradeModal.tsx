@@ -28,7 +28,6 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
   const [orderTypeValue, setOrderTypeValue] = useState(1);
   const [sideValue, setSideValue] = useState(1);
 
-  const [orderPriceIsDisabled, setOrderPriceIsDisabled] = useState<boolean>(false);
   const [stopLossIsDisabled, setStopLossIsDisabled] = useState<boolean>(true);
   const [takeProfitIsDisabled, setTakeProfitIsDisabled] = useState<boolean>(true);
 
