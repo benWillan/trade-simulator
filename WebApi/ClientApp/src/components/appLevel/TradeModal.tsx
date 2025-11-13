@@ -139,6 +139,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
             </Row>
             <Row>
               <h6>{graphData?.stockQuotes.at(-1)?.bidPrice.toFixed(3)} - {graphData?.stockQuotes.at(-1)?.askPrice.toFixed(3)}</h6>
+              <h6>Available volume: {graphData?.stockQuotes.at(-1)?.availableVolume.toLocaleString()}</h6>
             </Row>
             <Row>
               <ButtonGroup>

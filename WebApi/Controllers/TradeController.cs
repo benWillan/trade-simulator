@@ -9,10 +9,10 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BrokerController: ControllerBase
+public class TradeController: ControllerBase
 {
     private readonly ITradeOrderService _tradeOrderService;
-    public BrokerController(ITradeOrderService tradeOrderService)
+    public TradeController(ITradeOrderService tradeOrderService)
     {
         _tradeOrderService = tradeOrderService;
     }

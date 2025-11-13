@@ -44,4 +44,19 @@ public partial class StockQuote
     
     [NotMapped]
     public decimal? AskPrice => MidPrice * (1 + Spread / 2);
+    
+    [NotMapped]
+    public long? AvailableVolume
+    {
+        get
+        {
+            if (Volume is not null)
+            {
+                //  0.1% available volume to buy approximation;
+                return (long)Math.Round((decimal)Volume * 0.001m);
+            }
+
+            return null;
+        }
+    }
 }

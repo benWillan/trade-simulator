@@ -11,15 +11,16 @@ export interface TickerSecNameCombination {
 // StockQuote matches C# StockQuote
 export interface StockQuote {
   stockSymbol: string;
-  date: string;         // DateTime in JSON is serialized as an ISO string
-  openPrice?: number;   // nullable -> optional property
+  date: string;         
+  openPrice?: number;   
   highPrice?: number;
   lowPrice?: number;
   closePrice?: number;
   volume?: number;
   stockSymbolNavigation?: Stock; // navigation property (optional to avoid circular refs)
   bidPrice: number,
-  askPrice: number
+  askPrice: number,
+  availableVolume: number
 }
 
 // Stock matches C# Stock
