@@ -106,7 +106,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
       backdropClassName="backdrop-click-through"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Trade</Modal.Title>
+        <Modal.Title>Trade Order</Modal.Title>
       </Modal.Header>
 
       <Form ref={formRef} onSubmit={handleTradeSubmit}>
@@ -115,8 +115,9 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
           <Form.Control type='hidden' name='stockId' value={graphData?.id}></Form.Control>
           <Form.Control type='hidden' name='createdAt' value={currentHistoricalDateTime ?? "date error"}></Form.Control>
           <Form.Control type='hidden' name='stockId' value={graphData?.id}></Form.Control>
-          <h6 style={{textAlign:"center"}}>{graphData?.securityName}</h6>
-          <h5 style={{textAlign:"center"}}>{graphData?.ticker}</h5>
+          <h6 style={{textAlign:"center"}}>{graphData?.securityName} [{graphData?.ticker}]</h6>
+          <hr />
+          {/* <h5 style={{textAlign:"center"}}>{graphData?.ticker}</h5> */}
             <Row>
               <div>
                 <ButtonGroup>
@@ -138,7 +139,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
               </div>
             </Row>
             <Row>
-              <h6>{graphData?.stockQuotes.at(-1)?.bidPrice.toFixed(3)} - {graphData?.stockQuotes.at(-1)?.askPrice.toFixed(3)}</h6>
+              <h6>${graphData?.stockQuotes.at(-1)?.bidPrice.toFixed(3)} - ${graphData?.stockQuotes.at(-1)?.askPrice.toFixed(3)}</h6>
               <h6>Available volume: {graphData?.stockQuotes.at(-1)?.availableVolume.toLocaleString()}</h6>
             </Row>
             <Row>
