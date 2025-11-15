@@ -14,17 +14,15 @@ public class TradeOrderService : ITradeOrderService
         _context = context;
     }
 
-    public async Task<TradeOrderDto?> CreateTradeOrder(TradeOrderDto? tradeOrder)
+    public async Task<TradeOrderDto?> CreateTradeOrder(TradeOrderDto tradeOrder)
     {
-        if (tradeOrder is null) return null;
-
         var orderToAdd = new Order
         {
             user_id = tradeOrder.UserId,
             stock_id = tradeOrder.StockId,
-            quantity = tradeOrder.Quantity,
-            price = tradeOrder.Price,
             order_type = (int)tradeOrder.OrderType,
+            price = tradeOrder.Price,
+            quantity = tradeOrder.Quantity,
             side = (int)tradeOrder.Side,
             created_at = DateTime.Now
         };
@@ -40,6 +38,7 @@ public class TradeOrderService : ITradeOrderService
         var response = new TradeOrderDto
         {
             Price = orderToAdd.price,
+            //Price = 15.15m,
             StockTicker = orderToAdd.stock.Ticker,
             Side = (Side)orderToAdd.side,
             OrderType = (OrderType)orderToAdd.order_type
@@ -48,8 +47,4 @@ public class TradeOrderService : ITradeOrderService
         return response;
     }
 
-    // public async Task<TradeOrderDto?> GetTradeOrders()
-    // {
-    //     
-    // }
 }

@@ -21,7 +21,9 @@ public class Worker : BackgroundService
     {
         Console.WriteLine($"Stock Harvester Started @{DateTime.Now}");
         var random = new Random();
-        var upperRange = random.Next(1_500, 1_750);
+
+        var lowerRange = 500;
+        var upperRange = random.Next(750, 1000);
         
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -39,7 +41,7 @@ public class Worker : BackgroundService
                 if (fmpData is null)
                 {
                     Console.WriteLine($"Fmp fetch data was null at {DateTime.Now}");
-                    await Task.Delay(random.Next(1000, upperRange), stoppingToken);
+                    await Task.Delay(random.Next(lowerRange, upperRange), stoppingToken);
                     continue;
                 }
 
@@ -51,19 +53,19 @@ public class Worker : BackgroundService
 
                 Console.WriteLine(logMessage);
 
-                await Task.Delay(random.Next(1000, upperRange), stoppingToken);
+                await Task.Delay(random.Next(lowerRange, upperRange), stoppingToken);
             }
             catch (JsonException jex)
             {
                 // catch JSON parsing errors
                 Console.WriteLine($"JSON parsing error for stock: {jex.Message}");
-                await Task.Delay(random.Next(1000, upperRange), stoppingToken);
+                await Task.Delay(random.Next(lowerRange, upperRange), stoppingToken);
             }
             catch (Exception ex)
             {
                 // catch all other exceptions
                 Console.WriteLine($"Unexpected error: {ex.Message}");
-                await Task.Delay(random.Next(1000, upperRange), stoppingToken);
+                await Task.Delay(random.Next(lowerRange, upperRange), stoppingToken);
             }
         }
     }

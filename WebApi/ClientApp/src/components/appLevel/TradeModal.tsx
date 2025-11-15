@@ -38,22 +38,25 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const entries = Object.fromEntries(formData.entries());
+    //const entries = Object.fromEntries(formData.entries());
 
     const payload = {
       userId: formData.get('userId'),
       stockId: formData.get('stockId'),
       orderType: Number(formData.get('orderType')),
       price: formData.get('price'),
+      stopPrice: formData.get('stopPrice'),
       quantity: formData.get('quantity'),
       side: Number(formData.get('side'))
     };
     
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/broker/execute`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/trade/execute`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
 
     const data = await response.json() as Order;
 
@@ -139,8 +142,9 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
               </div>
             </Row>
             <Row>
-              <h6>${graphData?.stockQuotes.at(-1)?.bidPrice.toFixed(3)} - ${graphData?.stockQuotes.at(-1)?.askPrice.toFixed(3)}</h6>
+              <h6>${graphData?.stockQuotes.at(-1)?.bidPrice.toFixed(3)} (Bid) - ${graphData?.stockQuotes.at(-1)?.askPrice.toFixed(3)} (Ask)</h6>
               <h6>Available volume: {graphData?.stockQuotes.at(-1)?.availableVolume.toLocaleString()}</h6>
+              <h6>Available short: {graphData?.stockQuotes.at(-1)?.availableShort.toLocaleString()}</h6>
             </Row>
             <Row>
               <ButtonGroup>
@@ -163,14 +167,22 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
             <Row>
               <Col>
                 <Form.Group>
-                  <Form.Label>Price</Form.Label>
-                  <Form.Control type='number' disabled={orderTypeValue === 1} name='price' min={0.01} step={0.01} placeholder='$'></Form.Control>
+                  <Form.Label>Price ($)</Form.Label>
+                  <Form.Control type='number' name='price' readOnly={orderTypeValue === 1} value={orderTypeValue === 1 ? graphData?.stockQuotes.at(-1)?.askPrice.toFixed(2) : ""} min={0.01} step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
                   <Form.Control type='number' name='quantity' step={0.001} placeholder='Units'></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col className='col-6'>
+                <Form.Group>
+                  <Form.Label>Stop Price ($)</Form.Label>
+                  <Form.Control type='number' disabled={orderTypeValue !== 4} name='stopPrice' min={0.01} step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
             </Row>

@@ -7,9 +7,8 @@ export type Order = {
   orderType: number;
   quantity: number;
   price: number;
+  stopPrice: number | null;
   status: number;
-  stopLoss: number | null;
-  takeProfit: number | null;
   createdAt: Date;
   recordedAt: Date | null;
   executedAt: Date | null;

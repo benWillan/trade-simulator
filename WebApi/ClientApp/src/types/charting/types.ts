@@ -20,7 +20,8 @@ export interface StockQuote {
   stockSymbolNavigation?: Stock; // navigation property (optional to avoid circular refs)
   bidPrice: number,
   askPrice: number,
-  availableVolume: number
+  availableVolume: number,
+  availableShort: number,
 }
 
 // Stock matches C# Stock

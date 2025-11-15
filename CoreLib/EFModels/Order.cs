@@ -15,7 +15,7 @@ public partial class Order
 
     public decimal quantity { get; set; }
 
-    public decimal price { get; set; }
+    public decimal? price { get; set; }
 
     public int status { get; set; }
 

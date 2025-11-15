@@ -28,16 +28,9 @@ public class TradeController: ControllerBase
     {
         if (tradeOrder is null) return BadRequest();
         
-        // Console.WriteLine("Payload");
-        // Console.WriteLine("--------");
-        // Console.WriteLine($"UserId: {payload.UserId}");
-        // Console.WriteLine($"StockId: {payload.StockId}");
-        // Console.WriteLine($"OrderType: {payload.OrderType}");
-        // Console.WriteLine($"Price: {payload.Price}");
-        // Console.WriteLine($"Quantity: {payload.Quantity}");
-        // Console.WriteLine($"Side: {payload.Side}");
-
         var orderAdded = await _tradeOrderService.CreateTradeOrder(tradeOrder);
+
+        if (orderAdded is null) return BadRequest();
         
         return Ok(orderAdded);
     }

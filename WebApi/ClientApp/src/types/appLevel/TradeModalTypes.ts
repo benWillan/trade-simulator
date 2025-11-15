@@ -13,7 +13,6 @@ export const orderType: RadioOption[] = [
   { name: 'Limit', value: 2},
   { name: 'Stop', value: 3},
   { name: 'Stop Limit', value: 4},
-  // { name: 'Trailing Stop', value: '5'}
 ];
 
 export const OrderTypeEnum: Record<number, string> = {

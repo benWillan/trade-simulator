@@ -4,6 +4,8 @@ namespace CoreLib.EFModels;
 
 public partial class StockQuote
 {
+    private static readonly Random _rnd = new Random();
+    
     [NotMapped]
     public decimal? Volatility
     {
@@ -52,8 +54,27 @@ public partial class StockQuote
         {
             if (Volume is not null)
             {
-                //  0.1% available volume to buy approximation;
-                return (long)Math.Round((decimal)Volume * 0.001m);
+                //  0.1% available volume to buy approximation.
+                return (long)Math.Round((decimal)Volume * 0.01m);
+            }
+
+            return null;
+        }
+    }
+
+    [NotMapped]
+    public double? AvailableShort
+    {
+        get
+        {
+            if (Volume is not null)
+            {
+                double minFraction = 0.005;
+                double maxFraction = 0.015;
+
+                double fraction = _rnd.NextDouble() * (maxFraction - minFraction) + minFraction;
+
+                return (long)((double)Volume * fraction);
             }
 
             return null;
