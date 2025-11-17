@@ -23,6 +23,8 @@ Trade Simulator is a lightweight stock trading web application. It provides inte
 - FIX Protocol implementation.
 - Bot traders.
 - ETF/Crpyto/Forex integration.
+- Multiple trade charts per window.
+- Watchlist/alert feature.
 
 ## **Tech-stack:**
 - C# .NET Core Web Api
