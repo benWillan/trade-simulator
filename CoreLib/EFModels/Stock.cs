@@ -30,4 +30,6 @@ public partial class Stock
     public string? NASDAQSymbol { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ICollection<StockQuote> StockQuotes { get; set; } = new List<StockQuote>();
 }

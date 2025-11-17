@@ -48,46 +48,44 @@ public class StockHub : Hub
         DateTime? startDate,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        // var stockData = await _context.Stocks
-        //     .AsNoTracking()
-        //     .Include(s => s.StockQuotes)
-        //     .Where(stock => stock.Ticker == ticker)
-        //     .Select(s => new Stock
-        //     {
-        //         StockQuotes = s.StockQuotes
-        //             .Where(sq => !startDate.HasValue || sq.Date > startDate.Value.Date)
-        //             .OrderBy(sq => sq.Date)
-        //             .Select(sq => new StockQuote
-        //             {
-        //                 StockSymbol = s.Ticker,
-        //                 Date = sq.Date,
-        //                 ClosePrice = sq.ClosePrice,
-        //                 OpenPrice = sq.OpenPrice,
-        //                 HighPrice = sq.HighPrice,
-        //                 LowPrice = sq.LowPrice,
-        //                 Volume = sq.Volume,
-        //             })
-        //             .ToList()
-        //     })
-        //     .ToListAsync();
-        //
-        // for (var i = 0; i < stockData.FirstOrDefault()?.StockQuotes.Count; i += chunkSize)
-        // {
-        //     if (cancellationToken.IsCancellationRequested)
-        //         yield break;
-        //     
-        //     if (delayMs > 0)
-        //         await Task.Delay(delayMs, cancellationToken);
-        //
-        //     //var chunk = stockData.FirstOrDefault()?.StockQuotes.ElementAt(i);
-        //     var chunk = stockData.FirstOrDefault()?.StockQuotes.Skip(i).Take(chunkSize).ToList();
-        //
-        //     if (chunk is null) yield break;
-        //     
-        //     yield return chunk;
-        // }
-
-        yield return null;
+        var stockData = await _context.Stocks
+            .AsNoTracking()
+            .Include(s => s.StockQuotes)
+            .Where(stock => stock.Ticker == ticker)
+            .Select(s => new Stock
+            {
+                StockQuotes = s.StockQuotes
+                    .Where(sq => !startDate.HasValue || sq.Date > startDate.Value.Date)
+                    .OrderBy(sq => sq.Date)
+                    .Select(sq => new StockQuote
+                    {
+                        StockSymbol = s.Ticker,
+                        Date = sq.Date,
+                        ClosePrice = sq.ClosePrice,
+                        OpenPrice = sq.OpenPrice,
+                        HighPrice = sq.HighPrice,
+                        LowPrice = sq.LowPrice,
+                        Volume = sq.Volume,
+                    })
+                    .ToList()
+            })
+            .ToListAsync();
+        
+        for (var i = 0; i < stockData.FirstOrDefault()?.StockQuotes.Count; i += chunkSize)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                yield break;
+            
+            if (delayMs > 0)
+                await Task.Delay(delayMs, cancellationToken);
+        
+            //var chunk = stockData.FirstOrDefault()?.StockQuotes.ElementAt(i);
+            var chunk = stockData.FirstOrDefault()?.StockQuotes.Skip(i).Take(chunkSize).ToList();
+        
+            if (chunk is null) yield break;
+            
+            yield return chunk;
+        }
     }
     
 }

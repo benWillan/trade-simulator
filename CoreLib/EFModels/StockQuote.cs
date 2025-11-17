@@ -18,4 +18,6 @@ public partial class StockQuote
     public decimal? ClosePrice { get; set; }
 
     public long? Volume { get; set; }
+
+    public virtual Stock StockSymbolNavigation { get; set; } = null!;
 }

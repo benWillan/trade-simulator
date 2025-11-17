@@ -113,6 +113,12 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.HighPrice).HasPrecision(12, 3);
             entity.Property(e => e.LowPrice).HasPrecision(12, 3);
             entity.Property(e => e.OpenPrice).HasPrecision(12, 3);
+
+            entity.HasOne(d => d.StockSymbolNavigation).WithMany(p => p.StockQuotes)
+                .HasPrincipalKey(p => p.Ticker)
+                .HasForeignKey(d => d.StockSymbol)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("stock");
         });
 
         modelBuilder.Entity<null_stock>(entity =>
