@@ -28,6 +28,7 @@ Trade Simulator is a lightweight stock trading web application. It provides inte
 - TypeScript
 - SignalR
 - PostgreSQL database
+- Entity Framework Core
 
 ## **Screenshots:**
 - <img width="2558" height="1266" alt="image" src="https://github.com/user-attachments/assets/a7326b7a-c39e-4933-bb8d-d8ff184b9fc6" />
