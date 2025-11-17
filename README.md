@@ -16,6 +16,16 @@ Additional features to come including:
 - More in depth order book detail and analysis.
 - HFT simulation scenarios.
 - Monte-Carlo simulation tool for buy/sell strategy optimisation.
+- FIX Protocol implementation.
+- Bot traders.
+- ETF/Crpyto/Forex integration.
+
+Tech-stack:
+- C# .NET Core Web Api
+- React
+- TypeScript
+- SignalR
+- PostgreSQL database
 
 Screenshots:
 - <img width="2558" height="1266" alt="image" src="https://github.com/user-attachments/assets/a7326b7a-c39e-4933-bb8d-d8ff184b9fc6" />
