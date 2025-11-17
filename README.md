@@ -36,5 +36,5 @@ Trade Simulator is a lightweight stock trading web application. It provides inte
 - Entity Framework Core
 
 ## **Screenshots:**
-- <img width="2558" height="1266" alt="image" src="https://github.com/user-attachments/assets/a7326b7a-c39e-4933-bb8d-d8ff184b9fc6" />
-- <img width="2558" height="1267" alt="image" src="https://github.com/user-attachments/assets/ee9d7336-9219-4db8-8c0a-a7a6b35c3cf2" />
+<img width="2558" height="1266" alt="image" src="https://github.com/user-attachments/assets/a7326b7a-c39e-4933-bb8d-d8ff184b9fc6" />
+<img width="2558" height="1267" alt="image" src="https://github.com/user-attachments/assets/ee9d7336-9219-4db8-8c0a-a7a6b35c3cf2" />
