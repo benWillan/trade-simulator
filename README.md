@@ -12,7 +12,7 @@ This codebase is evolving. Expect frequent updates as new features, optimization
 Additional features to come including:
 - Individual user accounts.
 - Trading accounts with balance, profit and loss, projected earnings.
-- AI tool to simulate market updates.
+- AI tool to simulate market news/updates.
 - More in depth order book detail and analysis.
 - HFT simulation scenarios.
 - Monte-Carlo simulation tool for buy/sell strategy optimisation.
