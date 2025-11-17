@@ -9,7 +9,7 @@ Trade Simulator is a lightweight stock trading web application. It provides inte
 - Place buy/sell trade orders. Market, Limit, Stop and Stop Limit order with take-profit and stop-loss.
 - A lookup tool for deeper stock meta data.
 
-###### This codebase is evolving. Expect frequent updates as new features, optimizations, and UI enhancements are introduced.
+###### This codebase is evolving. New features, optimizations, and UI enhancements will be introduced.
 
 ## **Additional features to come:**
 - Individual user accounts.
