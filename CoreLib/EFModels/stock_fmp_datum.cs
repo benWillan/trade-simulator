@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreLib.EFModels;
 
-[Table("stock_fmp_data", Schema = "public")]
 public partial class stock_fmp_datum
 {
     public int id { get; set; }
@@ -12,8 +10,6 @@ public partial class stock_fmp_datum
     public string symbol { get; set; } = null!;
 
     public decimal? price { get; set; }
-
-    //public long? market_cap { get; set; }
 
     public double? beta { get; set; }
 
@@ -80,4 +76,6 @@ public partial class stock_fmp_datum
     public bool? is_adr { get; set; }
 
     public bool? is_fund { get; set; }
+
+    public DateTime? created_at { get; set; }
 }

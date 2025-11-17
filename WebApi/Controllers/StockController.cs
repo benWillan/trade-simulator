@@ -57,9 +57,9 @@ public class StockController : ControllerBase
             stockData?.Exchange,
             stockData?.CQSSymbol,
             stockData?.NASDAQSymbol,
-            stockData?.StockQuotes,
-            MinDate = stockData?.StockQuotes.Min(sq => sq.Date).ToShortDateString(),
-            MaxDate = stockData?.StockQuotes.Max(sq => sq.Date).ToShortDateString()
+            // stockData?.StockQuotes,
+            // MinDate = stockData?.StockQuotes.Min(sq => sq.Date).ToShortDateString(),
+            // MaxDate = stockData?.StockQuotes.Max(sq => sq.Date).ToShortDateString()
         });
     }
     
@@ -68,11 +68,11 @@ public class StockController : ControllerBase
     {
         var comparisonData = await _stockQuoteService.RetrieveComparisonStockData(mainTicker, comparisonTicker);
 
-        var minDate = comparisonData?.StockQuotes.Where(sq => sq.ClosePrice != null)
-            .Min(sq => sq.Date).ToShortDateString();
-        
-        var maxDate = comparisonData?.StockQuotes.Where(sq => sq.ClosePrice != null)
-            .Max(sq => sq.Date).ToShortDateString();
+        // var minDate = comparisonData?.StockQuotes.Where(sq => sq.ClosePrice != null)
+        //     .Min(sq => sq.Date).ToShortDateString();
+        //
+        // var maxDate = comparisonData?.StockQuotes.Where(sq => sq.ClosePrice != null)
+        //     .Max(sq => sq.Date).ToShortDateString();
 
         return Ok(new
         {
@@ -88,9 +88,9 @@ public class StockController : ControllerBase
             comparisonData?.Exchange,
             comparisonData?.CQSSymbol,
             comparisonData?.NASDAQSymbol,
-            comparisonData?.StockQuotes,
-            MinDate = minDate,
-            MaxDate = maxDate
+            // comparisonData?.StockQuotes,
+            // MinDate = minDate,
+            // MaxDate = maxDate
         });
     }
     

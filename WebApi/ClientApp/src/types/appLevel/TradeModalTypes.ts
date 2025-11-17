@@ -34,3 +34,11 @@ export const TradeOrderLineColour: Record<string, string> = {
   "Green": "#198754",
   "Red": "#dc3545"
 }
+
+export type StopLoss = {
+  elementWithFocusId: string | null,
+  ticks: number | null,
+  price: number | null,
+  usd: number | null,
+  percentage: number | null
+}

@@ -22,8 +22,8 @@ public class Worker : BackgroundService
         Console.WriteLine($"Stock Harvester Started @{DateTime.Now}");
         var random = new Random();
 
-        var lowerRange = 500;
-        var upperRange = random.Next(750, 1000);
+        var lowerRange = 200;
+        var upperRange = random.Next(350, 600);
         
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -41,6 +41,7 @@ public class Worker : BackgroundService
                 if (fmpData is null)
                 {
                     Console.WriteLine($"Fmp fetch data was null at {DateTime.Now}");
+                    
                     await Task.Delay(random.Next(lowerRange, upperRange), stoppingToken);
                     continue;
                 }

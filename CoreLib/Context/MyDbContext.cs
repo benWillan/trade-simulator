@@ -18,6 +18,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<StockQuote> StockQuotes { get; set; }
 
+    public virtual DbSet<null_stock> null_stocks { get; set; }
+
     public virtual DbSet<order_type> order_types { get; set; }
 
     public virtual DbSet<side> sides { get; set; }
@@ -41,9 +43,18 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.recorded_at)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.sl_percent).HasPrecision(8, 2);
+            entity.Property(e => e.sl_price).HasPrecision(18, 4);
+            entity.Property(e => e.sl_ticks).HasPrecision(10, 2);
+            entity.Property(e => e.sl_usd).HasPrecision(10, 2);
             entity.Property(e => e.status).HasDefaultValue(1);
             entity.Property(e => e.stop_loss).HasPrecision(18, 4);
+            entity.Property(e => e.stop_price).HasPrecision(8, 4);
             entity.Property(e => e.take_profit).HasPrecision(18, 4);
+            entity.Property(e => e.tp_percent).HasPrecision(8, 2);
+            entity.Property(e => e.tp_price).HasPrecision(18, 4);
+            entity.Property(e => e.tp_ticks).HasPrecision(10, 2);
+            entity.Property(e => e.tp_usd).HasPrecision(10, 2);
 
             entity.HasOne(d => d.order_typeNavigation).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.order_type)
@@ -102,12 +113,15 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.HighPrice).HasPrecision(12, 3);
             entity.Property(e => e.LowPrice).HasPrecision(12, 3);
             entity.Property(e => e.OpenPrice).HasPrecision(12, 3);
+        });
 
-            entity.HasOne(d => d.StockSymbolNavigation).WithMany(p => p.StockQuotes)
-                .HasPrincipalKey(p => p.Ticker)
-                .HasForeignKey(d => d.StockSymbol)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_sq_stock_ticker");
+        modelBuilder.Entity<null_stock>(entity =>
+        {
+            entity.HasKey(e => e.ticker).HasName("null_stocks_pkey");
+
+            entity.ToTable(tb => tb.HasComment("A list of stocks tickers that return null from FMP"));
+
+            entity.Property(e => e.ticker).HasColumnType("character varying");
         });
 
         modelBuilder.Entity<order_type>(entity =>
@@ -139,6 +153,9 @@ public partial class MyDbContext : DbContext
             entity.HasKey(e => e.id).HasName("stock_fmp_data_pkey");
 
             entity.Property(e => e.change).HasPrecision(18, 3);
+            entity.Property(e => e.created_at)
+                .HasDefaultValueSql("now()")
+                .HasColumnType("timestamp without time zone");
             entity.Property(e => e.ipo_date).HasColumnType("timestamp(0) without time zone");
             entity.Property(e => e.last_dividend).HasPrecision(18, 3);
             entity.Property(e => e.price).HasPrecision(18, 3);

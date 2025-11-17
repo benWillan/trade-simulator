@@ -3,6 +3,7 @@ import {Stock} from '../../types/charting/types';
 import { side, orderType } from '../../types/appLevel/TradeModalTypes';
 import { Order } from '../../types/appLevel/orderTypes';
 import {NotificationType, NotificationStyle} from '../../types/charting/types';
+import { StopLoss } from '../../types/appLevel/TradeModalTypes'
 //  external.
 import React, { useEffect, useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal';
@@ -12,6 +13,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { cwd } from 'process';
 
 type Props = {
   isVisible: boolean;
@@ -30,6 +32,16 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
 
   const [stopLossIsDisabled, setStopLossIsDisabled] = useState<boolean>(true);
   const [takeProfitIsDisabled, setTakeProfitIsDisabled] = useState<boolean>(true);
+
+  const defaultStopLoss: StopLoss = {
+    elementWithFocusId: null,
+    ticks: null,
+    percentage: null,
+    price: null,
+    usd: null
+  }
+
+  const [stopLossValues, setStopLossValues] = useState<StopLoss>(defaultStopLoss);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -96,6 +108,96 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
     setSideValue(Number(e.currentTarget.value));
 
   }
+
+  const handleStopLossOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+
+    const inputWithFocusId = e.currentTarget.id;
+
+    setStopLossValues(prev => ({...prev, elementWithFocusId: inputWithFocusId}));
+
+  }
+
+  const handleStopLossPriceOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+
+    const inputWithFocusId = e.currentTarget.id;
+
+    setStopLossValues(prev => ({...prev, elementWithFocusId: inputWithFocusId}));
+
+  }
+
+  const handleStopLossPercentageOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+
+    const inputWithFocusId = e.currentTarget.id;
+
+    setStopLossValues(prev => ({...prev, elementWithFocusId: inputWithFocusId}));
+
+  }
+
+  const handleStopLossInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    // console.log(e.target.id);
+    
+    // let x = graphData?.stockQuotes.at(-1)?.askPrice;
+    
+    // const newVal: StopLoss =  {
+    //   ticks: parseInt(e.target.value) * 2,
+    //   price: graphData?.stockQuotes.at(-1)?.askPrice ?? null,
+    //   usd: 12,
+    //   percentage: parseInt(e.target.value)
+    // }
+
+    const valueInputIntoStopLossInputs = e.target.value;
+    const stopLossInputId = e.target.value;
+
+    switch(stopLossInputId) {
+
+      case "stopLossPercentage1":
+
+        setStopLossValues(prev => ({...prev, percentage: Number(valueInputIntoStopLossInputs)}));
+        break;
+
+      case "stopLossUsd1":
+
+        setStopLossValues(prev => ({...prev, usd: Number(valueInputIntoStopLossInputs)}));
+        break;
+
+      case "":
+
+
+    }
+
+
+  }
+
+  useEffect(() => {
+
+    // if (!stopLossValues.elementWithFocusId) return;
+
+    // switch(stopLossValues.elementWithFocusId) {
+
+    //   case "stopLossPercentage1":
+    //     setStopLossValues(prev => ({...prev, price: ((graphData?.stockQuotes?.at(-1)?.askPrice ?? 0) * 0.1)}));
+    //     break;
+
+    //   case "stopLossPrice1":
+    //     setStopLossValues(prev => ({...prev, percentage: ((graphData?.stockQuotes?.at(-1)?.askPrice ?? 0) * 0.50)}));
+    //     break;
+
+    //   case "":
+    //     break;
+
+    // }
+
+    // const updatedValues: StopLoss =  {
+    //   ticks: 0,
+    //   price: ,
+    //   usd: 0,
+    //   percentage: parseInt(e.target.value)
+    // }
+    
+    // setStopLossValues(prev => ({...prev, price: (graphData?.stockQuotes.at(-1)?.askPrice ?? 0) * 0.1, ticks: 0, usd: 0}));
+
+  }, [graphData]);
 
   return (
     <Modal
@@ -203,11 +305,12 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
                 </Form.Group>
               </Col>
             </Row>
+            {/* input pairs */}
             <Row>
               <Col>
                 <Form.Group>
                   <Form.Label>Ticks</Form.Label>
-                  <Form.Control type='number' disabled={stopLossIsDisabled} name='ticksStopLoss' step={0.01} placeholder=''></Form.Control>
+                  <Form.Control type='number' id='stopLossTicks1' onFocus={handleStopLossOnFocus} value={stopLossValues?.ticks ?? ""} disabled={stopLossIsDisabled} name='ticksStopLoss' step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
@@ -221,7 +324,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
               <Col>
                 <Form.Group>
                   <Form.Label>Price</Form.Label>
-                  <Form.Control type='number' disabled={stopLossIsDisabled} name='priceStopLoss' step={0.01} placeholder=''></Form.Control>
+                  <Form.Control id='stopLossPrice1' type='number' onFocus={handleStopLossPriceOnFocus} onChange={handleStopLossInputChange} value={stopLossValues.price ?? ""} disabled={stopLossIsDisabled} name='priceStopLoss' step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
@@ -235,7 +338,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
               <Col>
                 <Form.Group>
                   <Form.Label>USD</Form.Label>
-                  <Form.Control type='number' disabled={stopLossIsDisabled} name='currencyStopLoss' step={0.01} placeholder=''></Form.Control>
+                  <Form.Control id='stopLossUsd1' onFocus={handleStopLossOnFocus} type='number' value={stopLossValues?.usd ?? ""} disabled={stopLossIsDisabled} name='currencyStopLoss' step={0.01} ></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
@@ -249,7 +352,7 @@ function TradeModal({isVisible, onTradeModalHide, graphData, userId, currentHist
               <Col>
                 <Form.Group>
                   <Form.Label>%</Form.Label>
-                  <Form.Control type='number' disabled={stopLossIsDisabled} name='percentageStopLoss' step={0.01} placeholder=''></Form.Control>
+                  <Form.Control type='number' id='stopLossPercentage1' onFocus={handleStopLossPercentageOnFocus} onChange={handleStopLossInputChange} value={stopLossValues?.percentage ?? ""} disabled={stopLossIsDisabled} name='percentageStopLoss' step={0.01} placeholder=''></Form.Control>
                 </Form.Group>
               </Col>
               <Col>

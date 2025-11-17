@@ -31,6 +31,24 @@ public partial class Order
 
     public int side { get; set; }
 
+    public decimal? stop_price { get; set; }
+
+    public decimal? sl_ticks { get; set; }
+
+    public decimal? sl_price { get; set; }
+
+    public decimal? sl_usd { get; set; }
+
+    public decimal? sl_percent { get; set; }
+
+    public decimal? tp_ticks { get; set; }
+
+    public decimal? tp_price { get; set; }
+
+    public decimal? tp_usd { get; set; }
+
+    public decimal? tp_percent { get; set; }
+
     public virtual order_type order_typeNavigation { get; set; } = null!;
 
     public virtual side sideNavigation { get; set; } = null!;
