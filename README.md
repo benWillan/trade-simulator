@@ -2,6 +2,8 @@
 
 Trade Simulator is a lightweight stock trading web application. It provides interactive financial charts, technical indicators, and real-time data updates, built to replicate the core user experience of modern trading analysis platforms while focusing on historical stock price data.
 
+###### https://tradesimulator-e5aaayf9cygre0be.uksouth-01.azurewebsites.net/
+
 ## **Current features:**
 - A dataset of 5000+ stocks in OHLCV format from 1962-2017.
 - Candlestick and linechart visualisation.
@@ -9,7 +11,7 @@ Trade Simulator is a lightweight stock trading web application. It provides inte
 - Place buy/sell trade orders. Market, Limit, Stop and Stop Limit order with take-profit and stop-loss.
 - A lookup tool for deeper stock meta data.
 
-###### This codebase is evolving. New features, optimizations, and UI enhancements will be introduced.
+###### This codebase is evolving frequently. New features, optimizations, and UI enhancements will be introduced.
 
 ## **Additional features to come:**
 - Individual user accounts.
