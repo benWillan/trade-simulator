@@ -1,4 +1,4 @@
-## **What is it?**
+## **Intro**
 
 Trade Simulator is a lightweight stock trading web application. It provides interactive financial charts, technical indicators, and real-time data updates, built to replicate the core user experience of modern trading analysis platforms. Trading is executed using historical stock price data in a risk-free environment to back test strategies and learn more about stock trading in general.
 
