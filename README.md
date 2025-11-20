@@ -7,7 +7,7 @@ Trade Simulator is a lightweight stock trading web application. It provides inte
 
 ## **Current features**
 - A dataset of 5000+ stocks in OHLCV format from 1962-2017 listed on NYSE, NYSE MKT and NASDAQ.
-- Candlestick and linechart visualisation.
+- Candlestick and line chart visualisation.
 - Real time streaming experience via SignalR that simulates market updates between chosen date periods.
 - Place buy/sell trade orders. Market, Limit, Stop and Stop Limit order with take-profit and stop-loss.
 - A lookup tool for deeper stock meta data.
